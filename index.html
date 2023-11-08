@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-
+  
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta property="og:type" content="website">
@@ -13,28 +13,26 @@
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-
+  
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-
   
-
+  
     <link rel="shortcut icon" href="/favicon.png">
-
   
-
-
+  
+    
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
 
   
-
+  
 <link rel="stylesheet" href="/css/style.css">
 
-
-​    
+  
+    
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
 
   
-
+  
 <meta name="generator" content="Hexo 7.0.0"></head>
 
 <body>
@@ -47,7 +45,7 @@
       <h1 id="logo-wrap">
         <a href="/" id="logo">Hexo</a>
       </h1>
-
+      
     </div>
     <div id="header-inner" class="inner">
       <nav id="main-nav">
@@ -59,9 +57,8 @@
         
       </nav>
       <nav id="sub-nav">
-
-
-​        
+        
+        
           <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
         
         <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
@@ -75,25 +72,251 @@
 
       <div class="outer">
         <section id="main">
+  
+    <article id="post-六，常见的网络拓扑结构" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/08/%E5%85%AD%EF%BC%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/" class="article-date">
+  <time class="dt-published" datetime="2023-11-08T12:07:41.000Z" itemprop="datePublished">2023-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/08/%E5%85%AD%EF%BC%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/">六，常见的网络拓扑结构</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
       
+        <hr>
+<p>常见的网络拓扑结构有以下6种：<br>1.总线型网络拓扑结构；<br>2.星型网络拓扑结构；<br>3.环形网络拓扑结构；<br>4.树型网络拓扑结构；<br>5.网状网络拓扑结构；<br>6.混合网络型拓扑结构。</p>
+<h4 id="1-总线型网络拓扑结构"><a href="#1-总线型网络拓扑结构" class="headerlink" title="1.总线型网络拓扑结构"></a>1.总线型网络拓扑结构</h4><p>​	总线型结构是将网络中的所有设备通过相应的硬件接口直接连接到公共总线上，结点之间按广播方式通信，一个结点发出的信息，总线上的其它结点均可“收听”到。 总线型结构就像一张树叶,有一条主干线,主干线上面由很多分支。总线型拓扑结构图如下:</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311082009455.png" alt="image-20231108200931313" style="zoom: 50%;" />
+
+<p>优点：</p>
+<ul>
+<li>结构简单，可扩充性好；</li>
+<li>当需要增加节点时，只需要在总线上增加一个分支接口便可与分支节点相连，当总线负载不允许时还可以扩充总线；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>维护难，分支节点故障查找难。</li>
+<li>这种网络因为各节点是共用总线带宽的，所以在传输速度上会随着接入网络的用户的增多而下降；</li>
+</ul>
+<h4 id="2-星型网络拓扑结构"><a href="#2-星型网络拓扑结构" class="headerlink" title="2.星型网络拓扑结构"></a>2.星型网络拓扑结构</h4><p>​	星型结构是一种以中央节点为中心，把若干外围节点连接起来的辐射式互联结构。这种结构适用于局域网，特别是近年来连接的局域网大都采用这种连接方式。这种连接方式以双绞线或同轴电缆作连接线路。星型拓扑结构图如下:</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311082012425.png" alt="image-20231108201232501" style="zoom:50%;" />
+
+<p>优点：</p>
+<ul>
+<li>控制简单。任何一站点只和中央节点相连接，因而介质访问控制方法简单，致使访问协议也十分简单。易于网络监控和管理。</li>
+<li>故障诊断和隔离容易。中央节点对连接线路可以逐一隔离进行故障检测和定位，单个连接点的故障只影响一个设备，不会影响全网。</li>
+</ul>
+<h4 id="3-环形网络拓扑结构"><a href="#3-环形网络拓扑结构" class="headerlink" title="3.环形网络拓扑结构"></a>3.环形网络拓扑结构</h4><p>​	环形结构各结点通过通信线路组成闭合回路，环中数据只能单向传输，信息在每台设备上的延时时间是固定的，特别适合实时控制的局域网系统。环形结构就如一串珍珠项链,环形结构上的每台计算机就是项链上的一个个珠子。环形拓扑结构图如下:<br><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311082015799.png" alt="image-20231108201541789" style="zoom:50%;" /></p>
+<p>特点：</p>
+<ul>
+<li>信息流在网中是沿着固定方向流动的，两个节点仅有一条道路，故简化了路径选择的控制；</li>
+<li>环路上各节点都是自主控制，故控制软件简单；</li>
+<li>由于信息源在环路中是串行地穿过各个节点，当环中节点过多时，势必影响信息传输速率，使网络的响应时间延长；</li>
+</ul>
+<h4 id="4-树型网络拓扑结构"><a href="#4-树型网络拓扑结构" class="headerlink" title="4.树型网络拓扑结构"></a>4.树型网络拓扑结构</h4><p>​	树型拓扑结构是一种层次结构，结点按层次连结，信息交换主要在上下结点之间进行，相邻结点或同层结点之间一般不进行数据交换。树型拓扑结构是就是数据结构中的树。树型拓扑结构图如下:</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311082018334.png" alt="image-20231108201808142" style="zoom:50%;" />
+
+<p>特点：</p>
+<p>● 网络结构简单，便于管理；<br>● 控制简单，建网容易；<br>● 网络延迟时间较短，误码率较低；<br>● 网络共享能力较差；<br>● 通信线路利用率不高；<br>● 中央结点负荷太重。</p>
+<p>三层结构分为核心层，汇聚层和接入层，</p>
+<p>接入层：无线网络发射器，AP（提供接入网络的接口）<br>汇聚层：楼层交换机、建筑物交换机（汇聚接入层设备）<br>核心层：核心交换机（数据高速转发）</p>
+<h4 id="5-网状网络拓扑结构"><a href="#5-网状网络拓扑结构" class="headerlink" title="5.网状网络拓扑结构"></a>5.网状网络拓扑结构</h4><p>​	网络拓扑结构又称作无规则结构，结点之间的联结是任意的，没有规律。网状拓扑结构图如下:</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311082020611.png" alt="image-20231108202028629" style="zoom:50%;" />
+
+<p>特点如下：<br>●网络可靠性高，一般通信子网中任意两个节点交换机之间，存在着两条或两条以上的通信路径，这样，当一条路径发生故障时，还可以通过另一条路径把信息送至节点交换机。<br>●网络可组建成各种形状，采用多种通信信道，多种传输速率。<br>●网内节点共享资源容易。<br>●可改善线路的信息流量分配。<br>●可选择最佳路径，传输延迟小。</p>
+<h4 id="6-混合网络型拓扑结构"><a href="#6-混合网络型拓扑结构" class="headerlink" title="6.混合网络型拓扑结构"></a>6.混合网络型拓扑结构</h4><p>​		混合型网络拓扑结构就是指同时使用上面的5种网络拓扑结构种两种或两种以上的网络拓扑结构。<br>这种网络拓扑结构是由星型结构和总线型结构的网络结合在一起的网络结构，这样的拓扑结构更能满足较大网络的拓展，解决星型网络在传输距离上的局限，而同时又解决了总线型网络在连接用户数量的限制。这种网络拓扑结构同时兼顾了星型网与总线型网络的优点，在缺点方面得到了一定的弥补。</p>
+<p>特点：</p>
+<ul>
+<li>应用广泛</li>
+<li>扩展灵活</li>
+<li>性能差</li>
+<li>较难维护</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/11/08/%E5%85%AD%EF%BC%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/" data-id="clopqel6e0001y0uu13vq2uz2" data-title="六，常见的网络拓扑结构" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-五，VMware的三种网络连接模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/08/%E4%BA%94%EF%BC%8CVMware%E7%9A%84%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2023-11-08T11:47:27.000Z" itemprop="datePublished">2023-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/08/%E4%BA%94%EF%BC%8CVMware%E7%9A%84%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F/">五，VMware的三种网络连接模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>安装完成vmware以后<br>进入虚拟机—&gt;&gt;设置—&gt;&gt;网络适配器</p>
+<p>​	在网络适配器中可以发现vmware为我们提供了三种网络工作模式，它们分别是：<br>1,Bridged（桥接模式）直接连接物理网络<br>2,NAT（网络地址转换模式）与主机共享IP地址<br>3,Host-Only（仅主机模式）与主机共享的专用网络</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081949514.png" alt="image-20231108194928046"></p>
+<ul>
+<li>VMnet0表示的是用于桥接模式下的虚拟交换机；</li>
+<li>VMnet1表示的是用于仅主机模式下的虚拟交换机；</li>
+<li>VMnet8表示的是用于NAT模式下的虚拟交换机；</li>
+</ul>
+<h3 id="Bridged（桥接模式）"><a href="#Bridged（桥接模式）" class="headerlink" title="Bridged（桥接模式）"></a>Bridged（桥接模式）</h3><p>​	桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<p>其网络结构如下图所示：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081953502.png" alt="image-20231108195306332" style="zoom: 33%;" />
+
+<p>​	虚拟机可以连接外网，可以和同网段的其他真实物理主机之间相互访问呢，可以和相同模式的虚拟机之间相互访问。此模式用于ip地址资源比较充足的情况<br>缺点：<br>​	但如果你的网络环境是ip资源很缺少或对ip管理比较严格的话，那桥接模式就不太适用了。</p>
+<h3 id="NAT（地址转换模式）"><a href="#NAT（地址转换模式）" class="headerlink" title="NAT（地址转换模式）"></a>NAT（地址转换模式）</h3><p>NAT模式借助虚拟NAT设备和虚拟DHCP服务器，使得虚拟机可以联网。其网络结构如下图所示：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081955188.png" alt="image-20231108195509383" style="zoom:33%;" />
+
+<p>​	在NAT模式中，主机网卡直接与虚拟NAT设备相连，然后虚拟NAT设备与虚拟DHCP服务器一起连接在虚拟交换机VMnet8上，这样就实现了虚拟机联网。</p>
+<p>​	此时，虚拟机可以连接外网（NAT实现），可以和相同模式的虚拟机之间相互访问（同一交换机下），但不可以和同网段的其他真实物理主机之间相互访问（不同子网，且没有第三层路由器）。此模式用于ip地址资源比较稀缺的情况。  </p>
+<p>​	然后，将VMware Network Adapter VMnet8启用之后，发现远程工具可以连接上虚拟机了。<br>那么，这就是NAT模式，利用虚拟的NAT设备以及虚拟DHCP服务器来使虚拟机连接外网，而VMware Network Adapter VMnet8虚拟网卡是用来与虚拟机通信的。</p>
+<h3 id="Host-Only（仅主机模式）"><a href="#Host-Only（仅主机模式）" class="headerlink" title="Host-Only（仅主机模式）"></a>Host-Only（仅主机模式）</h3><p>​	Host-Only模式其实就是NAT模式去除了虚拟NAT设备，然后使用VMware Network Adapter VMnet1虚拟网卡连接VMnet1虚拟交换机来与虚拟机通信的，Host-Only模式将虚拟机与外网隔开，使得虚拟机成为一个独立的系统，只与主机相互通讯。其网络结构如下图所示：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081956923.png" alt="image-20231108195650718" style="zoom:33%;" />
+
+<h3 id="ipv4地址"><a href="#ipv4地址" class="headerlink" title="ipv4地址"></a>ipv4地址</h3><p>由32为二进制数组成，每四位用空格隔开，每八位用逗号隔开</p>
+<p>私有地址范围：<br>A段：10.0.0.0-10.255.255.255<br>B段：172.16.0.0-172.31.255.255<br>C段：192.168.0.0-192.168.255.255</p>
+<p><a target="_blank" rel="noopener" href="https://myip.ipip.net/">https://myip.ipip.net</a> 用于查看公网IP地址</p>
+<p>子网掩码255.255.255.0标志前24位相同的数字在同一网络下，后8位是主机号<br>前24位是网络号</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/11/08/%E4%BA%94%EF%BC%8CVMware%E7%9A%84%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F/" data-id="clopqel5f0000y0uuavii8e7i" data-title="五，VMware的三种网络连接模式" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-四，markdown语法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2023-11-08T11:02:10.000Z" itemprop="datePublished">2023-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/">四，markdown语法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<h5 id="标题："><a href="#标题：" class="headerlink" title="标题："></a>标题：</h5><p>用#来表示格式，以#的数量表示标题的大小，效果如图：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081920415.png" style="zoom:50%;" />
+
+<h5 id="字体设置斜体、粗体、删除线："><a href="#字体设置斜体、粗体、删除线：" class="headerlink" title="字体设置斜体、粗体、删除线："></a>字体设置斜体、粗体、删除线：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081919870.png" alt="image-20231108191934493" style="zoom:50%;" />
+
+<h5 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h5><p>1，插入图片链接：</p>
+<p>格式为：<img src="/%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84/%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84" alt="图片描述"></p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081928845.png" style="zoom:50%;" />
+
+<p>2，Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用&lt;&gt;包起来， Markdown 就会自动把它转成链接。也可以直接写，也是可以显示成链接形式的</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081930795.png" alt="image-20231108192849993" style="zoom:50%;" />
+
+<h5 id="分割线："><a href="#分割线：" class="headerlink" title="分割线："></a>分割线：</h5><p>可以在一行中用三个以上的星号(*)、减号(-)、底线(_)来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081931923.png" alt="image-20231108193154539" style="zoom:50%;" />
+
+<h5 id="代码块："><a href="#代码块：" class="headerlink" title="代码块："></a>代码块：</h5><p>用三个~来表示格式，效果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main</span><br></pre></td></tr></table></figure>
+
+<h5 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h5><p>在被引用的文本前加上&gt;符号，以及一个空格就可以了，如果只输入了一个&gt;符号会产生一个空白的引用。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081935515.png" alt="image-20231108193543671" style="zoom:50%;" />
+
+<h5 id="列表："><a href="#列表：" class="headerlink" title="列表："></a>列表：</h5><p>1，无序列表</p>
+<p>使用 *，+，- 表示无序列表。<br>注意：符号后面一定要有一个空格，起到缩进的作用。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081938349.png" alt="image-20231108193814543" style="zoom:50%;" />
+
+<p>2，有序列表</p>
+<p>使用数字和一个英文句点表示有序列表。<br>注意：英文句点后面一定要有一个空格，起到缩进的作用。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939852.png" alt="image-20231108193908340" style="zoom:50%;" />
+
+<p>3，无序列表和有序列表同时使用</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939344.png" alt="image-20231108193938532" style="zoom:50%;" />
+
+<h5 id="表格："><a href="#表格：" class="headerlink" title="表格："></a>表格：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081941334.png" alt="image-20231108194115208" style="zoom:50%;" />
+
+<h5 id="换行："><a href="#换行：" class="headerlink" title="换行："></a>换行：</h5><p>方法1: 连续两个以上空格+回车<br>方法2：使用html语言换行标签：</p>
+<h5 id="缩进字符："><a href="#缩进字符：" class="headerlink" title="缩进字符："></a>缩进字符：</h5><p>、<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942745.png" alt="image-20231108194221891" style="zoom:50%;" /></p>
+<h5 id="特殊符号："><a href="#特殊符号：" class="headerlink" title="特殊符号："></a>特殊符号：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942698.png" alt="image-20231108194249512" style="zoom:50%;" />
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/" data-id="clopqel6h0002y0uu8efici2o" data-title="四，markdown语法" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-三，Typora-PicGo-Github保证博客中图片显示" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/" class="article-date">
   <time class="dt-published" datetime="2023-11-08T03:11:38.000Z" itemprop="datePublished">2023-11-08</time>
 </a>
-
+    
   </div>
   <div class="article-inner">
-
-​    
+    
+    
       <header class="article-header">
-
+        
   
-
     <h1 itemprop="name">
       <a class="p-name article-title" href="/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/">三，Typora+PicGo+Github保证博客中图片显示</a>
     </h1>
-
+  
 
       </header>
     
@@ -159,40 +382,38 @@
 
 <p>上传后图片就在GitHub中设置的仓库中的文件夹中了</p>
 
-
+      
     </div>
     <footer class="article-footer">
       <a data-url="http://example.com/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/" data-id="clop79af600008wuudmu45a23" data-title="三，Typora+PicGo+Github保证博客中图片显示" class="article-share-link"><span class="fa fa-share">Share</span></a>
-
-
-​      
-​      
+      
+      
+      
     </footer>
   </div>
-
+  
 </article>
 
 
 
-
+  
     <article id="post-图片猫" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/" class="article-date">
   <time class="dt-published" datetime="2023-11-07T12:44:22.000Z" itemprop="datePublished">2023-11-07</time>
 </a>
-
+    
   </div>
   <div class="article-inner">
-
-​    
+    
+    
       <header class="article-header">
-
+        
   
-
     <h1 itemprop="name">
       <a class="p-name article-title" href="/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/">图片猫</a>
     </h1>
-
+  
 
       </header>
     
@@ -201,40 +422,38 @@
         <p>mao</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081031611.jpeg" alt="点击查看图片来源"></p>
 
-
+      
     </div>
     <footer class="article-footer">
       <a data-url="http://example.com/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/" data-id="cloobrdpw000000uuehzsdqzm" data-title="图片猫" class="article-share-link"><span class="fa fa-share">Share</span></a>
-
-
-​      
-​      
+      
+      
+      
     </footer>
   </div>
-
+  
 </article>
 
 
 
-
+  
     <article id="post-二，发布新增文章到博客" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/11/07/%E4%BA%8C%EF%BC%8C%E5%8F%91%E5%B8%83%E6%96%B0%E5%A2%9E%E6%96%87%E7%AB%A0%E5%88%B0%E5%8D%9A%E5%AE%A2/" class="article-date">
   <time class="dt-published" datetime="2023-11-07T12:20:49.000Z" itemprop="datePublished">2023-11-07</time>
 </a>
-
+    
   </div>
   <div class="article-inner">
-
-​    
+    
+    
       <header class="article-header">
-
+        
   
-
     <h1 itemprop="name">
       <a class="p-name article-title" href="/2023/11/07/%E4%BA%8C%EF%BC%8C%E5%8F%91%E5%B8%83%E6%96%B0%E5%A2%9E%E6%96%87%E7%AB%A0%E5%88%B0%E5%8D%9A%E5%AE%A2/">二，发布新增文章到博客</a>
     </h1>
-
+  
 
       </header>
     
@@ -265,32 +484,31 @@
 <li>需要删除文件的话要先将本地文件删除后在上传同步一次GitHub</li>
 </ul>
 
-​      
+      
     </div>
     <footer class="article-footer">
       <a data-url="http://example.com/2023/11/07/%E4%BA%8C%EF%BC%8C%E5%8F%91%E5%B8%83%E6%96%B0%E5%A2%9E%E6%96%87%E7%AB%A0%E5%88%B0%E5%8D%9A%E5%AE%A2/" data-id="cloob558h00002suuc5mug3f5" data-title="二，发布新增文章到博客" class="article-share-link"><span class="fa fa-share">Share</span></a>
-
-
-​      
-​      
+      
+      
+      
     </footer>
   </div>
-
+  
 </article>
 
 
 
-
+  
     <article id="post-一，利用github搭建hexo博客" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/11/07/%E4%B8%80%EF%BC%8C%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/" class="article-date">
   <time class="dt-published" datetime="2023-11-07T11:34:02.561Z" itemprop="datePublished">2023-11-07</time>
 </a>
-
+    
   </div>
   <div class="article-inner">
-
-​    
+    
+    
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id="一，利用github搭建hexo博客"><a href="#一，利用github搭建hexo博客" class="headerlink" title="一，利用github搭建hexo博客"></a>一，利用github搭建hexo博客</h1><h3 id="搭建前的准备："><a href="#搭建前的准备：" class="headerlink" title="搭建前的准备："></a>搭建前的准备：</h3><ol>
@@ -377,40 +595,38 @@
 <li>注意在blog文件夹中进行操作</li>
 </ul>
 
-
+      
     </div>
     <footer class="article-footer">
       <a data-url="http://example.com/2023/11/07/%E4%B8%80%EF%BC%8C%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/" data-id="cloo9thwb000018uu6k27eu46" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
-
-
-​      
-​      
+      
+      
+      
     </footer>
   </div>
-
+  
 </article>
 
 
 
-
+  
     <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2023/11/07/hello-world/" class="article-date">
   <time class="dt-published" datetime="2023-11-07T07:22:12.264Z" itemprop="datePublished">2023-11-07</time>
 </a>
-
+    
   </div>
   <div class="article-inner">
-
-​    
+    
+    
       <header class="article-header">
-
+        
   
-
     <h1 itemprop="name">
       <a class="p-name article-title" href="/2023/11/07/hello-world/">Hello World</a>
     </h1>
-
+  
 
       </header>
     
@@ -430,17 +646,16 @@
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
-
+      
     </div>
     <footer class="article-footer">
       <a data-url="http://example.com/2023/11/07/hello-world/" data-id="cloo0dld500002cuu2tjqafvu" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
-
-
-​      
-​      
+      
+      
+      
     </footer>
   </div>
-
+  
 </article>
 
 
@@ -451,17 +666,16 @@
 </section>
         
           <aside id="sidebar">
+  
+    
 
+  
+    
 
-​    
-
-
-​    
-
-
-​    
-
-
+  
+    
+  
+    
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
@@ -470,13 +684,25 @@
   </div>
 
 
-
-​    
+  
+    
   <div class="widget-wrap">
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
-
+        
+          <li>
+            <a href="/2023/11/08/%E5%85%AD%EF%BC%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/">六，常见的网络拓扑结构</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/08/%E4%BA%94%EF%BC%8CVMware%E7%9A%84%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F/">五，VMware的三种网络连接模式</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/">四，markdown语法</a>
+          </li>
+        
           <li>
             <a href="/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/">三，Typora+PicGo+Github保证博客中图片显示</a>
           </li>
@@ -485,31 +711,19 @@
             <a href="/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/">图片猫</a>
           </li>
         
-          <li>
-            <a href="/2023/11/07/%E4%BA%8C%EF%BC%8C%E5%8F%91%E5%B8%83%E6%96%B0%E5%A2%9E%E6%96%87%E7%AB%A0%E5%88%B0%E5%8D%9A%E5%AE%A2/">二，发布新增文章到博客</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/07/%E4%B8%80%EF%BC%8C%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/">一，利用github搭建hexo博客</a>
-          </li>
-        
-          <li>
-            <a href="/2023/11/07/hello-world/">Hello World</a>
-          </li>
-        
       </ul>
     </div>
   </div>
 
-
+  
 </aside>
         
       </div>
       <footer id="footer">
-
+  
   <div class="outer">
     <div id="footer-info" class="inner">
-
+      
       &copy; 2023 John Doe<br>
       Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
@@ -518,11 +732,11 @@
 
     </div>
     <nav id="mobile-nav">
-      
+  
     <a href="/" class="mobile-nav-link">Home</a>
-      
+  
     <a href="/archives" class="mobile-nav-link">Archives</a>
-
+  
 </nav>
     
 
@@ -531,7 +745,7 @@
 
 
 
-
+  
 <script src="/fancybox/jquery.fancybox.min.js"></script>
 
 

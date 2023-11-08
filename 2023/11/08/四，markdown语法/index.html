@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>四，markdown语法 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="标题：用#来表示格式，以#的数量表示标题的大小，效果如图：   字体设置斜体、粗体、删除线：  链接：1，插入图片链接： 格式为：   2，Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用&lt;&gt;包起来， Markdown 就会自动把它转成链接。也可以直接写，也是可以显示成链接形式的   分割线：可以在一行中用三个以上的星号(*)、减号(-)、底线(_)来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四，markdown语法">
+<meta property="og:url" content="http://example.com/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="标题：用#来表示格式，以#的数量表示标题的大小，效果如图：   字体设置斜体、粗体、删除线：  链接：1，插入图片链接： 格式为：   2，Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用&lt;&gt;包起来， Markdown 就会自动把它转成链接。也可以直接写，也是可以显示成链接形式的   分割线：可以在一行中用三个以上的星号(*)、减号(-)、底线(_)来">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081920415.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081919870.png">
+<meta property="og:image" content="http://example.com/%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84/%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081928845.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081930795.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081931923.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081935515.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081938349.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939852.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939344.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081941334.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942745.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942698.png">
+<meta property="article:published_time" content="2023-11-08T11:02:10.000Z">
+<meta property="article:modified_time" content="2023-11-08T11:45:31.829Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081920415.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-四，markdown语法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2023-11-08T11:02:10.000Z" itemprop="datePublished">2023-11-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      四，markdown语法
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <hr>
+<h5 id="标题："><a href="#标题：" class="headerlink" title="标题："></a>标题：</h5><p>用#来表示格式，以#的数量表示标题的大小，效果如图：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081920415.png" style="zoom:50%;" />
+
+<h5 id="字体设置斜体、粗体、删除线："><a href="#字体设置斜体、粗体、删除线：" class="headerlink" title="字体设置斜体、粗体、删除线："></a>字体设置斜体、粗体、删除线：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081919870.png" alt="image-20231108191934493" style="zoom:50%;" />
+
+<h5 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h5><p>1，插入图片链接：</p>
+<p>格式为：<img src="/%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84/%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84" alt="图片描述"></p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081928845.png" style="zoom:50%;" />
+
+<p>2，Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用&lt;&gt;包起来， Markdown 就会自动把它转成链接。也可以直接写，也是可以显示成链接形式的</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081930795.png" alt="image-20231108192849993" style="zoom:50%;" />
+
+<h5 id="分割线："><a href="#分割线：" class="headerlink" title="分割线："></a>分割线：</h5><p>可以在一行中用三个以上的星号(*)、减号(-)、底线(_)来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081931923.png" alt="image-20231108193154539" style="zoom:50%;" />
+
+<h5 id="代码块："><a href="#代码块：" class="headerlink" title="代码块："></a>代码块：</h5><p>用三个~来表示格式，效果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main</span><br></pre></td></tr></table></figure>
+
+<h5 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h5><p>在被引用的文本前加上&gt;符号，以及一个空格就可以了，如果只输入了一个&gt;符号会产生一个空白的引用。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081935515.png" alt="image-20231108193543671" style="zoom:50%;" />
+
+<h5 id="列表："><a href="#列表：" class="headerlink" title="列表："></a>列表：</h5><p>1，无序列表</p>
+<p>使用 *，+，- 表示无序列表。<br>注意：符号后面一定要有一个空格，起到缩进的作用。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081938349.png" alt="image-20231108193814543" style="zoom:50%;" />
+
+<p>2，有序列表</p>
+<p>使用数字和一个英文句点表示有序列表。<br>注意：英文句点后面一定要有一个空格，起到缩进的作用。</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939852.png" alt="image-20231108193908340" style="zoom:50%;" />
+
+<p>3，无序列表和有序列表同时使用</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939344.png" alt="image-20231108193938532" style="zoom:50%;" />
+
+<h5 id="表格："><a href="#表格：" class="headerlink" title="表格："></a>表格：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081941334.png" alt="image-20231108194115208" style="zoom:50%;" />
+
+<h5 id="换行："><a href="#换行：" class="headerlink" title="换行："></a>换行：</h5><p>方法1: 连续两个以上空格+回车<br>方法2：使用html语言换行标签：</p>
+<h5 id="缩进字符："><a href="#缩进字符：" class="headerlink" title="缩进字符："></a>缩进字符：</h5><p>、<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942745.png" alt="image-20231108194221891" style="zoom:50%;" /></p>
+<h5 id="特殊符号："><a href="#特殊符号：" class="headerlink" title="特殊符号："></a>特殊符号：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942698.png" alt="image-20231108194249512" style="zoom:50%;" />
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/" data-id="clopqel6h0002y0uu8efici2o" data-title="四，markdown语法" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/11/08/%E4%BA%94%EF%BC%8CVMware%E7%9A%84%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          五，VMware的三种网络连接模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">三，Typora+PicGo+Github保证博客中图片显示</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">November 2023</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/11/08/%E5%85%AD%EF%BC%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/">六，常见的网络拓扑结构</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/08/%E4%BA%94%EF%BC%8CVMware%E7%9A%84%E4%B8%89%E7%A7%8D%E7%BD%91%E7%BB%9C%E8%BF%9E%E6%8E%A5%E6%A8%A1%E5%BC%8F/">五，VMware的三种网络连接模式</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/">四，markdown语法</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/">三，Typora+PicGo+Github保证博客中图片显示</a>
+          </li>
+        
+          <li>
+            <a href="/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/">图片猫</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
