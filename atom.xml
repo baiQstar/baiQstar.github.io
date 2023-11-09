@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-08T12:23:31.899Z</updated>
+  <updated>2023-11-09T08:58:54.846Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>七，更改hexo博客主题</title>
+    <link href="http://example.com/2023/11/09/%E4%B8%83%EF%BC%8C%E6%9B%B4%E6%94%B9hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/"/>
+    <id>http://example.com/2023/11/09/%E4%B8%83%EF%BC%8C%E6%9B%B4%E6%94%B9hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/</id>
+    <published>2023-11-09T08:48:31.000Z</published>
+    <updated>2023-11-09T08:58:54.846Z</updated>
+    
+    <content type="html"><![CDATA[<hr><p>1,在hexo博客主题官网上选择一个合适的主题</p><img src="../../../../Users/Q/AppData/Roaming/Typora/typora-user-images/image-20231109165040757.png" alt="image-20231109165040757" style="zoom: 25%;" /><p>2，点击跳转到该主题的GitHub网站，并找到安装操作步骤</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311091652986.png" alt="image-20231109165249394" style="zoom:25%;" /><p>3，在本地博客文件的根目录打开git输入安装命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/cofess/hexo-theme-pure.git themes/pure</span><br></pre></td></tr></table></figure><p>4，打开站点配置文件，找到theme字段，将其值更改为 pure</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: pure</span><br></pre></td></tr></table></figure><p>5，更新主题</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd themes/pure</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure><p>6，进行预览</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure><p>7,清除Hexo生成的静态文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure><p>8,部署至GitHub仓库</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d -g</span><br></pre></td></tr></table></figure><p>在浏览器中输入网址：<a href="https://baiqstar.github.io/%EF%BC%8C%E6%95%88%E6%9E%9C%E5%A6%82%E4%B8%8B%E5%9B%BE%E6%89%80%E7%A4%BA%EF%BC%9A">https://baiqstar.github.io/，效果如下图所示：</a></p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311091658503.png" alt="image-20231109165808086" style="zoom:25%;" />]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;hr&gt;
+&lt;p&gt;1,在hexo博客主题官网上选择一个合适的主题&lt;/p&gt;
+&lt;img src=&quot;../../../../Users/Q/AppData/Roaming/Typora/typora-user-images/image-20231109165040757.png&quot; alt</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>六，常见的网络拓扑结构</title>
