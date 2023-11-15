@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>十，php搭建主页面功能 | Hexo</title>
+  <meta name="description" content="1，登录页面有SQL注入漏洞查询数据库名称 在用户名输入框输入：0’ union select 1,database(),3– - 2，登录页面有SQL注入罗东查询uses表中的所有数据 在用户名输入框输入：0’ union select 1,database(),(group_concat(id,username,password)) from security.users– - 3，新建upl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十，php搭建主页面功能">
+<meta property="og:url" content="http://example.com/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="1，登录页面有SQL注入漏洞查询数据库名称 在用户名输入框输入：0’ union select 1,database(),3– - 2，登录页面有SQL注入罗东查询uses表中的所有数据 在用户名输入框输入：0’ union select 1,database(),(group_concat(id,username,password)) from security.users– - 3，新建upl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151233941.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151236386.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151238867.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151242265.png">
+<meta property="article:published_time" content="2023-11-15T04:19:34.000Z">
+<meta property="article:modified_time" content="2023-11-15T04:49:36.313Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151233941.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/" class="title">十，php搭建主页面功能</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-15T04:19:34.000Z" itemprop="datePublished">2023-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/13/%E4%B9%9D%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2/" class="title">九，php搭建登录页面</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-13T09:14:32.000Z" itemprop="datePublished">2023-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/10/%E5%85%AB%EF%BC%8C%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/" class="title">八，永恒之蓝漏洞利用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-10T08:10:03.000Z" itemprop="datePublished">2023-11-10</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/09/%E4%B8%83%EF%BC%8C%E6%9B%B4%E6%94%B9hexo%E5%8D%9A%E5%AE%A2%E4%B8%BB%E9%A2%98/" class="title">七，更改hexo博客主题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-09T08:48:31.000Z" itemprop="datePublished">2023-11-09</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/08/%E5%85%AD%EF%BC%8C%E5%B8%B8%E8%A7%81%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84/" class="title">六，常见的网络拓扑结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-08T12:07:41.000Z" itemprop="datePublished">2023-11-08</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-十，php搭建主页面功能" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      十，php搭建主页面功能
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/" class="article-date">
+	  <time datetime="2023-11-15T04:19:34.000Z" itemprop="datePublished">2023-11-15</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>1，登录页面有SQL注入漏洞查询数据库名称</p>
+<p>在用户名输入框输入：0’ union select 1,database(),3– -</p>
+<p>2，登录页面有SQL注入罗东查询uses表中的所有数据</p>
+<p>在用户名输入框输入：0’ union select 1,database(),(group_concat(id,username,password)) from security.users– -</p>
+<p>3，新建upload.php文件，编写文件上传功能</p>
+<p>代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">&quot;en&quot;</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">&quot;UTF-8&quot;</span>&gt;</span><br><span class="line">    &lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br><span class="line">    &lt;title&gt;Document&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line"></span><br><span class="line">        .ft&#123;</span><br><span class="line">            margin-left: <span class="number">10</span>%;</span><br><span class="line">        &#125;</span><br><span class="line">        .com&#123;	</span><br><span class="line">  		background-color: <span class="comment">#00BFFF;</span></span><br><span class="line">  		border: <span class="number">2</span>px solid white;</span><br><span class="line">  		border-radius: <span class="number">10</span>px;</span><br><span class="line">  		width: <span class="number">100</span>px;</span><br><span class="line">  		height: <span class="number">40</span>px;</span><br><span class="line">  		color: white;</span><br><span class="line">  		text-align: center;</span><br><span class="line">  		line-height: <span class="number">40</span>px;</span><br><span class="line">  		font-size: <span class="number">20</span>px;</span><br><span class="line">		  margin-bottom: <span class="number">10</span>px;</span><br><span class="line">          margin-top:<span class="number">20</span>px</span><br><span class="line">		&#125;</span><br><span class="line">        .com:active&#123;</span><br><span class="line">		transform: <span class="title function_ invoke__">translateY</span>(<span class="number">2</span>px);</span><br><span class="line">		&#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span>=&quot;<span class="title">ft</span>&quot;&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">h2</span>&gt;文件上传&lt;/<span class="title">h2</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">form</span> <span class="title">method</span>=&quot;<span class="title">post</span>&quot; <span class="title">action</span>=&quot;&quot; <span class="title">enctype</span>=&quot;<span class="title">multipart</span>/<span class="title">form</span>-<span class="title">data</span>&quot;&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">input</span> <span class="title">type</span>=&quot;<span class="title">file</span>&quot; <span class="title">name</span>=&quot;<span class="title">file</span>&quot; &gt;&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">input</span> <span class="title">type</span>=&quot;<span class="title">submit</span>&quot; <span class="title">name</span>=&quot;<span class="title">submit</span>&quot; <span class="title">class</span>=&quot;<span class="title">com</span>&quot; <span class="title">value</span>=&quot;点击上传&quot;&gt;&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">h3</span>&gt;下面是接收到的文件：&lt;<span class="title">h3</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;/<span class="title">form</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    &lt;?<span class="title">php</span></span></span><br><span class="line"><span class="class">    <span class="title">if</span>(<span class="title">isset</span>($<span class="title">_FILES</span>[&#x27;<span class="title">file</span>&#x27;]))</span>&#123;</span><br><span class="line">        <span class="variable">$upload_dir</span>=<span class="string">&quot;upload&quot;</span>;</span><br><span class="line">        <span class="variable">$name</span>=<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;name&quot;</span>];</span><br><span class="line">        <span class="variable">$type</span>=<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;type&quot;</span>];</span><br><span class="line">        <span class="variable">$size</span>=<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;size&quot;</span>];</span><br><span class="line">        <span class="variable">$tmp_name</span>=<span class="variable">$_FILES</span>[<span class="string">&quot;file&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>];</span><br><span class="line">        <span class="variable">$radmon_name</span>=<span class="variable">$name</span>;</span><br><span class="line">        <span class="variable">$target_path</span>=<span class="variable">$upload_dir</span>.<span class="string">&quot;//&quot;</span>.<span class="variable">$radmon_name</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$tmp_name</span>,<span class="variable">$target_path</span>))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;上传成功！&lt;br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;文件名称：&quot;</span> .<span class="variable">$radmon_name</span> .<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;文件大小:&quot;</span> .(<span class="variable">$size</span>/<span class="number">1024</span>) .<span class="string">&quot;KB&lt;br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;文件类型:&quot;</span> .<span class="variable">$type</span> .<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;文件地址:&quot;</span> .<span class="variable">$target_path</span> .<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;上传失败！&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">?&gt;</span></span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151233941.png" alt="image-20231115123034035" style="zoom:50%;" />
+
+<p>4，新建mycomments.php文件，编写评论功能</p>
+<p>代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">&quot;en&quot;</span>&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;meta charset=<span class="string">&quot;UTF-8&quot;</span>&gt;</span><br><span class="line">    &lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span><br><span class="line">    &lt;title&gt;我的评论&lt;/title&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">        .form1&#123;</span><br><span class="line">            margin-left: <span class="number">10</span>%;</span><br><span class="line">            margin-top: <span class="number">20</span>px;</span><br><span class="line">        &#125;</span><br><span class="line">        .ft&#123;</span><br><span class="line">            margin-left: <span class="number">10</span>%;</span><br><span class="line">        &#125;</span><br><span class="line">        .com&#123;	</span><br><span class="line">  		background-color: <span class="comment">#00BFFF;</span></span><br><span class="line">  		border: <span class="number">2</span>px solid white;</span><br><span class="line">  		border-radius: <span class="number">10</span>px;</span><br><span class="line">  		width: <span class="number">100</span>px;</span><br><span class="line">  		height: <span class="number">40</span>px;</span><br><span class="line">  		color: white;</span><br><span class="line">  		text-align: center;</span><br><span class="line">  		line-height: <span class="number">40</span>px;</span><br><span class="line">  		font-size: <span class="number">20</span>px;</span><br><span class="line">		  margin-bottom: <span class="number">10</span>px;</span><br><span class="line">          margin-top:<span class="number">20</span>px</span><br><span class="line">		&#125;</span><br><span class="line">        .com:active&#123;</span><br><span class="line">		transform: <span class="title function_ invoke__">translateY</span>(<span class="number">2</span>px);</span><br><span class="line">		&#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;form method=<span class="string">&quot;post&quot;</span> action=<span class="string">&quot;&quot;</span> <span class="class"><span class="keyword">class</span>=&quot;<span class="title">form1</span>&quot;&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">h3</span> &gt;发表评论：&lt;/<span class="title">h3</span>&gt;&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">textarea</span> <span class="title">id</span>=&quot;<span class="title">input</span>&quot; <span class="title">name</span>=&quot;<span class="title">comment</span>&quot; <span class="title">rows</span>=&quot;4&quot; <span class="title">cols</span>=&quot;50&quot; &gt;&lt;/<span class="title">textarea</span>&gt;&lt;<span class="title">br</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;<span class="title">input</span> <span class="title">type</span>=&quot;<span class="title">submit</span>&quot; <span class="title">name</span>=&quot;<span class="title">post_com</span>&quot; <span class="title">value</span>=&quot;提交评论&quot; <span class="title">class</span>=&quot;<span class="title">com</span>&quot; &gt;</span></span><br><span class="line"><span class="class">    &lt;/<span class="title">form</span>&gt;</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    &lt;?<span class="title">php</span></span></span><br><span class="line"><span class="class">    <span class="title">session_start</span>();</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    $<span class="title">link</span>=<span class="title">new</span> <span class="title">mysqli</span>(&quot;<span class="title">localhost</span>&quot;,&quot;<span class="title">root</span>&quot;,&quot;<span class="title">root</span>&quot;,&quot;<span class="title">security</span>&quot;);</span></span><br><span class="line"><span class="class">    // 检查连接是否成功  </span></span><br><span class="line"><span class="class">    <span class="title">if</span> ($<span class="title">conn</span>-&gt;<span class="title">connect_error</span>) </span>&#123;  </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;数据库连接失败!&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;数据库连接成功！&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$comment</span>=<span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;comment&#x27;</span>]);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt; &quot;</span> . <span class="variable">$comment</span> .<span class="string">&quot;&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向表中插入数据</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;post_com&#x27;</span>]))&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$comment</span>))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;评论内容不能为空！&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$insert</span>=<span class="string">&quot;INSERT INTO comments (comment) VALUES (<span class="subst">$comment</span>)&quot;</span>;</span><br><span class="line">		<span class="variable">$result1</span>=<span class="variable">$link</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$insert</span>);</span><br><span class="line">        <span class="keyword">if</span>(<span class="variable">$result1</span>===<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;评论发表成功！&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;&quot;</span>.<span class="variable">$insert</span> .<span class="string">&quot;&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;评论发表失败！&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//从表中查询数据</span></span><br><span class="line">    <span class="variable">$select</span>=<span class="string">&quot;SELECT comment FROM comments ORDER BY id DESC &quot;</span>;</span><br><span class="line">    <span class="variable">$result2</span>=<span class="variable">$link</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$select</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$result2</span>-&gt;num_rows &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 输出数据</span></span><br><span class="line">        <span class="keyword">while</span>(<span class="variable">$row</span> = <span class="variable">$result2</span>-&gt;<span class="title function_ invoke__">fetch_assoc</span>()) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;&quot;</span>. <span class="variable">$row</span>[<span class="string">&quot;comment&quot;</span>]. <span class="string">&quot;&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;0 结果&lt;/div&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">?&gt;</span></span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151236386.png" alt="image-20231115123607783" style="zoom:50%;" />
+
+<p>5，将上述两个功能块加入书主页面</p>
+<p>在main.php中写入以下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="class"><span class="keyword">class</span>=&quot;<span class="title">container</span>&quot;&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">left</span>&quot;&gt;</span></span><br><span class="line"><span class="class">            &lt;?<span class="title">php</span> <span class="title">include</span> &#x27;<span class="title">upload</span>.<span class="title">php</span>&#x27;; ?&gt;</span></span><br><span class="line"><span class="class">        &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">div</span> <span class="title">class</span>=&quot;<span class="title">right</span>&quot;&gt;</span></span><br><span class="line"><span class="class">            &lt;?<span class="title">php</span> <span class="title">include</span> &#x27;<span class="title">mycomments</span>.<span class="title">php</span>&#x27;; ?&gt;</span></span><br><span class="line"><span class="class">        &lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="class">    &lt;/<span class="title">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>效果如图所示：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151238867.png" alt="image-20231115123847445" style="zoom: 33%;" />
+
+<p>6，新建signip.php和link_ip.php，编写注册页面</p>
+<p>在link_ip.php中写入以下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;content-type:text/html; charset= utf-8&#x27;</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="variable">$username</span>=<span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>]);</span><br><span class="line"><span class="variable">$password1</span>=<span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password1&#x27;</span>]);</span><br><span class="line"><span class="variable">$password2</span>=<span class="title function_ invoke__">trim</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password2&#x27;</span>]);</span><br><span class="line"></span><br><span class="line"><span class="variable">$link</span>=<span class="keyword">new</span> <span class="title function_ invoke__">mysqli</span>(<span class="string">&quot;localhost&quot;</span>,<span class="string">&quot;root&quot;</span>,<span class="string">&quot;root&quot;</span>,<span class="string">&quot;security&quot;</span>);</span><br><span class="line">    <span class="comment">// 检查连接是否成功  </span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$conn</span>-&gt;connect_error) &#123;  </span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;数据库连接失败!&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;div class=&#x27;ft&#x27;&gt;数据库连接成功！&lt;/div&gt;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;login&#x27;</span>]))&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;跳转到登录页面！&quot;</span>;</span><br><span class="line">	<span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: login.php&quot;</span>);</span><br><span class="line">	<span class="keyword">exit</span>();</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;signup&#x27;</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$username</span>) || <span class="keyword">empty</span>(<span class="variable">$password1</span>) || <span class="keyword">empty</span>(<span class="variable">$password2</span>))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;输入不能为空！&quot;</span>;</span><br><span class="line">        <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: signup.php&quot;</span>);</span><br><span class="line">        <span class="keyword">exit</span>();</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="variable">$password1</span>!=<span class="variable">$password2</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;两次输入的密码不一致&quot;</span>;</span><br><span class="line">	    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: signup.php&quot;</span>);</span><br><span class="line">	    <span class="keyword">exit</span>();</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;两次输入的密码一致！&quot;</span>;</span><br><span class="line">        <span class="variable">$seclect</span>=<span class="string">&quot;select * from users where username=&#x27;<span class="subst">$username</span>&#x27; and password=&#x27;<span class="subst">$password1</span>&#x27; &quot;</span>;</span><br><span class="line">		<span class="variable">$result</span>=<span class="variable">$link</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$seclect</span>);</span><br><span class="line">        <span class="keyword">if</span>((<span class="variable">$result</span>-&gt;num_rows)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;该用户已存在！&quot;</span>;</span><br><span class="line">            <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: signup.php&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="variable">$sql</span>=<span class="string">&quot;INSERT INTO users (username,password,isadm) VALUES (&#x27;<span class="subst">$username</span>&#x27;,&#x27;<span class="subst">$password1</span>&#x27;,0)&quot;</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="variable">$link</span>-&gt;<span class="title function_ invoke__">query</span>(<span class="variable">$sql</span>) === <span class="literal">TRUE</span>) &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;用户注册成功！&quot;</span>;</span><br><span class="line">                <span class="keyword">echo</span> <span class="variable">$sql</span> . <span class="string">&quot;&lt;br&gt;&quot;</span> ;</span><br><span class="line">                <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: login.php&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;Error: &quot;</span> . <span class="variable">$sql</span> . <span class="string">&quot;&lt;br&gt;&quot;</span> ;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&quot;用户注册失败！&quot;</span>;</span><br><span class="line">                <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: signup.php&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>效果如图所示：</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311151242265.png" alt="image-20231115124242563" style="zoom: 33%;" />
+
+<hr>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/" title="十，php搭建主页面功能" target="_blank" rel="external">http://example.com/2023/11/15/十，php搭建主页面功能/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/11/13/%E4%B9%9D%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2/" title="九，php搭建登录页面"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
