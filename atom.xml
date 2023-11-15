@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-15T07:48:31.373Z</updated>
+  <updated>2023-11-15T08:10:34.210Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>十二，网站问题修复</title>
+    <link href="http://example.com/2023/11/15/%E5%8D%81%E4%BA%8C%EF%BC%8C%E7%BD%91%E7%AB%99%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D/"/>
+    <id>http://example.com/2023/11/15/%E5%8D%81%E4%BA%8C%EF%BC%8C%E7%BD%91%E7%AB%99%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D/</id>
+    <published>2023-11-15T07:54:32.000Z</published>
+    <updated>2023-11-15T08:10:34.210Z</updated>
+    
+    <content type="html"><![CDATA[<p>​在之前的网站搭建中，网站还有一些问题会影响网站的使用，例如SQL注入和XSS攻击等，这篇文章讲述对这些问题的修复方案</p><p>1，之前的主页退出后再点击浏览器的回退见还可以返回主页面，原因是没有清除会话数据，解决代码如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;&lt;h1&gt;&lt;a href=&quot;?logout=true&quot;&gt;注销&lt;/a&gt;&lt;/h1&gt;&#x27;;</span><br><span class="line">if (isset($_GET[&#x27;logout&#x27;])) &#123;</span><br><span class="line">    // 清除会话数据</span><br><span class="line">    session_unset();</span><br><span class="line">    session_destroy();</span><br><span class="line">    echo &quot;您已成功注销。&lt;br&gt;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2，在文件上传之后，很容易发现文件名和文件所处的位置，这样就很容易被植入木马，所以要对文件名称和位置进行加密处理，代码如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 生成随机的文件名</span><br><span class="line">    $random_name = time().uniqid() . &#x27;_&#x27; . $file_name;</span><br><span class="line">    // 移动文件到目标位置</span><br><span class="line">    $target_path = $upload_dir .&quot;\\&quot;. md5($random_name).$file_name;</span><br></pre></td></tr></table></figure><p>3，在登录功能中简单的使用拼接的方式拼接变量很容易引发SQL注入的问题，可以用预编译语句来处理SQL语句再执行，但是一些场景不适用预编译，代码如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 使用预编译语句</span><br><span class="line">    $sql = &quot;SELECT * FROM users WHERE username = ? AND password = ?&quot;;</span><br><span class="line">    $stmt = mysqli_prepare($link, $sql);</span><br><span class="line">    // 绑定参数</span><br><span class="line">    mysqli_stmt_bind_param($stmt, &quot;ss&quot;, $u, $p);</span><br><span class="line">    // 执行查询</span><br><span class="line">    mysqli_stmt_execute($stmt);</span><br><span class="line">    // 获取结果集</span><br><span class="line">    $result = mysqli_stmt_get_result($stmt);</span><br></pre></td></tr></table></figure><p>4，在评论功能中也很容易发生SQL注入和XSS攻击，可以对获取的评论内容进行加密和转义来预防这些问题，代码如下：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 处理评论</span><br><span class="line">$comment = htmlspecialchars($_POST[&#x27;comment&#x27;]); // 防止 XSS 攻击</span><br><span class="line">$comment = mysqli_real_escape_string($link, $comment); // 转义评论，防止 SQL 注入</span><br></pre></td></tr></table></figure><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;​		在之前的网站搭建中，网站还有一些问题会影响网站的使用，例如SQL注入和XSS攻击等，这篇文章讲述对这些问题的修复方案&lt;/p&gt;
+&lt;p&gt;1，之前的主页退出后再点击浏览器的回退见还可以返回主页面，原因是没有清除会话数据，解决代码如下：&lt;/p&gt;
+&lt;figure class=&quot;</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>十一，php搭建管理员页面</title>
