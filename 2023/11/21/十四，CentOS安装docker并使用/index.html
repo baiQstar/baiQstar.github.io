@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>十四，CentOS安装docker并使用 | Hexo</title>
+  <meta name="description" content="一，docker简介：​		Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。它可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 ​		容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。 ​		Docker将工程及此">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十四，CentOS安装docker并使用">
+<meta property="og:url" content="http://example.com/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="一，docker简介：​		Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。它可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 ​		容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。 ​		Docker将工程及此">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311211919902.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311211935011.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311212011788.png">
+<meta property="article:published_time" content="2023-11-21T11:13:15.000Z">
+<meta property="article:modified_time" content="2023-11-21T12:11:34.079Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311211919902.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">16</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/" class="title">十四，CentOS安装docker并使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-21T11:13:15.000Z" itemprop="datePublished">2023-11-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/" class="title">十三，CentOS搭建网站</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-20T12:30:19.000Z" itemprop="datePublished">2023-11-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/15/%E5%8D%81%E4%BA%8C%EF%BC%8C%E7%BD%91%E7%AB%99%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D/" class="title">十二，网站问题修复</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-15T07:54:32.000Z" itemprop="datePublished">2023-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/15/%E5%8D%81%E4%B8%80%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E7%AE%A1%E7%90%86%E5%91%98%E9%A1%B5%E9%9D%A2/" class="title">十一，php搭建管理员页面</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-15T07:30:36.000Z" itemprop="datePublished">2023-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/15/%E5%8D%81%EF%BC%8Cphp%E6%90%AD%E5%BB%BA%E4%B8%BB%E9%A1%B5%E9%9D%A2%E5%8A%9F%E8%83%BD/" class="title">十，php搭建主页面功能</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-15T04:19:34.000Z" itemprop="datePublished">2023-11-15</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-十四，CentOS安装docker并使用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      十四，CentOS安装docker并使用
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/" class="article-date">
+	  <time datetime="2023-11-21T11:13:15.000Z" itemprop="datePublished">2023-11-21</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="一，docker简介："><a href="#一，docker简介：" class="headerlink" title="一，docker简介："></a>一，docker简介：</h3><p>​		Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。它可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。</p>
+<p>​		容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。</p>
+<p>​		Docker将工程及此工程依赖的所有软件打包到一个容器中统一部署，可以解决在开发环境、测试环境以及生产环境等等。多种环境去部署同一份代码，由于环境原因往往会出现软件跨环境迁移的问题！</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311211919902.png" alt="image-20231121191848479" style="zoom:50%;" />
+
+<h3 id="二，介绍Docker中的三个概念"><a href="#二，介绍Docker中的三个概念" class="headerlink" title="二，介绍Docker中的三个概念"></a>二，介绍Docker中的三个概念</h3><p>镜像image</p>
+<p>​		Docker 镜像（Image），就相当于是一个文件系统，是用于创建 Docker 容器的模板。也可以将镜像当作容器的“源代码”。镜像体积很小，非常“便携”，易于分享、存储和更新。</p>
+<p>容器container</p>
+<p>​		容器是独立运行的一个或一组应用，是镜像运行时的实体。</p>
+<p>注册中心(仓库)registry</p>
+<p>​		Docker 仓库用来保存镜像，有点类似于Maven的远程仓库。Registry 分为公共和私有两种。Docker 公司运营公共的 Registry 叫做 Docker Hub。用户可以在 Docker Hub 注册账号，分享并保存自己的镜像（说明：在 Docker Hub 下载镜像巨慢，可以自己构建私有的 Registry）。</p>
+<h3 id="三，安装docker"><a href="#三，安装docker" class="headerlink" title="三，安装docker"></a>三，安装docker</h3><p>在安装docker之前，可以先做如下准备工作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#1. 关闭防火墙，并禁止防火墙开机自启</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br><span class="line">#2. 关闭MySQL，并禁止MySQL开机自启（你的CentOS里之前安装过MySql，为防止端口冲突，需要做这一步）</span><br><span class="line">systemctl stop mysqld</span><br><span class="line">systemctl disable mysqld</span><br></pre></td></tr></table></figure>
+
+<p>在联网环境下依次执行以下操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 更新系统，如果需要确认，全部选 y (yes)。根据网络状况，此操作可能要花几分钟或者十几分钟时间</span><br><span class="line">yum update</span><br><span class="line"># 安装yum-utils工具和两个驱动依赖</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># 设置使用阿里云的yum源，稍后会从阿里云下载docker软件</span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo </span><br><span class="line"># 安装docker</span><br><span class="line">yum install docker-ce</span><br><span class="line"># 查看docker版本</span><br><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+
+<p>设置注册中心(仓库)</p>
+<p>如果不设置注册中心，将从默认的docker hub里下载镜像，速度非常慢。</p>
+<p>USTC（中科大的镜像服务）是老牌的Linux镜像服务提供者（注册中心Registry），从Ubuntu5.04版本就在使用。USTC的docker镜像速度加载很快，它的优势之一是不需要注册，是真正的公共服务。</p>
+<p>设置步骤：</p>
+<p>创建文件夹：mkdir &#x2F;etc&#x2F;docker</p>
+<p>编辑文件daemon.json： vi &#x2F;etc&#x2F;docker&#x2F;daemon.json</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;registry-mirrors&quot;: [&quot;https://registry.docker-cn.com&quot;,&quot;https://pee6w651.mirror.aliyuncs.com&quot;],</span><br><span class="line">    &quot;live-restore&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出vi：按ESC，输:wq 回车</p>
+<p>重新加载daemon文件，然后重启docker服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="四，应用场景"><a href="#四，应用场景" class="headerlink" title="四，应用场景"></a>四，应用场景</h3><ul>
+<li>docker镜像一旦构建，就已经一次性完成了应用自动打包、集成。docker镜像可以进行版本管理、复制、分享、修改，就像管理代码一样。</li>
+<li>通过统一的docker环境封装（比如镜像中封装了同一版本的JDK、同样的环境变量等等），保证应用服务运行环境的一致性。避免出现在测试环境上好用，挪到生产环境下运行失败的问题。</li>
+<li>docker可以做到秒级、甚至毫秒级的启动时间。大大的节约了开发、测试、部署的时间。<br>因为镜像可下载、可复用，docker容器可快速启动等特性，结合容器编排服务(k8s)可以实现大型分布式部署的弹性伸缩，快速扩展。</li>
+</ul>
+<h3 id="五，Docker常用命令"><a href="#五，Docker常用命令" class="headerlink" title="五，Docker常用命令"></a>五，Docker常用命令</h3><p>1，docker的启动，停止和重启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br><span class="line">systemctl stop docker</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>2，查看docker的状态</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status docker</span><br></pre></td></tr></table></figure>
+
+<p>3，设置docker开机自启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+
+<p>4查看docker的概要信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+<p>5，列出本地主机上有的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker images [OPTIONS]</span><br><span class="line">常用参数：</span><br><span class="line">-a ：列出所有的镜像 （含历史映像层）</span><br><span class="line">-q ：只显示镜像ID</span><br><span class="line">example：</span><br><span class="line">docker images -a</span><br><span class="line">docker images -q</span><br><span class="line">docker images -aq</span><br><span class="line">docker images redis   #查找镜像名为redis的镜像</span><br><span class="line">docker images redis:6.0.8   #查找镜像名:版本号(REPOSITORY：TAG)对应的镜像</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311211935011.png" alt="image-20231121193502304"></p>
+<p>字段解析：</p>
+<ul>
+<li>REPOSITORY：表示镜像的仓库源</li>
+<li>TAG：镜像的标签版本号</li>
+<li>IMAGE ID：镜像ID</li>
+<li>CREATED：镜像创建时间</li>
+<li>SIZE：镜像大小</li>
+</ul>
+<p>6，从远程库拉取镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker pull 镜像名字[:TAG]</span><br><span class="line">example：</span><br><span class="line">docker pull redis:6.0.8</span><br><span class="line">docker pull ubuntu  # 没有指定版本即拉取最新版 即默认为 ubuntu:latest</span><br></pre></td></tr></table></figure>
+
+<p>7，删除本地有的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#删除单个</span><br><span class="line">docker rmi 镜像ID  #删除镜像，如果此时镜像上面有容器正在运行，会报错无法删除</span><br><span class="line">docker rmi  -f 镜像ID   #强制(forced)删除镜像</span><br><span class="line">#删除多个</span><br><span class="line">docker rmi -f 镜像名1:TAG 镜像名2:TAG </span><br><span class="line">#删除全部（慎用）</span><br><span class="line">docker rmi -f $(docker images -qa)  </span><br><span class="line">#首先docker images -qa会列举本地所有的镜像的ID，然后作为一个集合送入rmi一个个删除</span><br></pre></td></tr></table></figure>
+
+<p>8，新建启动容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</span><br><span class="line">常用参数：</span><br><span class="line">--name=NAME   #为容器指定名字为NAME，不使用的话系统自动为容器命名</span><br><span class="line">-d: 后台运行容器并返回容器ID，也即启动守护式容器(后台运行)；</span><br><span class="line">-i：以交互模式运行容器，通常与 -t 同时使用；</span><br><span class="line">-t：为容器重新分配一个伪输入终端，通常与 -i 同时使用；</span><br><span class="line">也即启动交互式容器(前台有伪终端，等待交互，一般连用，即-it)；</span><br><span class="line">-P: 随机端口映射，大写P</span><br><span class="line">-p: 指定端口映射，小写p </span><br><span class="line">example：</span><br><span class="line">以ubuntu为例，启动后要交互先声明交互模式，其次交互得需要一个终端，因此参数为-it</span><br><span class="line">docker run -it ubuntu /bin/bash</span><br><span class="line">指定名称</span><br><span class="line">docker run -it --name=myubuntu ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>9，启动守护式容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d 容器名</span><br><span class="line"> </span><br><span class="line">example：</span><br><span class="line">docker run -d redis:6.0.8</span><br><span class="line">docker run -d ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>10，列出正在运行的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker ps [OPTIONS]</span><br><span class="line">常用参数：</span><br><span class="line">-a :列出当前所有正在运行的容器+历史上运行过的</span><br><span class="line">-l :显示最近创建的容器。</span><br><span class="line">-n nu：显示最近nu个创建的容器。</span><br><span class="line">-q :静默模式，只显示容器编号。</span><br><span class="line">example：</span><br><span class="line">docker ps -aq</span><br><span class="line">docker ps -n 3</span><br><span class="line">docker ps -l</span><br></pre></td></tr></table></figure>
+
+<p>11，进入正在运行的容器并以命令行交互</p>
+<p>（1）docker exec -it 容器ID&#x2F;容器名称 bashShell</p>
+<p>（2）docker attach 容器ID</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">example：</span><br><span class="line">#容器ID</span><br><span class="line">docker exec -it c32f612cc218 /bin/bash</span><br><span class="line">docker attach c32f612cc218</span><br><span class="line">#容器名称</span><br><span class="line">docker exec -it wizardly_booth /bin/bash</span><br><span class="line">docker attach wizardly_booth</span><br></pre></td></tr></table></figure>
+
+<p>区别 ：</p>
+<p>​		exec 是在容器中打开新的终端，并且可以启动新的进程。用exit退出，不会导致容器的停止，attach 直接进入容器启动命令的终端，不会启动新的进程。用exit退出，会导致容器的停止。推荐大家使用 docker exec 命令，因为退出容器终端，不会导致容器的停止。</p>
+<p>12，启动，重启和停止容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker start 容器ID或者容器名</span><br><span class="line">docker restart 容器ID或者容器名</span><br><span class="line">docker stop 容器ID或者容器名</span><br><span class="line">docker kill 容器ID或容器名  # 强制停止容器</span><br></pre></td></tr></table></figure>
+
+<p>13，删除已停止的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#删除一个</span><br><span class="line">docker rm 容器ID  </span><br><span class="line">docker rm -f 容器ID  #强制删除</span><br><span class="line">#删除多个</span><br><span class="line">docker rm -f $(docker ps -a -q)</span><br><span class="line">或</span><br><span class="line">docker ps -a -q | xargs docker rm</span><br></pre></td></tr></table></figure>
+
+<h3 id="六，安装并启动phpmyadmin"><a href="#六，安装并启动phpmyadmin" class="headerlink" title="六，安装并启动phpmyadmin"></a>六，安装并启动phpmyadmin</h3><p>安装phpmyadmin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull phpmyadmin/phpmyadmin</span><br></pre></td></tr></table></figure>
+
+<p>启动MySQL和phpmyadmin服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> docker inspect mysql57</span><br><span class="line">docker run --name mysql57 -v mysql57:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql:5.7</span><br><span class="line"></span><br><span class="line">docker exec -it mysql57 bash</span><br><span class="line">docker run --name phpmyadmin --link mysql57:db -p 9998:80 -d phpmyadmin/phpmyadmin</span><br></pre></td></tr></table></figure>
+
+<p>打开网址：192.168.0.44：9998进入phpmyadmin管理网站</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311212011788.png" alt="image-20231121201110643" style="zoom:67%;" />
+
+
+
+<hr>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/" title="十四，CentOS安装docker并使用" target="_blank" rel="external">http://example.com/2023/11/21/十四，CentOS安装docker并使用/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/" title="十三，CentOS搭建网站"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
