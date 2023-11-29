@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-11-29T12:32:02.435Z</updated>
+  <updated>2023-11-29T13:06:21.920Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二十，网页注入捆绑木马</title>
+    <link href="http://example.com/2023/11/29/%E4%BA%8C%E5%8D%81%EF%BC%8C%E7%BD%91%E9%A1%B5%E6%B3%A8%E5%85%A5%E6%8D%86%E7%BB%91%E6%9C%A8%E9%A9%AC/"/>
+    <id>http://example.com/2023/11/29/%E4%BA%8C%E5%8D%81%EF%BC%8C%E7%BD%91%E9%A1%B5%E6%B3%A8%E5%85%A5%E6%8D%86%E7%BB%91%E6%9C%A8%E9%A9%AC/</id>
+    <published>2023-11-29T12:36:24.000Z</published>
+    <updated>2023-11-29T13:06:21.920Z</updated>
+    
+    <content type="html"><![CDATA[<p>1，先制作一个flash页面加入flash升级弹窗</p><p>下载好flash.js文件，先制作一个简单页面在body标签中加入以下代码</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;./flash.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure><p>效果如下：<br><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292044323.png" alt="image-20231129204430323"></p><p>2，制作捆绑木马</p><p>将flashcenter_pp_ax_install_cn.exe安装包和flag.exe木马放在同一文件夹下</p><p>使⽤winrar选中两个文件创建压缩⽂件</p><p>选中 创建自解压格式压缩文件</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292048736.png" alt="image-20231129204809684"></p><p>⾼级-&gt;⾼级⾃解压选项，路径设置 C:\windows\temp</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292049081.png" alt="image-20231129204928461"></p><p>在设置添加<br>C:\windows\temp\flashcenter_pp_ax_install_cn.exe<br>C:\windows\temp\flag.exe</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292050897.png" alt="image-20231129205010088"></p><p>模式设置全部隐藏</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292050470.png" alt="image-20231129205045192"></p><p>更新设置</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292051436.png" alt="image-20231129205111322"></p><p>在最后点击确定，点击生成</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292054689.png" alt="image-20231129205428438"></p><p>3，替换图标</p><p>先下载Restorator.rar文件并进行解压</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292055603.png" alt="image-20231129205534521"></p><p>双击Restorator.exe运行</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292056692.png" alt="image-20231129205623567"></p><p>将Desktop.exe和flashcenter_pp_ax_install_cn.exe都拖到Restorator的资源数中</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292058432.png" alt="image-20231129205805145"></p><p>将Desktop.exe的图标删除，将flashcenter_pp_ax_install_cn.exe的图标复制黏贴到Desktop.exe中</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292059560.png" alt="image-20231129205927369"></p><p>点击保存退出并将Desktop.exe重命名为flash.exe</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292100474.png" alt="image-20231129210023351"></p><p>4，将捆绑木马放到网页中</p><p>先将flash.exe放到网站根目录中</p><p>并在flash.js的最后改为</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.96/flash.exe</span><br></pre></td></tr></table></figure><p>其中192.168.2.96为本机的IP地址，flash.exe为改好的安装包文件</p><p>在网页中点击立即升级，开始下载flash.exe文件说明放入捆绑木马成功</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311292105253.png" alt="image-20231129210530876"></p><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;1，先制作一个flash页面加入flash升级弹窗&lt;/p&gt;
+&lt;p&gt;下载好flash.js文件，先制作一个简单页面在body标签中加入以下代码&lt;/p&gt;
+&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutt</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>十九，Quasar远控的安装及使用</title>
@@ -421,26 +443,6 @@
       
     <summary type="html">&lt;p&gt;1，安装扩展：&lt;/p&gt;
 &lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;c</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://example.com/2023/11/07/%E4%B8%80%EF%BC%8C%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/"/>
-    <id>http://example.com/2023/11/07/%E4%B8%80%EF%BC%8C%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/</id>
-    <published>2023-11-07T11:34:02.561Z</published>
-    <updated>2023-11-08T02:37:30.997Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="一，利用github搭建hexo博客"><a href="#一，利用github搭建hexo博客" class="headerlink" title="一，利用github搭建hexo博客"></a>一，利用github搭建hexo博客</h1><h3 id="搭建前的准备："><a href="#搭建前的准备：" class="headerlink" title="搭建前的准备："></a>搭建前的准备：</h3><ol><li>提前安装好(node.js)[<a href="https://nodejs.org/en]">https://nodejs.org/en]</a> 左边的那个</li><li>提前安装好(GIt)[<a href="https://git-scm.com/downloads]">https://git-scm.com/downloads]</a></li><li>提前注册好一个github账号</li></ol><h3 id="操作步骤："><a href="#操作步骤：" class="headerlink" title="操作步骤："></a>操作步骤：</h3><ol><li><p>在本地找个目录放博客源文件，路径不要有中文</p><hr></li><li><p>在选定的目录中，右键<strong>Git Bash Here</strong></p><hr></li><li><p>使用npm命令安装Hexo，输入:</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli   #全局安装hexo-cli</span><br><span class="line">hexo init blog  #使用Hexo初始化一个新的博客项目名称为blog</span><br><span class="line">cd blog  #进入blog文件夹</span><br><span class="line">hexo g  #使用Hexo生成静态文件</span><br></pre></td></tr></table></figure><p>回车构建好后出现如下效果图<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081033459.png" alt="image-20231107190213777"></p><hr></li><li><p>按顺序执行以下三条命令便可查看网站雏形</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo new test_my_site#使用Hexo创建一个新的博客项目名称为test_my_site</span><br><span class="line">hexo g#使用Hexo生成静态文件</span><br><span class="line">hexo s#使用Hexo启动本地服务器,可以进行网站预览</span><br></pre></td></tr></table></figure><p>在浏览器中输入网址<a href="">localhost:4000</a>，效果图如下：<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081034472.png" alt="image-20231107191153550"></p></li><li><hr><p>配置ssh</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh #检查本机已存在的ssh密钥</span><br></pre></td></tr></table></figure><p>如果提示：No such file or directory 说明你是第一次使用git。</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C “邮件地址”</span><br></pre></td></tr></table></figure><ul><li><p>然后连续3次回车，最终会生成一个文件在用户目录下，打开用户目录，找到.ssh\id_rsa.pub文件，记事本打开并复制里面的内容，打开你的github主页，进入个人设置 -&gt; SSH and GPG keys -&gt; New SSH key</p></li><li><p>key填写C:\Users\Administrator.ssh\id_rsa.pub中的内容，填写钥匙名并创建</p></li><li><p>尝试ssh连接,测试是否成功</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com # 注意邮箱地址不用改</span><br></pre></td></tr></table></figure></li><li><p>如果提示Are you sure you want to continue connecting (yes&#x2F;no)?，输入yes，然后会看到下面这个，就算成功：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi liuxianan! You’ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure></li><li><ul><li>在选中的位置(blog目录下)打开cmd(以管理员身份)</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git –save</span><br></pre></td></tr></table></figure></li><li><p>在上一个Git Bash Here还需要继续配置</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;luozhixiaowo&quot;// 你的github用户名，非昵称</span><br><span class="line">git config --global user.email &quot;xxx@qq.com&quot;// 填写你的github注册邮箱</span><br></pre></td></tr></table></figure><hr></li></ul></li><li><p>准备上传代码</p><ul><li><p>在github上新建一个存储库，命名为<strong>github的用户名.github.io</strong></p></li><li><p>编辑_config.yml文件，在最后改成这样</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: git</span><br><span class="line">repository: git@github.com:luozhixiaowo/luozhixiaowo.github.io.git</span><br><span class="line">branch: main</span><br></pre></td></tr></table></figure></li><li><p>注意保持格式，缩进不对，会导致一会儿，上传不成功</p><hr></li></ul></li><li><p>最后上传</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br><span class="line">每次上传成功之后，需要等待1-3分钟，用来刷新页面</span><br></pre></td></tr></table></figure><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081037025.png" alt="image-20231108103719182"></p></li></ol><ul><li><p>在创建的存储库的设置中-pages-如图设置<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081035642.png" alt="image-20231107192631709"></p></li><li><p>最后在浏览器中输入网址<a href="">baiQstar.github.io</a>就可访问网站了</p><hr></li></ul><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul><li>注意英文输入，命令含中文符号会报错</li><li>在设置用户名和邮箱时注意将—改为–</li><li>注意在blog文件夹中进行操作</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;一，利用github搭建hexo博客&quot;&gt;&lt;a href=&quot;#一，利用github搭建hexo博客&quot; class=&quot;headerlink&quot; title=&quot;一，利用github搭建hexo博客&quot;&gt;&lt;/a&gt;一，利用github搭建hexo博客&lt;/h1&gt;&lt;h3 id=&quot;搭</summary>
       
     
     
