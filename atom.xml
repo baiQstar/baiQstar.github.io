@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-12-03T06:24:58.758Z</updated>
+  <updated>2023-12-04T12:23:36.234Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,49 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二十三，网络基础</title>
+    <link href="http://example.com/2023/12/04/%E4%BA%8C%E5%8D%81%E4%B8%89%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/"/>
+    <id>http://example.com/2023/12/04/%E4%BA%8C%E5%8D%81%E4%B8%89%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</id>
+    <published>2023-12-04T11:54:11.000Z</published>
+    <updated>2023-12-04T12:23:36.234Z</updated>
+    
+    <content type="html"><![CDATA[<p>1，正向shell和反弹shell</p><p>​正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。</p><p>​反弹shell是指攻击者通过在目标主机上成功执行一个恶意代码，然后利用该恶意代码与自己的主机建立连接，从而实现对目标主机的远程控制。攻击者可以利用反弹shell执行各种攻击，如窃取敏感信息、操纵目标主机等。</p><p>示意图如下：<br><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042011102.png" alt="image-20231204201149825" style="zoom:67%;" /></p><p>2，ipv4的组成：</p><p>网络部分（NETWORK）+主机部分（HOST）</p><p>比如：        192.168.1.142</p><p>网络部分为[192.168.1]    主机部分[142]</p><p>问：255.255.255.255&#x2F;30有多少个可分配的主机地址，分别是什么，其他的为什么不可用</p><p>答：对于IP地址块255.255.255.255&#x2F;30，它是一个包含4个连续IP地址的子网。</p><p>其中，两个IP地址是网络地址和广播地址，不能用于分配给主机。剩下的两个IP地址可用于分配给主机。</p><p>具体地，该子网的可分配的主机地址为：</p><pre><code>网络地址：255.255.255.252 (不可用)第一个可用主机地址：255.255.255.253第二个可用主机地址：255.255.255.254广播地址：255.255.255.255 (不可用)</code></pre><p>其中，网络地址和广播地址是保留地址，不能用于主机的分配。而第一个可用主机地址和第二个可用主机地址可以用于分配给主机使用。</p><p>需要注意的是，&#x2F;30 子网掩码只允许分配两个可用主机地址，因为它使用了30位来标识网络，只留下了2个位用于主机地址。</p><p>3，公网地址和私网地址：</p><p>公有网络地址分为A，B，C，D，E五类</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042019152.png" alt="image-20231204201908897"></p><p>其中A，B，C三类为常用地址，D类地址用于组播通信的地址，E类地址用于科学研究的保留地址</p><p>私有网络地址分为A，B，C三类</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042020772.png" alt="image-20231204202045734"></p><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;1，正向shell和反弹shell&lt;/p&gt;
+&lt;p&gt;​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。&lt;/p&gt;
+&lt;p&gt;​		反弹shel</summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>二十二，安卓手机远控AhMyth</title>
+    <link href="http://example.com/2023/12/04/%E4%BA%8C%E5%8D%81%E4%BA%8C%EF%BC%8C%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E8%BF%9C%E6%8E%A7AhMyth/"/>
+    <id>http://example.com/2023/12/04/%E4%BA%8C%E5%8D%81%E4%BA%8C%EF%BC%8C%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E8%BF%9C%E6%8E%A7AhMyth/</id>
+    <published>2023-12-04T11:12:59.000Z</published>
+    <updated>2023-12-04T11:47:00.739Z</updated>
+    
+    <content type="html"><![CDATA[<p>AhMyth是一款在GitHub上开源的能控制安卓手机的远程控制软件</p><p>项目地址为：<a href="https://github.com/AhMyth/AhMyth-Android-RAT">https://github.com/AhMyth/AhMyth-Android-RAT</a></p><p>接下来进行进行控制操作：</p><p>1，下载好AhMyth双击打开</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041921484.png" alt="image-20231204192128499" style="zoom:67%;" /><p>2，点击APK Builder—&gt;在Source IP中输入本机的IP地址—&gt;Source Port可以不用填，默认端口—&gt;点击Builder生成apk木马</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041929465.png" alt="image-20231204192953991" style="zoom:67%;" /><p>3，根据生成的地址找到apk木马</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041931824.png" alt="image-20231204193145510"></p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041933275.png" alt="image-20231204193317929"></p><p>4，在AhMyth中点击Victims，再点击Listen开启监听</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041936924.png" alt="image-20231204193640437" style="zoom:67%;" /><p>5，打开手机模拟器，将生成的Ahmyth.s.apk拖到模拟器中，双击运行，返回Ahmyth若出现以下效果，则证明远控成功</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041938350.png" alt="image-20231204193832219" style="zoom:67%;" /><p>6，点击Open The Lab可打开操作面板</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041939082.png" alt="image-20231204193948018" style="zoom:67%;" /><p>7，其中各个按钮皆有不同的功能</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312041945549.png" alt="image-20231204194534288" style="zoom:67%;" /><p>Camera:开启手机的前置或后置摄像头进行拍照</p><p>File Manager:文件管理器</p><p>Mic:可开启麦克风进行录音</p><p>Location:地址定位功能</p><p>contacts:通讯录</p><p>SMS:发送短信</p><p>Calls Logs:查看通话记录</p><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;AhMyth是一款在GitHub上开源的能控制安卓手机的远程控制软件&lt;/p&gt;
+&lt;p&gt;项目地址为：&lt;a href=&quot;https://github.com/AhMyth/AhMyth-Android-RAT&quot;&gt;https://github.com/AhMyth/AhMyth-A</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>二十一，python爬虫基础</title>
@@ -397,51 +440,6 @@
     <summary type="html">&lt;hr&gt;
 &lt;h5 id=&quot;标题：&quot;&gt;&lt;a href=&quot;#标题：&quot; class=&quot;headerlink&quot; title=&quot;标题：&quot;&gt;&lt;/a&gt;标题：&lt;/h5&gt;&lt;p&gt;用#来表示格式，以#的数量表示标题的大小，效果如图：&lt;/p&gt;
 &lt;img src=&quot;https://cdn.jsdelivr</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>三，Typora+PicGo+Github保证博客中图片显示</title>
-    <link href="http://example.com/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/"/>
-    <id>http://example.com/2023/11/08/%E4%B8%89%EF%BC%8CTypora-PicGo-Github%E4%BF%9D%E8%AF%81%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%9B%BE%E7%89%87%E6%98%BE%E7%A4%BA/</id>
-    <published>2023-11-08T03:11:38.000Z</published>
-    <updated>2023-11-08T03:27:35.097Z</updated>
-    
-    <content type="html"><![CDATA[<p>为了方便写作，我们可以采用Typora+PicGo+Github的方案来搭建我们的博客写作环境。</p><ul><li>Typora：它是一款轻便简洁的Markdown编辑器，支持即时渲染技术，即所写立刻所见，少了排版的时间，专注于文章内容的编辑。</li><li>PicGo:它是一个用于快速上传图片并获取图片 URL 链接的工具，支持多种图库。</li><li>Github:代码托管工具，除了代码，还可以用作图片存储。</li></ul><p>在我们的博客写作中，可以达成这样的需求：</p><ul><li>使用Markdown编辑博客</li><li>一篇博客发布多个平台</li><li>图片一次上传，处处引用</li></ul><h3 id="操作步骤："><a href="#操作步骤：" class="headerlink" title="操作步骤："></a>操作步骤：</h3><ol><li>安装好Typora和PicGo软件，并准备一个GitHub账号</li><li>登录Github并创建一个公开的仓库，需要注意仓库必须是公开的，否则无法预览。</li><li>设置token</li></ol><ul><li>点击右上角头像-settings，然后点击developer settings，点击personal access tokens。</li><li>点击tokens (classic)，点击create new token(classic)</li><li>设置权限</li></ul><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081120305.png" alt="image-20231108112006915" style="zoom:50%;" /><ul><li>复制token</li></ul><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081120396.png" alt="image-20231108112054069" style="zoom:50%;" /><ol start="4"><li>PicGo配置Github图床</li></ol><ul><li>点击左边图床设置，选择GitHub图床，具体配置如下</li><li>设定仓库名，填写：GitHub名&#x2F;库名</li><li>分支，默认填main</li><li>设定Token，刚才保存的token令牌</li><li>指定存储路径，默认填img&#x2F;</li></ul><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081123809.png" alt="image-20231108112313680" style="zoom:50%;" /><p>自定义域名为<a href="https://cdn.jsdelivr.net/gh/%E4%BD%A0%E7%9A%84github%E7%94%A8%E6%88%B7%E5%90%8D/%E4%BD%A0%E7%9A%84%E4%BB%93%E5%BA%93%E5%90%8D@%E5%88%86%E6%94%AF%EF%BC%88%E4%B8%80%E8%88%AC%E4%B8%BAmain%EF%BC%89/">https://cdn.jsdelivr.net/gh/你的github用户名/你的仓库名@分支（一般为main）/</a></p><ol start="5"><li><p>图床接入</p><p>接下来可以在 Typora中接入我们的图床了。</p><ul><li><p>打开Typora，找到文件-&gt;偏好设置-&gt;图像</p></li><li><p>进行如下配置</p></li></ul></li></ol><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081125463.png" alt="image-20231108112518588" style="zoom:50%;" /><p>6.上传图片</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081126295.png" alt="image-20231108112619628" style="zoom:50%;" /><p>上传后图片就在GitHub中设置的仓库中的文件夹中了</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;为了方便写作，我们可以采用Typora+PicGo+Github的方案来搭建我们的博客写作环境。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Typora：它是一款轻便简洁的Markdown编辑器，支持即时渲染技术，即所写立刻所见，少了排版的时间，专注于文章内容的编辑。&lt;/li&gt;
-&lt;li&gt;P</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>图片猫</title>
-    <link href="http://example.com/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/"/>
-    <id>http://example.com/2023/11/07/%E5%9B%BE%E7%89%87%E7%8C%AB/</id>
-    <published>2023-11-07T12:44:22.000Z</published>
-    <updated>2023-11-08T02:31:56.984Z</updated>
-    
-    <content type="html"><![CDATA[<p>mao</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081031611.jpeg" alt="点击查看图片来源"></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;mao&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081031611.jpeg&quot; alt=&quot;点击查看图片来源&quot;&gt;&lt;/p&gt;
-</summary>
       
     
     
