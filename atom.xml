@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-12-04T12:23:36.234Z</updated>
+  <updated>2023-12-05T12:09:31.262Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二十四，Proxifier和Wireshark的使用</title>
+    <link href="http://example.com/2023/12/05/%E4%BA%8C%E5%8D%81%E5%9B%9B%EF%BC%8CProxifier%E5%92%8CWireshark%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://example.com/2023/12/05/%E4%BA%8C%E5%8D%81%E5%9B%9B%EF%BC%8CProxifier%E5%92%8CWireshark%E7%9A%84%E4%BD%BF%E7%94%A8/</id>
+    <published>2023-12-05T11:23:38.000Z</published>
+    <updated>2023-12-05T12:09:31.262Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="一，Proxifier的使用"><a href="#一，Proxifier的使用" class="headerlink" title="一，Proxifier的使用"></a>一，Proxifier的使用</h4><p>​Proxifier是一款功能非常强大的socks5客户端，可以让不支持通过代理服务器工作的网络程序能通过HTTPS或SOCKS代理或代理链。</p><p>1，下载安装Proxifier，官网地址为：<a href="https://www.proxifier.com/">https://www.proxifier.com/</a></p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051933548.png" alt="image-20231205193345581" style="zoom: 80%;" /><p>2，双击运行Proxifier</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051936640.png" alt="image-20231205193621432"></p><p>3，点击配置文件—&gt;点击代理服务器—&gt;点击添加—&gt;地址填127.0.0.1—&gt;端口填自己代理的端口—&gt;选中SOCKES 版本 5—&gt;点击确定—&gt;点击确定</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051940358.png" alt="image-20231205194010239"></p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051941649.png" alt="image-20231205194102379"></p><p>4，点击配置文件—&gt;点击代理规则—&gt;点击添加—&gt;名称随意填—&gt;应用程序填想要添加代理的程序或服务，例如：ssh*;—&gt;点击确定—&gt;移除Location—&gt;将Default的最后一格改为Direct—&gt;点击确定</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051944093.png" alt="image-20231205194430704"></p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051946528.png" alt="image-20231205194615312"></p><p>5，打开命令提示符，输入：ssh <a href="mailto:&#114;&#111;&#x6f;&#x74;&#64;&#x31;&#x2e;&#x31;&#x2e;&#49;&#46;&#x31;">&#114;&#111;&#x6f;&#x74;&#64;&#x31;&#x2e;&#x31;&#x2e;&#49;&#46;&#x31;</a>，返回Proxifier出现以下效果，说明代理成功</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051950439.png" alt="image-20231205195024403"></p><h4 id="二，Wireshark的使用"><a href="#二，Wireshark的使用" class="headerlink" title="二，Wireshark的使用"></a>二，Wireshark的使用</h4><p>​WireShark是非常流行的网络封包分析工具，可以截取各种网络数据包，并显示数据包详细信息。常用于开发测试过程中各种问题定位。</p><p>1，下载WireShark，官网地址为：<a href="https://www.wireshark.org/">https://www.wireshark.org/</a></p><p>下载时能勾上下载的插件全部都要勾上下载下来，包括其中的Npcap和USBPcap组件</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051956891.png" alt="image-20231205195616935"></p><p>2，找到本机的网卡并双击选择</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312051958979.png" alt="image-20231205195830437"></p><p>3，打开命令提示符，输入ping 192.168.2.56,发送和接收四个数据包</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312052000693.png" alt="image-20231205200010210"></p><p>4，在WireShark中点击停止，停止监控数据包</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312052001054.png" alt="image-20231205200123126"></p><p>5，在搜索框中输入icmp，查看ping的数据包</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312052002568.png" alt="image-20231205200251634"></p><p>6.，在搜索框中输入ip.src&#x3D;&#x3D;192.168.2.96则可以查看源地址为192.168.2.96的数据包</p><p>输入ip.dst&#x3D;&#x3D;192.168.2.56则可以查看目标地址为192.168.2.56的数据包</p><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312052008367.png" alt="image-20231205200848249"></p><hr>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h4 id=&quot;一，Proxifier的使用&quot;&gt;&lt;a href=&quot;#一，Proxifier的使用&quot; class=&quot;headerlink&quot; title=&quot;一，Proxifier的使用&quot;&gt;&lt;/a&gt;一，Proxifier的使用&lt;/h4&gt;&lt;p&gt;​		Proxifier是一款功能非常强大的</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>二十三，网络基础</title>
@@ -418,28 +438,6 @@
     <summary type="html">&lt;hr&gt;
 &lt;p&gt;安装完成vmware以后&lt;br&gt;进入虚拟机—&amp;gt;&amp;gt;设置—&amp;gt;&amp;gt;网络适配器&lt;/p&gt;
 &lt;p&gt;​	在网络适配器中可以发现vmware为我们提供了三种网络工作模式，它们分别是：&lt;br&gt;1,Bridged（桥接模式）直接连接物理网络&lt;br&gt;2,NAT（网</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>四，markdown语法</title>
-    <link href="http://example.com/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/"/>
-    <id>http://example.com/2023/11/08/%E5%9B%9B%EF%BC%8Cmarkdown%E8%AF%AD%E6%B3%95/</id>
-    <published>2023-11-08T11:02:10.000Z</published>
-    <updated>2023-11-08T11:45:31.829Z</updated>
-    
-    <content type="html"><![CDATA[<hr><h5 id="标题："><a href="#标题：" class="headerlink" title="标题："></a>标题：</h5><p>用#来表示格式，以#的数量表示标题的大小，效果如图：</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081920415.png" style="zoom:50%;" /><h5 id="字体设置斜体、粗体、删除线："><a href="#字体设置斜体、粗体、删除线：" class="headerlink" title="字体设置斜体、粗体、删除线："></a>字体设置斜体、粗体、删除线：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081919870.png" alt="image-20231108191934493" style="zoom:50%;" /><h5 id="链接："><a href="#链接：" class="headerlink" title="链接："></a>链接：</h5><p>1，插入图片链接：</p><p>格式为：<img src="/%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84/%E7%BD%91%E7%BB%9C%E5%9B%BE%E7%89%87%E8%B7%AF%E5%BE%84" alt="图片描述"></p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081928845.png" style="zoom:50%;" /><p>2，Markdown 支持以比较简短的自动链接形式来处理网址和电子邮件信箱，只要是用&lt;&gt;包起来， Markdown 就会自动把它转成链接。也可以直接写，也是可以显示成链接形式的</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081930795.png" alt="image-20231108192849993" style="zoom:50%;" /><h5 id="分割线："><a href="#分割线：" class="headerlink" title="分割线："></a>分割线：</h5><p>可以在一行中用三个以上的星号(*)、减号(-)、底线(_)来建立一个分隔线，行内不能有其他东西。你也可以在星号或是减号中间插入空格。</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081931923.png" alt="image-20231108193154539" style="zoom:50%;" /><h5 id="代码块："><a href="#代码块：" class="headerlink" title="代码块："></a>代码块：</h5><p>用三个~来表示格式，效果如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main</span><br></pre></td></tr></table></figure><h5 id="引用："><a href="#引用：" class="headerlink" title="引用："></a>引用：</h5><p>在被引用的文本前加上&gt;符号，以及一个空格就可以了，如果只输入了一个&gt;符号会产生一个空白的引用。</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081935515.png" alt="image-20231108193543671" style="zoom:50%;" /><h5 id="列表："><a href="#列表：" class="headerlink" title="列表："></a>列表：</h5><p>1，无序列表</p><p>使用 *，+，- 表示无序列表。<br>注意：符号后面一定要有一个空格，起到缩进的作用。</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081938349.png" alt="image-20231108193814543" style="zoom:50%;" /><p>2，有序列表</p><p>使用数字和一个英文句点表示有序列表。<br>注意：英文句点后面一定要有一个空格，起到缩进的作用。</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939852.png" alt="image-20231108193908340" style="zoom:50%;" /><p>3，无序列表和有序列表同时使用</p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081939344.png" alt="image-20231108193938532" style="zoom:50%;" /><h5 id="表格："><a href="#表格：" class="headerlink" title="表格："></a>表格：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081941334.png" alt="image-20231108194115208" style="zoom:50%;" /><h5 id="换行："><a href="#换行：" class="headerlink" title="换行："></a>换行：</h5><p>方法1: 连续两个以上空格+回车<br>方法2：使用html语言换行标签：</p><h5 id="缩进字符："><a href="#缩进字符：" class="headerlink" title="缩进字符："></a>缩进字符：</h5><p>、<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942745.png" alt="image-20231108194221891" style="zoom:50%;" /></p><h5 id="特殊符号："><a href="#特殊符号：" class="headerlink" title="特殊符号："></a>特殊符号：</h5><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202311081942698.png" alt="image-20231108194249512" style="zoom:50%;" />]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;hr&gt;
-&lt;h5 id=&quot;标题：&quot;&gt;&lt;a href=&quot;#标题：&quot; class=&quot;headerlink&quot; title=&quot;标题：&quot;&gt;&lt;/a&gt;标题：&lt;/h5&gt;&lt;p&gt;用#来表示格式，以#的数量表示标题的大小，效果如图：&lt;/p&gt;
-&lt;img src=&quot;https://cdn.jsdelivr</summary>
       
     
     
