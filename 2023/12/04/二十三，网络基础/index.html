@@ -18,18 +18,18 @@
   
   
   <title>二十三，网络基础 | Hexo</title>
-  <meta name="description" content="1，正向shell和反弹shell ​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。 ​		反弹shell是指攻击者通过在目标主机上成功执行一个恶意代码，然后利用该恶意代码与自己的主机建立连接，从而实现对目标主机的远程控制。攻击者可以利用反弹shell执行各">
+  <meta name="description" content="1，正向shell和反弹shell​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。 ​		反弹shell是指攻击者通过在目标主机上成功执行一个恶意代码，然后利用该恶意代码与自己的主机建立连接，从而实现对目标主机的远程控制。攻击者可以利用反弹shell执行各种">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二十三，网络基础">
 <meta property="og:url" content="http://example.com/2023/12/04/%E4%BA%8C%E5%8D%81%E4%B8%89%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="baiQstar的博客">
-<meta property="og:description" content="1，正向shell和反弹shell ​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。 ​		反弹shell是指攻击者通过在目标主机上成功执行一个恶意代码，然后利用该恶意代码与自己的主机建立连接，从而实现对目标主机的远程控制。攻击者可以利用反弹shell执行各">
+<meta property="og:description" content="1，正向shell和反弹shell​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。 ​		反弹shell是指攻击者通过在目标主机上成功执行一个恶意代码，然后利用该恶意代码与自己的主机建立连接，从而实现对目标主机的远程控制。攻击者可以利用反弹shell执行各种">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042011102.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042019152.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042020772.png">
 <meta property="article:published_time" content="2023-12-04T11:54:11.000Z">
-<meta property="article:modified_time" content="2023-12-04T12:23:36.234Z">
+<meta property="article:modified_time" content="2023-12-10T07:32:44.616Z">
 <meta property="article:author" content="白易安">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042011102.png">
@@ -360,12 +360,10 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>1，正向shell和反弹shell</p>
-<p>​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。</p>
+        <h4 id="1，正向shell和反弹shell"><a href="#1，正向shell和反弹shell" class="headerlink" title="1，正向shell和反弹shell"></a>1，正向shell和反弹shell</h4><p>​		正向shell是指攻击者在目标主机上成功安装了一个后门程序，使其能够通过网络与目标主机进行远程通信和控制。攻击者可以通过正向shell执行各种操作，如上传、下载、修改文件、执行命令等。</p>
 <p>​		反弹shell是指攻击者通过在目标主机上成功执行一个恶意代码，然后利用该恶意代码与自己的主机建立连接，从而实现对目标主机的远程控制。攻击者可以利用反弹shell执行各种攻击，如窃取敏感信息、操纵目标主机等。</p>
 <p>示意图如下：<br><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042011102.png" alt="image-20231204201149825" style="zoom:67%;" /></p>
-<p>2，ipv4的组成：</p>
-<p>网络部分（NETWORK）+主机部分（HOST）</p>
+<h4 id="2，ipv4的组成："><a href="#2，ipv4的组成：" class="headerlink" title="2，ipv4的组成："></a>2，ipv4的组成：</h4><p>网络部分（NETWORK）+主机部分（HOST）</p>
 <p>比如：        192.168.1.142</p>
 <p>网络部分为[192.168.1]    主机部分[142]</p>
 <p>问：255.255.255.255&#x2F;30有多少个可分配的主机地址，分别是什么，其他的为什么不可用</p>
@@ -379,12 +377,25 @@
 </code></pre>
 <p>其中，网络地址和广播地址是保留地址，不能用于主机的分配。而第一个可用主机地址和第二个可用主机地址可以用于分配给主机使用。</p>
 <p>需要注意的是，&#x2F;30 子网掩码只允许分配两个可用主机地址，因为它使用了30位来标识网络，只留下了2个位用于主机地址。</p>
-<p>3，公网地址和私网地址：</p>
-<p>公有网络地址分为A，B，C，D，E五类</p>
+<h4 id="3，公网地址和私网地址："><a href="#3，公网地址和私网地址：" class="headerlink" title="3，公网地址和私网地址："></a>3，公网地址和私网地址：</h4><p>公有网络地址分为A，B，C，D，E五类</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042019152.png" alt="image-20231204201908897"></p>
 <p>其中A，B，C三类为常用地址，D类地址用于组播通信的地址，E类地址用于科学研究的保留地址</p>
 <p>私有网络地址分为A，B，C三类</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312042020772.png" alt="image-20231204202045734"></p>
+<h4 id="4，OSI模型"><a href="#4，OSI模型" class="headerlink" title="4，OSI模型"></a>4，OSI模型</h4><p>​		OSI（Open System Interconnect），即开放式系统互连。该体系结构标准定义了网络互连的七层框架</p>
+<p>​		OSI是逻辑模型，而非物理模型，它是一组指导原则，开发人员可据此来开发网络中运行的应用程序，它还提供了一个框架，可用于指导如何制作和实施网络标准，如何制造设备以及如何制定网络互联档案。</p>
+<p>参考模型的优点：</p>
+<ul>
+<li>将网络通信过程划分成更小，更简单的组件，这有助于组件的开发，设计和故障排除。</li>
+<li>通过标准化网络部件，让多家厂商能够协作开发。</li>
+<li>明确定义了模型每层执行的功能，从而支持行业标准化。</li>
+<li>让不同类型的网络硬件和软件能够彼此通信。</li>
+<li>防止对一层的修改影响其他层，从而避免了开发工作的影响。</li>
+</ul>
+<p>OSI七层架构及各层作用：</p>
+<p>物理层（Physical Layer）：负责传输比特流，并管理物理连接、电压等物理特性。<br>数据链路层（Data Link Layer）：在相邻节点之间传输数据帧，并提供错误检测和纠正的功能。<br>网络层（Network Layer）：负责在网络中选择路由并转发数据包，例如IP协议。<br>传输层（Transport Layer）：提供端到端的数据传输服务，并确保数据的可靠性和完整性，例如TCP协议。<br>会话层（Session Layer）：管理通信会话的建立、维护和终止。<br>表示层（Presentation Layer）：负责数据的格式化、加密和解密，以确保不同系统之间的数据交换。<br>应用层（Application Layer）：提供特定应用程序的服务，例如HTTP、FTP、SMTP等。</p>
+<h4 id="5，路由器"><a href="#5，路由器" class="headerlink" title="5，路由器"></a>5，路由器</h4><p>路由器的定义：是实现网络互连设备，工作在网络层<br>路由器的功能：路由和转发<br>1）可以决定数据包从来源端到目的端所经过的路由路径（host到host之间的最佳传输路径），这个过程称为路由；<br>2）将路由器输入端的数据包移送至适当的路由器输出端（在路由器内部进行），这称为转发。<br>路由器和交换机的区别？<br>交换机是查看MAC地址表的，路由器是查看路由表的。交换机如果没有在MAC地址表中找到自己想要的，它就要进行区域泛洪，而路由器如果在路由表中找不到对应的条目会直接丢弃数据包，并返回一个不可到达的信息。他不会发送广播，所以路由器有隔离广播域的功能而交换机所在的网络内部就是一个广播域，他只在本区域泛洪，不会泛红到路由器外面；且交换机工作在二层，根据MAC地址表转发数据帧，路由器工作在三层，根据路由表转发数据包，交换机一般工作在据域网内，而路由器工作在广域网。</p>
+<p>内网从路由器获取ip地址分为静态自动和动态（dhcp）手动两种<br>动态获取的ip在电脑关机时回收，下次启用时重新分发<br>当静动态都设为同一ip时，能不能上网和路由器的优先有关，一般时静态优先</p>
 <hr>
 
       
