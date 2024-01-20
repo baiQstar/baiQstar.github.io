@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>三十九，目录扫描靶机 | Hexo</title>
+  <meta name="description" content="1、端口扫描我们的靶机ip是192.168.2.197 先使用nmap进行端口扫描  2、查看端口的内容比如192.168.2.197:27689他打开的页面是一个文件下载页面，需要账号密码登陆  3、目录扫描我们对这个端口进行目录扫描,扫出来的文件我们都翻一翻 1dirsearch -u 192.168.2.197:27689   查看一下&#x2F;web.config.bak,可以下载一个文件，查看文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三十九，目录扫描靶机">
+<meta property="og:url" content="http://example.com/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="1、端口扫描我们的靶机ip是192.168.2.197 先使用nmap进行端口扫描  2、查看端口的内容比如192.168.2.197:27689他打开的页面是一个文件下载页面，需要账号密码登陆  3、目录扫描我们对这个端口进行目录扫描,扫出来的文件我们都翻一翻 1dirsearch -u 192.168.2.197:27689   查看一下&#x2F;web.config.bak,可以下载一个文件，查看文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/image-20240110204844488.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110194904.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110195237.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110195827.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110200623.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110200820.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110201035.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110201826.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110201949.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110203013.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110203613.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110204151.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110204559.png">
+<meta property="article:published_time" content="2024-01-20T12:12:53.000Z">
+<meta property="article:modified_time" content="2024-01-20T12:20:17.015Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/image-20240110204844488.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="title">四十三，命令执行漏洞</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:25:59.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%BA%8C%EF%BC%8CXSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" class="title">四十二，XSS跨站脚本攻击</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:24:40.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%80%EF%BC%8CHackademic-RTB1%E9%9D%B6%E6%9C%BA/" class="title">四十一，Hackademic.RTB1靶机</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:23:04.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%EF%BC%8CWireshark%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/" class="title">四十，Wireshark抓包分析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:21:37.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/" class="title">三十九，目录扫描靶机</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:12:53.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-三十九，目录扫描靶机" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      三十九，目录扫描靶机
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/" class="article-date">
+	  <time datetime="2024-01-20T12:12:53.000Z" itemprop="datePublished">2024-01-20</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3><span id="1-端口扫描">1、端口扫描</span></h3><p>我们的<code>靶机ip</code>是<code>192.168.2.197</code></p>
+<p>先使用nmap进行端口扫描</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/image-20240110204844488.png" alt="image-20240110204844488"></p>
+<h3><span id="2-查看端口的内容">2、查看端口的内容</span></h3><p>比如<code>192.168.2.197:27689</code>他打开的页面是一个文件下载页面，需要账号密码登陆</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110194904.png" alt="QQ截图20240110194904"></p>
+<h3><span id="3-目录扫描">3、目录扫描</span></h3><p>我们对这个端口进行目录扫描,扫出来的文件我们都翻一翻</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirsearch -u 192.168.2.197:27689</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110195237.png" alt="QQ截图20240110195237"></p>
+<p>查看一下<code>/web.config.bak</code>,可以下载一个文件，查看文件内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.197:27689/web.config.bak</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110195827.png" alt="QQ截图20240110195827"></p>
+<p>我们可以看到这很像一个数据库，我们尝试连接一下,新建一个lyg数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id=down</span><br><span class="line">pwd=downsql</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110200623.png" alt="QQ截图20240110200623"></p>
+<p>随便查看一下数据库的内容，找到一个账号密码admin   123456</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110200820.png" alt="QQ截图20240110200820"></p>
+<p>登陆之前的页面</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110201035.png" alt="QQ截图20240110201035"></p>
+<p>成功找到第一个key，这里都是一些文件上传的页面，所以我们猜测第二个key，可以利用文件上传漏洞，</p>
+<p>先随便上传一个文件看看，试了一下可以上传jpg文件</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110201826.png" alt="QQ截图20240110201826"></p>
+<p>查看上传的文件，发现有一个上传的规定，我们利用它去上传aspx类型的木马</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110201949.png" alt="QQ截图20240110201949"></p>
+<p>复制图片链接打开看一下，在file后面的位置删掉一截，让他报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.197:27689/admin/file_down.aspx?file=638287889289156441-12311112.aspx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110203013.png" alt="QQ截图20240110203013"></p>
+<p>根据报错的内容，修改路径</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110203613.png" alt="QQ截图20240110203613"></p>
+<p>木马已经成功植入进去了，我们可以使用蚁剑操作他的后台了，连接密码是我们写木马设置的密码abcd</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110204151.png" alt="QQ截图20240110204151"></p>
+<p>查找一下有没有key，ok成功在web目录下找到了第二个key</p>
+<p><img src="https://raw.githubusercontent.com/luyuguohhh/tuku/main/imj/QQ%E6%88%AA%E5%9B%BE20240110204559.png" alt="QQ截图20240110204559"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/" title="三十九，目录扫描靶机" target="_blank" rel="external">http://example.com/2024/01/20/三十九，目录扫描靶机/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%EF%BC%8CWireshark%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/" title="四十，Wireshark抓包分析"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E5%85%AB%EF%BC%8C%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/" title="三十八，文件上传漏洞"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

